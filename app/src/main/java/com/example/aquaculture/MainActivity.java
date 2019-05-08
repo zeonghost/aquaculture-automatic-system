@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(name.getText().toString().equals("user1")){
-                    if(pass.getText().toString().equals("123456")){
+                    if(pass.getText().toString().equals("123456789")){
                         //jump to home page
                         Intent intent = new Intent(MainActivity.this, home.class);
                         startActivity(intent);
