@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "151903542382",
+    "firebase_url": "https://aquaculture-7393d.firebaseio.com",
+    "project_id": "aquaculture-7393d",
+    "storage_bucket": "aquaculture-7393d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151903542382:android:af4b6f692eb078ea",
+        "android_client_info": {
+          "package_name": "com.example.aquaculture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151903542382-0mu4mhsilhsengv9cugt5qks4cbis03h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aquaculture",
+            "certificate_hash": "3a9e18f4a7d2a40d7f6b7ccb1d005fbfe041a324"
+          }
+        },
+        {
+          "client_id": "151903542382-09m90936n3rhirl0nf1lgb9om8i6rdmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYcveIgsCCqMJ6QMsvQHaxVr2ppImfQJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151903542382-09m90936n3rhirl0nf1lgb9om8i6rdmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
