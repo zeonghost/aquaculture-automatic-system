@@ -39,7 +39,7 @@ public class home extends AppCompatActivity {
 
     public void basicReadWrite() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();//connect to database
-        DatabaseReference myRef = database.getReference("/pi1/location");//declear path to location
+        DatabaseReference myRef = database.getReference("/pi1-detail/location");//declear path to location
         //final DatabaseReference myRef1 = database.getReference("/pi1/pond1/ch1");
         //final DatabaseReference myRef2 = database.getReference("/pi1/pond1/ch2");
         //final DatabaseReference myRef3 = database.getReference("/pi1/pond1/ch3");

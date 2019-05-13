@@ -22,16 +22,19 @@ public class pondInfo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+        basicReadWrite();
         setContentView(R.layout.activity_pond_info);
     }
 
     public void basicReadWrite() {
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/pi1/location");
-        final DatabaseReference myRef1 = database.getReference("/pi1/pond1/ch1");
-        final DatabaseReference myRef2 = database.getReference("/pi1/pond1/ch2");
-        final DatabaseReference myRef3 = database.getReference("/pi1/pond1/ch3");
-        final DatabaseReference myRef4 = database.getReference("/pi1/pond1/temp");
+        DatabaseReference myRef = database.getReference("/pi1-detail/location");
+        final DatabaseReference myRef1 = database.getReference("/pi1-pond1/ch1");
+        final DatabaseReference myRef2 = database.getReference("/pi1-pond1/ch2");
+        final DatabaseReference myRef3 = database.getReference("/pi1-pond1/ch3");
+        DatabaseReference myRef4 = database.getReference("/pi1-pond1/temp");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -46,6 +49,7 @@ public class pondInfo extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             } 
         });
+
         myRef4.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -60,6 +64,7 @@ public class pondInfo extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
         myRef1.addValueEventListener(new ValueEventListener() {//button for ch1
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
