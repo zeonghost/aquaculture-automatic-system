@@ -1,10 +1,11 @@
 package com.example.aquaculture;
 
-import android.content.Intent;
+
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText name;//name input
     private EditText pass;//password input
     private Button login;//login button
+    private Button sign;//login button
     private String a;
     private String b;
     @Override
@@ -38,70 +40,23 @@ public class MainActivity extends AppCompatActivity {
         name = (EditText)findViewById(R.id.nameInput);
         pass = (EditText)findViewById(R.id.passInput);
         login = (Button)findViewById(R.id.loginBtn);
+        sign = (Button)findViewById(R.id.sinbtr);
         //basicReadWrite();
-
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("/user");
-        myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                System.out.println(dataSnapshot.getKey());
-            }
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef2 = database.getReference("/user");
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-            // ...
-        });
-
-
-/*
-        final Query searchun = myRef.orderByChild("username").equalTo(name.getText().toString());
-        searchun.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    // TODO: handle the post
-                    //postSnapshot.child("password");
-                    String value = dataSnapshot.getValue(String.class);
-                    Log.d(TAG, "RESULT: " + value);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-  */
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                        a = dataSnapshot.getKey();
+                         a = dataSnapshot.getKey();
                         //System.out.println(dataSnapshot.getKey());
-                        //Log.d(TAG,"Result1:" + dataSnapshot.getKey());
+                        Log.d(TAG,"Result1:" + a);
                     }
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -120,17 +75,32 @@ public class MainActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        TextView textElement = (TextView) findViewById(R.id.warnMessage2);
+                        textElement.setVisibility(TextView.VISIBLE);
                     }
                     // i don't know why i can't delete those four(onChildChanged, Removed, Moved,Cancelled)
                     // it will cause error if delete
                     // the one actual work is onChildAdded
                 });
-                myRef.orderByChild("password").equalTo(pass.getText().toString()).addChildEventListener(new ChildEventListener() {
+                myRef2.orderByChild("password").equalTo(pass.getText().toString()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                        a = dataSnapshot.getKey();
-                        //System.out.println(dataSnapshot.getKey());
-                        //Log.d(TAG,"Result1:" + dataSnapshot.getKey());
+                        b = dataSnapshot.getKey();
+                        Log.d(TAG,"Result2:" + b);
+                        Log.d(TAG,"Result3:" + a);
+                        if(a == b)
+                        {
+                            //jump to home page
+                            //Log.d(TAG, " Result4: "+ a);
+                            //Log.d(TAG, " Result5: "+ b);
+                            Intent intent = new Intent(MainActivity.this, home.class);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            TextView textElement = (TextView) findViewById(R.id.warnMessage);
+                            textElement.setVisibility(TextView.VISIBLE);
+                        }
                     }
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -149,18 +119,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
+                        TextView textElement = (TextView) findViewById(R.id.warnMessage);
+                        textElement.setVisibility(TextView.VISIBLE);
                     }
                 });
-                if(a == b)
-                {
-                    //jump to home page
-                    Intent intent = new Intent(MainActivity.this, home.class);
-                    startActivity(intent);
-                }
-                else{
-                    TextView textElement = (TextView) findViewById(R.id.warnMessage);
-                    textElement.setVisibility(TextView.VISIBLE);
-                }
+
+            }
+        });
+
+        sign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(MainActivity.this, regist.class);
+                startActivity(intent2);
             }
         });
 
@@ -168,8 +139,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+}
 
-    //communicate with databasse
+//communicate with databasse
     /*
     public void basicReadWrite() {
         // [START write_message]
@@ -202,4 +174,3 @@ public class MainActivity extends AppCompatActivity {
         // [END read_message]
     }
     */
-}
