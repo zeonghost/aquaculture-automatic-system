@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +52,42 @@ public class pondInfo extends AppCompatActivity {
                 return false;
             }
         });
+        final Switch sw = (Switch) findViewById(R.id.autosw);
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        final DatabaseReference swRef = db.getReference("/pi1-pond1/auto");
+        swRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final Integer val4 = dataSnapshot.getValue(Integer.class);
+                if(val4 == 1){
+                    sw.setChecked(true);
+                }
+                else{
+                    sw.setChecked(false);
+                }//check auto model status and change switch display
+                sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked){
+                            swRef.setValue(1);
+                            Toast.makeText(pondInfo.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
+                        }
+                        else{
+                            swRef.setValue(0);
+                            Toast.makeText(pondInfo.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
+                        }
+                    }//upload database when switch work
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
     }
 
@@ -109,10 +148,12 @@ public class pondInfo extends AppCompatActivity {
                         if(val1 == 1)
                         {
                             myRef1.setValue(0);//if click then change status
+                            Toast.makeText(pondInfo.this, "Turned off ch 1", Toast.LENGTH_SHORT).show();
                         }
                         if(val1 == 0)
                         {
                             myRef1.setValue(1);
+                            Toast.makeText(pondInfo.this, "Turned on ch 1", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -144,10 +185,12 @@ public class pondInfo extends AppCompatActivity {
                         if(val2 == 1)
                         {
                             myRef2.setValue(0);
+                            Toast.makeText(pondInfo.this, "Turned off ch 2", Toast.LENGTH_SHORT).show();
                         }
                         if(val2 == 0)
                         {
                             myRef2.setValue(1);
+                            Toast.makeText(pondInfo.this, "Turned on ch 2", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -178,10 +221,12 @@ public class pondInfo extends AppCompatActivity {
                         if(val3 == 1)
                         {
                             myRef3.setValue(0);
+                            Toast.makeText(pondInfo.this, "Turned off ch 3", Toast.LENGTH_SHORT).show();
                         }
                         if(val3 == 0)
                         {
                             myRef3.setValue(1);
+                            Toast.makeText(pondInfo.this, "Turned on ch 3", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

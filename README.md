@@ -4,8 +4,10 @@ This project is mainly about create an automatic system for aquaculture.
 
 Don't forget add note for what you have changed
 
+Install git first
+
 In Android studio, integrate git and login your github account
-Then clone files from this repositories and import to your android studio manually
+Then VCS -> Git -> clone, and input link of this repositories, then clone.
 
 For upload, click commit in your android studio, and input what you have changed or add in commit
 
