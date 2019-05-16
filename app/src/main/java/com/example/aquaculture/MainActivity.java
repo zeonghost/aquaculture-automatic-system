@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
                         if(a == b)
                         {
                             //jump to home page
-                            //Log.d(TAG, " Result4: "+ a);
-                            //Log.d(TAG, " Result5: "+ b);
+                            Log.d(TAG, " Result4: "+ a);
+                            Log.d(TAG, " Result5: "+ b);
                             Intent intent = new Intent(MainActivity.this, home.class);
                             startActivity(intent);
                         }
