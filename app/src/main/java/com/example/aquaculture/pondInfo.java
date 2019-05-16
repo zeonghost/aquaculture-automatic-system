@@ -1,9 +1,12 @@
 package com.example.aquaculture;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,6 +28,28 @@ public class pondInfo extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         basicReadWrite();
         setContentView(R.layout.activity_pond_info);
+        setTitle("Pond Details");
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1:
+                        Intent intent1 = new Intent(pondInfo.this, home.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.item2:
+                        break;
+                    case R.id.item3:
+                        Intent intent2 = new Intent(pondInfo.this, MainActivity.class);
+                        startActivity(intent2);
+                        break;
+                }
+                return false;
+            }
+        });
+
     }
 
     public void basicReadWrite() {

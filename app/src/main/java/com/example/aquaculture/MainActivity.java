@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Login");
         FirebaseApp.initializeApp(this);
         name = (EditText)findViewById(R.id.nameInput);
         pass = (EditText)findViewById(R.id.passInput);

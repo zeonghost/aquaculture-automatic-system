@@ -1,9 +1,12 @@
 package com.example.aquaculture;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,6 +37,7 @@ public class regist extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
+        setTitle("Regist");
         name = (EditText)findViewById(R.id.un);
         pass = (EditText)findViewById(R.id.pass);
         fname = (EditText)findViewById(R.id.Fname);
@@ -41,6 +45,26 @@ public class regist extends AppCompatActivity {
         //login = (Button)findViewById(R.id.btr);
         role =(Spinner) findViewById(R.id.roleSele);
         btr =(Button) findViewById(R.id.btr);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1:
+                        Intent intent1 = new Intent(regist.this, home.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.item2:
+                        break;
+                    case R.id.item3:
+                        Intent intent2 = new Intent(regist.this, MainActivity.class);
+                        startActivity(intent2);
+                        break;
+                }
+                return false;
+            }
+        });
 
         final FirebaseDatabase database =  FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference();

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item1"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Home" />
+        <!--android:icon="@drawable/ic_content_copy_24dp"
+        android:checked="true"-->
+
+    <item
+        android:id="@+id/item2"
+        android:icon="@drawable/ic_menu_send"
+        android:title="Task" />
+        <!--android:icon="@drawable/ic_add_24dp"-->
+
+    <item
+        android:id="@+id/item3"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Profile" />
+        <!--android:icon="@drawable/ic_link_24dp"-->
+
+
+</menu>
