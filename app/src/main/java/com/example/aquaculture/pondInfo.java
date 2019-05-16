@@ -1,9 +1,12 @@
 package com.example.aquaculture;
 
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,16 +25,41 @@ public class pondInfo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+        basicReadWrite();
         setContentView(R.layout.activity_pond_info);
+        setTitle("Pond Details");
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1:
+                        Intent intent1 = new Intent(pondInfo.this, home.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.item2:
+                        break;
+                    case R.id.item3:
+                        Intent intent2 = new Intent(pondInfo.this, MainActivity.class);
+                        startActivity(intent2);
+                        break;
+                }
+                return false;
+            }
+        });
+
     }
 
     public void basicReadWrite() {
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/pi1/location");
-        final DatabaseReference myRef1 = database.getReference("/pi1/pond1/ch1");
-        final DatabaseReference myRef2 = database.getReference("/pi1/pond1/ch2");
-        final DatabaseReference myRef3 = database.getReference("/pi1/pond1/ch3");
-        final DatabaseReference myRef4 = database.getReference("/pi1/pond1/temp");
+        DatabaseReference myRef = database.getReference("/pi1-detail/location");
+        final DatabaseReference myRef1 = database.getReference("/pi1-pond1/ch1");
+        final DatabaseReference myRef2 = database.getReference("/pi1-pond1/ch2");
+        final DatabaseReference myRef3 = database.getReference("/pi1-pond1/ch3");
+        DatabaseReference myRef4 = database.getReference("/pi1-pond1/temp");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -46,6 +74,7 @@ public class pondInfo extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             } 
         });
+
         myRef4.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -60,6 +89,7 @@ public class pondInfo extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
         myRef1.addValueEventListener(new ValueEventListener() {//button for ch1
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

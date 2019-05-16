@@ -1,8 +1,11 @@
 package com.example.aquaculture;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +16,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.ChildEventListener;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,42 +29,120 @@ public class MainActivity extends AppCompatActivity {
     private EditText name;//name input
     private EditText pass;//password input
     private Button login;//login button
+    private Button sign;//login button
+    private String a;
+    private String b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //FirebaseApp.initializeApp(this);
+        setTitle("Login");
+        FirebaseApp.initializeApp(this);
         name = (EditText)findViewById(R.id.nameInput);
         pass = (EditText)findViewById(R.id.passInput);
         login = (Button)findViewById(R.id.loginBtn);
+        sign = (Button)findViewById(R.id.sinbtr);
         //basicReadWrite();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("/user");
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef2 = database.getReference("/user");
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(name.getText().toString().equals("user1")){
-                    if(pass.getText().toString().equals("123456")){
-                        //jump to home page
-                        Intent intent = new Intent(MainActivity.this, home.class);
-                        startActivity(intent);
+                myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                         a = dataSnapshot.getKey();
+                        //System.out.println(dataSnapshot.getKey());
+                        Log.d(TAG,"Result1:" + a);
                     }
-                    else{
-                        //show wrong password
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        System.out.println(dataSnapshot.getKey());
+                        Log.d(TAG,"Result2:" + dataSnapshot.getKey());
+                    }
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                        System.out.println(dataSnapshot.getKey());
+                        Log.d(TAG,"Result3: " + dataSnapshot.getKey());
+                    }
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        System.out.println(dataSnapshot.getKey());
+                        Log.d(TAG,"Result4: " + dataSnapshot.getKey());
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        TextView textElement = (TextView) findViewById(R.id.warnMessage2);
+                        textElement.setVisibility(TextView.VISIBLE);
+                    }
+                    // i don't know why i can't delete those four(onChildChanged, Removed, Moved,Cancelled)
+                    // it will cause error if delete
+                    // the one actual work is onChildAdded
+                });
+                myRef2.orderByChild("password").equalTo(pass.getText().toString()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                        b = dataSnapshot.getKey();
+                        Log.d(TAG,"Result2:" + b);
+                        Log.d(TAG,"Result3:" + a);
+                        if(a == b)
+                        {
+                            //jump to home page
+                            //Log.d(TAG, " Result4: "+ a);
+                            //Log.d(TAG, " Result5: "+ b);
+                            Intent intent = new Intent(MainActivity.this, home.class);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            TextView textElement = (TextView) findViewById(R.id.warnMessage);
+                            textElement.setVisibility(TextView.VISIBLE);
+                        }
+                    }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        System.out.println(dataSnapshot.getKey());
+                        Log.d(TAG,"Result2:" + dataSnapshot.getKey());
+                    }
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                        System.out.println(dataSnapshot.getKey());
+                        Log.d(TAG,"Result3: " + dataSnapshot.getKey());
+                    }
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        System.out.println(dataSnapshot.getKey());
+                        Log.d(TAG,"Result4: " + dataSnapshot.getKey());
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                         TextView textElement = (TextView) findViewById(R.id.warnMessage);
                         textElement.setVisibility(TextView.VISIBLE);
                     }
-                }
-                else{
-                    //show wrong username
-                    TextView textElement2 = (TextView) findViewById(R.id.warnMessage2);
-                    textElement2.setVisibility(TextView.VISIBLE);
-                }
+                });
+
+            }
+        });
+
+        sign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(MainActivity.this, regist.class);
+                startActivity(intent2);
             }
         });
 
     }
 
-    //communicate with databasse
+
+
+}
+
+//communicate with databasse
     /*
     public void basicReadWrite() {
         // [START write_message]
@@ -91,4 +175,3 @@ public class MainActivity extends AppCompatActivity {
         // [END read_message]
     }
     */
-}
