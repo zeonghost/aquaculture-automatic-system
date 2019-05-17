@@ -36,13 +36,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText pass;//password input
     private Button login;//login button
     private Button sign;//login button
-    private String a;//uid get from username
-    private String b;//uid get from password
     private CheckBox rp;//remember password
     private CheckBox al;//auto login
     private String rem_pass;
     private String auto_log;
     private SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,142 +114,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
-        /*
-        sp.edit().
-                .clear();
-                .apply();
-         */
-        //code for delete save status
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("/user");
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef2 = database.getReference("/user");
-        //final DatabaseReference myRef3 = database.getReference("/allUser");
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                         a = dataSnapshot.getKey();
-                        //Log.d(TAG,"Result1:" + a);
-                        myRef2.orderByChild("password").equalTo(pass.getText().toString()).addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                                b = dataSnapshot.getKey();
-                                Log.d(TAG,"Result2:" + b);
-                                Log.d(TAG,"Result3:" + a);
-                                if(Objects.equals(a, b))
-                                {
-                                    if(rp.isChecked())
-                                    {
-                                        SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
-                                        sp.edit()
-                                                .putString("username", name.getText().toString())
-                                                .putString("password", pass.getText().toString())
-                                                //.putString("auto_log1", auto_log)
-                                                //.putString("rem_pass1", rem_pass)
-                                                .apply();
-                                        //Log.d(TAG, "saving sp");
-                                        //Log.d(TAG, "Result sp-rp2: "+ sp.getString("rem_pass1", null));
-                                        //Log.d(TAG, "Result sp-al2: "+ sp.getString("auto_log1", null));
-                                    }//save password and auto login status
-                                    //jump to home page
-                                    Intent intent = new Intent(MainActivity.this, home.class);
-                                    startActivity(intent);
-                                }
-                                else
-                                {
-                                    //TextView textElement = (TextView) findViewById(R.id.warnMessage);
-                                    //textElement.setVisibility(TextView.VISIBLE);
-                                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            @Override
-                            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                            }
-                            @Override
-                            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                            }
-                            @Override
-                            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                //TextView textElement = (TextView) findViewById(R.id.warnMessage);
-                                //textElement.setVisibility(TextView.VISIBLE);
-                            }
-                        });
-                    }
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                    // i don't know why i can't delete those four(onChildChanged, Removed, Moved,Cancelled)
-                    // it will cause error if delete
-                    // the one actual work is onChildAdded
-                });
-                /*
-                myRef2.orderByChild("password").equalTo(pass.getText().toString()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                        b = dataSnapshot.getKey();
-                        Log.d(TAG,"Result2:" + b);
-                        Log.d(TAG,"Result3:" + a);
-                        if(a == b)
-                        {
-                            //jump to home page
-                            Log.d(TAG, " Result4: "+ a);
-                            Log.d(TAG, " Result5: "+ b);
-                            Intent intent = new Intent(MainActivity.this, home.class);
-                            startActivity(intent);
-                        }
-                        else
-                        {
-                            TextView textElement = (TextView) findViewById(R.id.warnMessage);
-                            textElement.setVisibility(TextView.VISIBLE);
-                        }
-                    }
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        //System.out.println(dataSnapshot.getKey());
-                        //Log.d(TAG,"Result2:" + dataSnapshot.getKey());
-                    }
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                        //System.out.println(dataSnapshot.getKey());
-                        //Log.d(TAG,"Result3: " + dataSnapshot.getKey());
-                    }
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        //System.out.println(dataSnapshot.getKey());
-                        //Log.d(TAG,"Result4: " + dataSnapshot.getKey());
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        //TextView textElement = (TextView) findViewById(R.id.warnMessage);
-                        //textElement.setVisibility(TextView.VISIBLE);
-                    }
-                });
-                */
+                logInFunction();
             }
         });
 
@@ -261,43 +129,52 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
-
     }
 
 
-
-}
-
-//communicate with databasse
-    /*
-    public void basicReadWrite() {
-        // [START write_message]
-        // Write a message to the database
-
+    public void logInFunction(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/pi2/pond1/ch1");
-        //set path
-        //myRef.setValue("Hello, World!");
-        //update val
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                //TextView textElement = (TextView) findViewById(R.id.this_is_id_name);
-                //textElement.setText(value);
-                //get data from db
+        DatabaseReference myRef = database.getReference("/user");
 
-                Log.d(TAG, "Value is: " + value);
+        String username = name.getText().toString();
+        final String password = pass.getText().toString();
+
+        if(!username.isEmpty() && !password.isEmpty()){
+            Query checkUserPass = myRef.child(username).child("password");
+            checkUserPass.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String fetchedPass = dataSnapshot.getValue().toString();
+                    if(Objects.equals(fetchedPass, password)){
+                        Intent intent = new Intent(MainActivity.this, home.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Incorrect Username or Password. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            if(rp.isChecked()){
+                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                sp.edit()
+                        .putString("username", name.getText().toString())
+                        .putString("password", pass.getText().toString())
+                        .apply();
+            }
+        } else {
+            if(username.isEmpty()){
+                Toast.makeText(this, "Please enter a username.", Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+            if(password.isEmpty()){
+                Toast.makeText(this, "Please enter a password.", Toast.LENGTH_SHORT).show();
             }
-        });
-        // [END read_message]
+        }
+
     }
-    */
+}
