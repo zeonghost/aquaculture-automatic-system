@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText pass;//password input
     private Button login;//login button
     private Button sign;//login button
+    private Button fgt;//forget password
+    private String a;//uid get from username
+    private String b;//uid get from password
     private CheckBox rp;//remember password
     private CheckBox al;//auto login
     private String rem_pass;
@@ -52,14 +55,11 @@ public class MainActivity extends AppCompatActivity {
         pass = (EditText)findViewById(R.id.passInput);
         login = (Button)findViewById(R.id.loginBtn);
         sign = (Button)findViewById(R.id.sinbtr);
+        fgt = (Button)findViewById(R.id.fgt_pass);
         rp=(CheckBox)findViewById(R.id.cb_rp);
         al=(CheckBox)findViewById(R.id.cd_al);
         //basicReadWrite();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
-
-        //rem_pass = rp.isChecked();
-        //auto_log = al.isChecked();
-        //rp.setChecked(true);
 
         rp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -69,14 +69,14 @@ public class MainActivity extends AppCompatActivity {
                     sp.edit()
                             .putString("rem_pass1", rem_pass)
                             .apply();
-                    Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
+                    //Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
                 }
                 else{
                     rem_pass="N";
                     sp.edit()
                             .putString("rem_pass1", rem_pass)
                             .apply();
-                    Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
+                    //Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
                 }
             }
         });//detech remember password and save in SharedPreferences
@@ -88,20 +88,17 @@ public class MainActivity extends AppCompatActivity {
                     sp.edit()
                             .putString("auto_log1", auto_log)
                             .apply();
-                    Log.d(TAG, "Result sp-al1-changed: "+ sp.getString("auto_log1", null));
+                    //Log.d(TAG, "Result sp-al1-changed: "+ sp.getString("auto_log1", null));
                 }
                 else{
                     auto_log="N";
                     sp.edit()
                             .putString("auto_log1", auto_log)
                             .apply();
-                    Log.d(TAG, "Result sp-al1-changed: "+ sp.getString("auto_log1", null));
+                    //Log.d(TAG, "Result sp-al1-changed: "+ sp.getString("auto_log1", null));
                 }
             }
         });//detech auto login and saved in SharedPreference
-
-        //Log.d(TAG, "Result sp-rp1: "+ sp.getString("rem_pass1", null));
-        //Log.d(TAG, "Result sp-al1: "+ sp.getString("auto_log1", null));
 
         if(Objects.equals(sp.getString("rem_pass1", null), "Y")){//if Y, then auto fill up username and password
             rp.setChecked(true);
@@ -110,15 +107,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Reading sp");
             if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to home page.
                 al.setChecked(true);
-                Intent intent = new Intent(MainActivity.this, home.class);
-                startActivity(intent);
+                login();
             }
         }
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logInFunction();
+                login();
             }
         });
 
@@ -129,52 +125,62 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
+
+        fgt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent3 = new Intent(MainActivity.this, forget_password.class);
+                startActivity(intent3);
+            }
+        });
+
     }
-
-
-    public void logInFunction(){
+    public void login(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("/user");
-
-        String username = name.getText().toString();
-        final String password = pass.getText().toString();
-
-        if(!username.isEmpty() && !password.isEmpty()){
-            Query checkUserPass = myRef.child(username).child("password");
-            checkUserPass.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String fetchedPass = dataSnapshot.getValue().toString();
-                    if(Objects.equals(fetchedPass, password)){
-                        Intent intent = new Intent(MainActivity.this, home.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(MainActivity.this, "Incorrect Username or Password. Please try again.", Toast.LENGTH_SHORT).show();
-                    }
+        final DatabaseReference myRef = database.getReference("/user");
+        myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                a = dataSnapshot.getKey();
+                b = dataSnapshot.child("password").getValue().toString();
+                if(Objects.equals(b, pass.getText().toString())){
+                    if(rp.isChecked())
+                    {
+                        SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                        sp.edit()
+                                .putString("username", name.getText().toString())
+                                .putString("password", pass.getText().toString())
+                                .apply();
+                    }//save password and auto login status
+                    //jump to home page
+                    Intent intent = new Intent(MainActivity.this, home.class);
+                    startActivity(intent);
                 }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                else {
+                    Toast.makeText(MainActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
                 }
-            });
-
-            if(rp.isChecked()){
-                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
-                sp.edit()
-                        .putString("username", name.getText().toString())
-                        .putString("password", pass.getText().toString())
-                        .apply();
+                //Log.d(TAG,"Result1:" + a);
             }
-        } else {
-            if(username.isEmpty()){
-                Toast.makeText(this, "Please enter a username.", Toast.LENGTH_SHORT).show();
-            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            if(password.isEmpty()){
-                Toast.makeText(this, "Please enter a password.", Toast.LENGTH_SHORT).show();
             }
-        }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+            // i don't know why i can't delete those four(onChildChanged, Removed, Moved,Cancelled)
+            // it will cause error if delete
+            // the one actual work is onChildAdded
+        });
     }
+
 }

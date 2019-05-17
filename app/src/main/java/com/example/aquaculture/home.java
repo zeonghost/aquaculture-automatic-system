@@ -1,6 +1,8 @@
 package com.example.aquaculture;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import com.google.firebase.FirebaseApp;
 public class home extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button btr;//butten to jump to pond info
+    private Button btr1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,19 @@ public class home extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btr1 = (Button)findViewById(R.id.exit_log);
+        btr1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                sp.edit()
+                        .clear()
+                        .apply();
+                Log.d(TAG,"Result: delete");
+            }
+        });
+
     }
 
     @Override

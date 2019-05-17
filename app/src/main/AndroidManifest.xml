@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".regist"></activity>
+        <activity android:name=".forget_password"></activity>
+        <activity android:name=".regist" />
         <activity android:name=".pondInfo" />
         <activity android:name=".home" />
         <activity android:name=".MainActivity">
