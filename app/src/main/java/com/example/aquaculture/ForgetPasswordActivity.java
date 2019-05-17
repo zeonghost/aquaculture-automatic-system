@@ -55,7 +55,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         btr_res.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //search username and get device path and uid
                 //device path used to compare later with result of search location
                 //uid used to update password
