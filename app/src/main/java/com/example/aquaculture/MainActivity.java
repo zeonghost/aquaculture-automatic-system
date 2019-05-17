@@ -14,15 +14,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 
@@ -105,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             name.setText(sp.getString("username", null));
             pass.setText(sp.getString("password", null));
             Log.d(TAG, "Reading sp");
-            if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to home page.
+            if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to HomeActivity page.
                 al.setChecked(true);
                 login();
             }
@@ -121,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(MainActivity.this, regist.class);
+                Intent intent2 = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent2);
             }
         });
@@ -129,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         fgt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent3 = new Intent(MainActivity.this, forget_password.class);
+                Intent intent3 = new Intent(MainActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent3);
             }
         });
@@ -152,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
                                 .putString("password", pass.getText().toString())
                                 .apply();
                     }//save password and auto login status
-                    //jump to home page
-                    Intent intent = new Intent(MainActivity.this, home.class);
+                    //jump to HomeActivity page
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
                 else {

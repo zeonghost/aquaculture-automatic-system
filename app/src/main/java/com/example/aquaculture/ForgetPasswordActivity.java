@@ -8,27 +8,23 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.ChildEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 
-public class forget_password extends AppCompatActivity {
+public class ForgetPasswordActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private EditText name;//name input
@@ -52,8 +48,6 @@ public class forget_password extends AppCompatActivity {
         locat = (EditText)findViewById(R.id.location);
         species = (EditText)findViewById(R.id.species);
         btr_res = (Button)findViewById(R.id.btr_res);
-
-        //final String username = name.getText().toString();
 
         final FirebaseDatabase db = FirebaseDatabase.getInstance();
         final DatabaseReference Ref = db.getReference("/user");
@@ -89,12 +83,12 @@ public class forget_password extends AppCompatActivity {
                                     Map<String, Object> passUpdate = new HashMap<>();
                                     passUpdate.put("password", npass.getText().toString());
                                     Ref3.updateChildren(passUpdate);// update password by achieve uid
-                                    Toast.makeText(forget_password.this, "Reset Success", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(forget_password.this, MainActivity.class);
+                                    Toast.makeText(ForgetPasswordActivity.this, "Reset Success", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }
                                 else {
-                                    Toast.makeText(forget_password.this, "Auth Fail", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ForgetPasswordActivity.this, "Auth Fail", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             @Override
@@ -136,5 +130,12 @@ public class forget_password extends AppCompatActivity {
             }
         });
 
+
     }
 }
+
+/*
+
+
+
+ */

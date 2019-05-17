@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
 
-public class home extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button btr;//butten to jump to pond info
     private Button btr1;
@@ -39,14 +39,14 @@ public class home extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.item1://btn 1 -> home
-                        Intent intent1 = new Intent(home.this, home.class);
+                    case R.id.item1://btn 1 -> HomeActivity
+                        Intent intent1 = new Intent(HomeActivity.this, HomeActivity.class);
                         startActivity(intent1);
                         break;
                     case R.id.item2://btn 2 -> task
                         break;
                     case R.id.item3://btn 3 -> profile
-                        Intent intent2 = new Intent(home.this, MainActivity.class);
+                        Intent intent2 = new Intent(HomeActivity.this, MainActivity.class);
                         startActivity(intent2);
                         break;
                 }
@@ -59,7 +59,7 @@ public class home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //jump to pond info page
-                Intent intent = new Intent(home.this, pondInfo.class);
+                Intent intent = new Intent(HomeActivity.this, PondInfoActivity.class);
                 startActivity(intent);
             }
         });
