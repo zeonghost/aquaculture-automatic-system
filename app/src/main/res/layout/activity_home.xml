@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home">
-
+    tools:context=".HomeActivity">
 
     <Button
         android:id="@+id/click1"
@@ -122,6 +121,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/menu_bottom_navigation_items" />
+
+    <Button
+        android:id="@+id/exit_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginEnd="162dp"
+        android:layout_marginBottom="109dp"
+        android:text="Exit"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/click1" />
 
 
 </android.support.constraint.ConstraintLayout>

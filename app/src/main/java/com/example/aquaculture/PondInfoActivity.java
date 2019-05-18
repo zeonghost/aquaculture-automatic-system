@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
 
-public class pondInfo extends AppCompatActivity {
+public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -39,13 +39,13 @@ public class pondInfo extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item1:
-                        Intent intent1 = new Intent(pondInfo.this, home.class);
+                        Intent intent1 = new Intent(PondInfoActivity.this, HomeActivity.class);
                         startActivity(intent1);
                         break;
                     case R.id.item2:
                         break;
                     case R.id.item3:
-                        Intent intent2 = new Intent(pondInfo.this, MainActivity.class);
+                        Intent intent2 = new Intent(PondInfoActivity.this, MainActivity.class);
                         startActivity(intent2);
                         break;
                 }
@@ -70,11 +70,11 @@ public class pondInfo extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if(isChecked){
                             swRef.setValue(1);
-                            Toast.makeText(pondInfo.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
+                            Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
                         }
                         else{
                             swRef.setValue(0);
-                            Toast.makeText(pondInfo.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
                         }
                     }//upload database when switch work
                 });
@@ -148,12 +148,12 @@ public class pondInfo extends AppCompatActivity {
                         if(val1 == 1)
                         {
                             myRef1.setValue(0);//if click then change status
-                            Toast.makeText(pondInfo.this, "Turned off ch 1", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PondInfoActivity.this, "Turned off ch 1", Toast.LENGTH_SHORT).show();
                         }
                         if(val1 == 0)
                         {
                             myRef1.setValue(1);
-                            Toast.makeText(pondInfo.this, "Turned on ch 1", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PondInfoActivity.this, "Turned on ch 1", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -185,12 +185,12 @@ public class pondInfo extends AppCompatActivity {
                         if(val2 == 1)
                         {
                             myRef2.setValue(0);
-                            Toast.makeText(pondInfo.this, "Turned off ch 2", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PondInfoActivity.this, "Turned off ch 2", Toast.LENGTH_SHORT).show();
                         }
                         if(val2 == 0)
                         {
                             myRef2.setValue(1);
-                            Toast.makeText(pondInfo.this, "Turned on ch 2", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PondInfoActivity.this, "Turned on ch 2", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -221,12 +221,12 @@ public class pondInfo extends AppCompatActivity {
                         if(val3 == 1)
                         {
                             myRef3.setValue(0);
-                            Toast.makeText(pondInfo.this, "Turned off ch 3", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PondInfoActivity.this, "Turned off ch 3", Toast.LENGTH_SHORT).show();
                         }
                         if(val3 == 0)
                         {
                             myRef3.setValue(1);
-                            Toast.makeText(pondInfo.this, "Turned on ch 3", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PondInfoActivity.this, "Turned on ch 3", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
