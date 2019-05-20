@@ -8,12 +8,57 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:151903542382:android:87a2bbef8f71bf28",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151903542382-ckvo40qpt035cidk1dqdobcmk4ltrghn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app",
+            "certificate_hash": "c11c47be61862cfc1aff52c1655c4239405474d4"
+          }
+        },
+        {
+          "client_id": "151903542382-09m90936n3rhirl0nf1lgb9om8i6rdmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYcveIgsCCqMJ6QMsvQHaxVr2ppImfQJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151903542382-09m90936n3rhirl0nf1lgb9om8i6rdmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:151903542382:android:af4b6f692eb078ea",
         "android_client_info": {
           "package_name": "com.example.aquaculture"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "151903542382-7va3pn7epg4br5t0tcb0ujfium50o5dv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aquaculture",
+            "certificate_hash": "c11c47be61862cfc1aff52c1655c4239405474d4"
+          }
+        },
         {
           "client_id": "151903542382-0mu4mhsilhsengv9cugt5qks4cbis03h.apps.googleusercontent.com",
           "client_type": 1,
