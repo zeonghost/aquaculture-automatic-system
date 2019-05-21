@@ -7,33 +7,121 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
 //import under are for firebase
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.aquaculture.Model.Pond;
+import com.example.aquaculture.ViewHolder.PondViewHolder;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
 
 public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
-    private Button btr;//butten to jump to pond info
+    private static final String TAG = "LOG DATA: ";
     private Button btr1;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef;
+    private RecyclerView pondInfo;
+    private FirebaseRecyclerOptions<Pond> options;
+    private FirebaseRecyclerAdapter<Pond, PondViewHolder> adapter;
+    private Button addPond;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        basicReadWrite();//communicate to database
         setContentView(R.layout.activity_home);
-        setTitle("Home");//set action bar name
+        setTitle("Home");
 
+        addPondButton();
+        buttonNavigationSettings();
+
+        pondInfo = findViewById(R.id.recyclerview);
+        pondInfo.setHasFixedSize(true);
+        pondInfo.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+
+        myRef = database.getReference("/PondDetail");
+        //Query query = myRef.orderByKey().equalTo("pi1");
+
+        options = new FirebaseRecyclerOptions.Builder<Pond>()
+                .setQuery(myRef, Pond.class)   //mRef in this parameter can be changed into a more specific query like in LINE 50.
+                .build();
+
+        adapter = new FirebaseRecyclerAdapter<Pond, PondViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull PondViewHolder holder, int position, @NonNull Pond model) {
+                String piID = model.getPiId();
+                String pondName = model.getPondName();
+                String location = model.getLocation();
+
+                holder.piId.setText("Pi ID: " + piID);
+                holder.pondName.setText("Pond: " + pondName);
+                holder.location.setText("Location: " + location);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
+                        Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
+                        startActivity(toPondInfoActivity);
+                    }
+                });
+            }
+
+            @NonNull
+            @Override
+            public PondViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.activity_home_cardview, viewGroup, false);
+                PondViewHolder holder = new PondViewHolder(view);
+                return holder;
+            }
+        };
+        pondInfo.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return false;
+    }//ban back button
+
+    private void addPondButton(){
+        addPond = findViewById(R.id.btnAddPond);
+        addPond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toQRScanner = new Intent(HomeActivity.this, QRScannerActivity.class);
+                startActivity(toQRScanner);
+            }
+        });
+    }
+
+    private void buttonNavigationSettings(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -54,16 +142,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });//bottom navigation
 
-        btr = (Button)findViewById(R.id.click1);
-        btr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //jump to pond info page
-                Intent intent = new Intent(HomeActivity.this, PondInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
         btr1 = (Button)findViewById(R.id.exit_log);
         btr1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,38 +153,5 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d(TAG,"Result: delete");
             }
         });
-
     }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return true;
-        }
-        return false;
-    }//ban back button
-
-
-
-
-    public void basicReadWrite() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();//connect to database
-        DatabaseReference myRef = database.getReference("/pi1-detail/location");//declear path to location
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);//get data from database
-                TextView textElement = (TextView) findViewById(R.id.locate);//connect with text id is locate
-                textElement.setText(value);//change text to value
-                //get data from db
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());//log is for error message, check in logcat
-            }
-        });
-        // [END read_message]
-    }
-
 }

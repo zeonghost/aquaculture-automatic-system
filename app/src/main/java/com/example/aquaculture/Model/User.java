@@ -1,4 +1,4 @@
-package com.example.aquaculture;
+package com.example.aquaculture.Model;
 
 public class User {
     public String username;

@@ -20,4 +20,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="pi_id">PI ID</string>
+    <string name="pond_name">Pond Name</string>
+    <string name="pond_location">Pond Location</string>
+    <string name="exit">Exit</string>
+    <string name="add_pond">Add Pond</string>
+    <string name="value_check">VALUE CHECK!</string>
 </resources>
