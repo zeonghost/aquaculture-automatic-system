@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 //import under are for firebase
 import com.example.aquaculture.Model.Pond;
 import com.example.aquaculture.ViewHolder.PondViewHolder;
@@ -36,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseRecyclerOptions<Pond> options;
     private FirebaseRecyclerAdapter<Pond, PondViewHolder> adapter;
     private Button addPond;
+    public static String transferData;
+    public static String qrResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Pond, PondViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull PondViewHolder holder, int position, @NonNull Pond model) {
-                String piID = model.getPiId();
+                final String piID = model.getPiId();
                 String pondName = model.getPondName();
                 String location = model.getLocation();
 
@@ -68,9 +73,14 @@ public class HomeActivity extends AppCompatActivity {
                 holder.pondName.setText("Pond: " + pondName);
                 holder.location.setText("Location: " + location);
 
+                transferData = piID;
+                Log.d(TAG, "Result-2: "+ transferData);
+
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        transferData = piID;
+                        Log.d(TAG, "Result-2: "+ transferData);
                         //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
                         Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
                         startActivity(toPondInfoActivity);
@@ -115,11 +125,36 @@ public class HomeActivity extends AppCompatActivity {
         addPond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toQRScanner = new Intent(HomeActivity.this, QRScannerActivity.class);
-                startActivity(toQRScanner);
+                //Intent toQRScanner = new Intent(HomeActivity.this, AddPondActivity.class);
+                //startActivity(toQRScanner);//this jump is only for testing
+
+                IntentIntegrator intentIntegrator = new IntentIntegrator(HomeActivity.this);
+                intentIntegrator.setPrompt("QR Scanner");//set display context
+                intentIntegrator.setTimeout(60000);//set time out
+                intentIntegrator.setBeepEnabled(true);
+                intentIntegrator.initiateScan();
+
+                //use this code for real scan
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Scan Error", Toast.LENGTH_LONG).show();
+            } else {
+                qrResult = result.getContents();
+                Toast.makeText(this, "Scan Result: "+ qrResult, Toast.LENGTH_LONG).show();
+                Intent toQRScanner = new Intent(HomeActivity.this, AddPondActivity.class);
+                startActivity(toQRScanner);
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }//get result of qr scanner
 
     private void buttonNavigationSettings(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);

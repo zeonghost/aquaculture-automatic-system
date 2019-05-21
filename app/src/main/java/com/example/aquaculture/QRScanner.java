@@ -8,6 +8,18 @@ import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+public class QRScanner extends AppCompatActivity{
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTitle("Add Pond");
+
+    }
+
+}
+
+/*
 public class QRScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView scannerView;
 
@@ -38,3 +50,4 @@ public class QRScannerActivity extends AppCompatActivity implements ZXingScanner
         onBackPressed();
     }
 }
+*/
