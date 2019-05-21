@@ -25,4 +25,5 @@
     <string name="pond_location">Pond Location</string>
     <string name="exit">Exit</string>
     <string name="add_pond">Add Pond</string>
+    <string name="value_check">VALUE CHECK!</string>
 </resources>

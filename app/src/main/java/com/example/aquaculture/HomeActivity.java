@@ -115,7 +115,8 @@ public class HomeActivity extends AppCompatActivity {
         addPond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "INSERT QR SCANNER HERE!", Toast.LENGTH_SHORT).show();
+                Intent toQRScanner = new Intent(HomeActivity.this, QRScannerActivity.class);
+                startActivity(toQRScanner);
             }
         });
     }

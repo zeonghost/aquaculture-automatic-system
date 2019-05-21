@@ -39,5 +39,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth-github:4.3.2'
     implementation 'com.firebaseui:firebase-ui-storage:4.3.2'
     implementation 'com.google.firebase:firebase-core:16.0.9'
-}
 
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
+}
