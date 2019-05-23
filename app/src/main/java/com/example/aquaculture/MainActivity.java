@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Button sign;//login button
     private Button fgt;//forget password
     private String a;//uid get from username
-    private String b;//uid get from password
+    private String b;//uid get from password////
     private CheckBox rp;//remember password
     private CheckBox al;//auto login
     private String rem_pass;
