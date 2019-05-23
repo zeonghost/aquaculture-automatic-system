@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText name;//name input
     private EditText pass;//password input
     private Button login;//login button
-    private Button sign;//login button
+    private Button sign;//login button//
     private Button fgt;//forget password
     private String a;//uid get from username
     private String b;//uid get from password////
