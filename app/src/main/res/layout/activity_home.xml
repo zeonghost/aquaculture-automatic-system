@@ -22,18 +22,15 @@
         android:id="@+id/btnAddPond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_pond"
-        app:layout_constraintBottom_toTopOf="@id/exit_log"/>
-
-
-    <Button
-        android:id="@+id/exit_log"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/exit"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        tools:layout_editor_absoluteX="-8dp" />
+        android:text="@string/add_pond"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerview"
+        app:layout_constraintVertical_bias="0.895" />
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"

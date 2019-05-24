@@ -1,6 +1,7 @@
 package com.example.aquaculture;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
+
             }
         });
 
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void login(){
+        showWaitingDialog();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("/user");
         myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
@@ -150,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
                                 .apply();
                     }//save password and auto login status
                     //jump to HomeActivity page
-                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    Intent intent = new Intent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setClass(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
                 else {
@@ -178,6 +183,15 @@ public class MainActivity extends AppCompatActivity {
             // it will cause error if delete
             // the one actual work is onChildAdded
         });
+    }
+
+    private void showWaitingDialog() {
+        ProgressDialog waitingDialog= new ProgressDialog(MainActivity.this);
+        //waitingDialog.setTitle("");
+        waitingDialog.setMessage("Connecting...");
+        waitingDialog.setIndeterminate(true);
+        waitingDialog.setCancelable(false);
+        waitingDialog.show();
     }
 
 }

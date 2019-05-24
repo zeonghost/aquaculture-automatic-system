@@ -112,13 +112,18 @@ public class HomeActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
+    private long firstPressedTime;//first time press back buttom
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return true;
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - firstPressedTime < 2000) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(HomeActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
+            firstPressedTime = System.currentTimeMillis();
         }
-        return false;
-    }//ban back button
+    }
+
 
     private void addPondButton(){
         addPond = findViewById(R.id.btnAddPond);
@@ -177,16 +182,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });//bottom navigation
 
-        btr1 = (Button)findViewById(R.id.exit_log);
-        btr1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
-                sp.edit()
-                        .clear()
-                        .apply();
-                Log.d(TAG,"Result: delete");
-            }
-        });
+
     }
 }
