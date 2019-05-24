@@ -26,4 +26,22 @@
     <string name="exit">Exit</string>
     <string name="add_pond">Add Pond</string>
     <string name="value_check">VALUE CHECK!</string>
+    <string name="ch1">ch1</string>
+    <string name="ch3">ch3</string>
+    <string name="ch2">ch2</string>
+    <string name="pi_1">Pi 1</string>
+    <string name="pond_id">Pond ID:</string>
+    <string name="pond_1">Pond 1</string>
+    <string name="location">Location:</string>
+    <string name="locat">Locat</string>
+    <string name="tempeature">Tempeature:</string>
+    <string name="read">Read</string>
+    <string name="atomatic">Atomatic</string>
+    <string name="off">OFF</string>
+    <string name="going_to_graph">GOING TO GRAPH</string>
+    <string name="date_here">Date Here</string>
+    <string name="temperature_here">Temperature Here</string>
+    <string name="select_start_date">Select Start Date</string>
+    <string name="plot_graph">Plot Graph</string>
+    <string name="select_end_date">Select End Date</string>
 </resources>

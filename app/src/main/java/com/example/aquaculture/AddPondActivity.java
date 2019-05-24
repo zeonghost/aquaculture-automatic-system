@@ -84,9 +84,5 @@ public class AddPondActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
     }
 }

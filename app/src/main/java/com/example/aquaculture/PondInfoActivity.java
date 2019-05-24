@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.firebase.FirebaseApp;
 
 public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private CardView graphCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class PondInfoActivity extends AppCompatActivity {
         basicReadWrite();
         setContentView(R.layout.activity_pond_info);
         setTitle("Pond Details");
+
+        graphCheck = findViewById(R.id.cardView);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -193,4 +197,15 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        graphCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toGraphActivity = new Intent (PondInfoActivity.this, GraphTempActivity.class);
+                startActivity(toGraphActivity);
+            }
+        });
+    }
 }
