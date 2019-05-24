@@ -45,7 +45,7 @@ public class PondInfoActivity extends AppCompatActivity {
                     case R.id.item2:
                         break;
                     case R.id.item3:
-                        Intent intent2 = new Intent(PondInfoActivity.this, MainActivity.class);
+                        Intent intent2 = new Intent(PondInfoActivity.this, ProfileActivity.class);
                         startActivity(intent2);
                         break;
                 }

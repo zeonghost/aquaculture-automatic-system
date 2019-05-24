@@ -18,12 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 //import under are for firebase
 import com.example.aquaculture.Model.Pond;
-import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -131,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
                 IntentIntegrator intentIntegrator = new IntentIntegrator(HomeActivity.this);
                 intentIntegrator.setPrompt("QR Scanner");//set display context
                 intentIntegrator.setTimeout(60000);//set time out
-                intentIntegrator.setBeepEnabled(true);
+                intentIntegrator.setBeepEnabled(true);//set scan notice voice
                 intentIntegrator.initiateScan();
 
                 //use this code for real scan
@@ -169,7 +169,7 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.item2://btn 2 -> task
                         break;
                     case R.id.item3://btn 3 -> profile
-                        Intent intent2 = new Intent(HomeActivity.this, MainActivity.class);
+                        Intent intent2 = new Intent(HomeActivity.this, ProfileActivity.class);
                         startActivity(intent2);
                         break;
                 }
