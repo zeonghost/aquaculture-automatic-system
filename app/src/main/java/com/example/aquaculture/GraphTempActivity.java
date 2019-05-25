@@ -86,7 +86,13 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
         lineChart.setDragEnabled(true);
         lineChart.setEnabled(true);
-        lineChart.setExtraOffsets(10, 10, 10, 70);
+        lineChart.setPinchZoom(false);
+        lineChart.setScaleYEnabled(false);
+        lineChart.setDoubleTapToZoomEnabled(false);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getLegend().setEnabled(false);
+        lineChart.setExtraOffsets(5, 0, 5, 10);
+        startingGraph();
 
         /***********************************
          * START OF THE DATE PICKING LOGIC *
@@ -114,6 +120,8 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
         /*********************************
          * END OF THE DATE PICKING LOGIC *
          *********************************/
+
+
     }
 
     public class myXValueFormatter implements IAxisValueFormatter {
@@ -247,15 +255,21 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                         LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature");
 
                         //DESIGN OF THE LINES
-                        lineDataSet.setFillAlpha(200);
-                        lineDataSet.setColor(Color.BLUE);
+                        lineDataSet.setFillAlpha(0);
+                        lineDataSet.setColor(Color.CYAN);
                         lineDataSet.setLineWidth(5f);
-                        lineDataSet.setValueTextSize(11f);
-                        lineDataSet.setValueTextColor(Color.BLACK);
+                        lineDataSet.setValueTextSize(0);
+                        lineDataSet.setHighlightEnabled(true);
+                        lineDataSet.setDrawHighlightIndicators(true);
+                        lineDataSet.setHighLightColor(Color.BLUE);
+                        lineDataSet.setCircleHoleRadius(-1);
+                        lineDataSet.setCircleColor(Color.BLUE);
+                        //lineDataSet.setValueTextColor(Color.BLACK);
 
                         LineData lineData = new LineData(lineDataSet);
-                        lineData.setValueFormatter(new myValueFormatter());
+                        //lineData.setValueFormatter(new myValueFormatter());
 
+                        lineChart.getAxisRight().setEnabled(false);
                         lineChart.setData(lineData);
                         lineChart.notifyDataSetChanged();
                         lineChart.invalidate();
@@ -265,9 +279,10 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
                         XAxis xAxis = lineChart.getXAxis();
                         xAxis.setValueFormatter(new myXValueFormatter(xValues));
-                        xAxis.setGranularity(2f);
-                        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                        xAxis.setLabelRotationAngle(-45);
+                        xAxis.setDrawLabels(false);
+                        //xAxis.setGranularity(2f);
+                        //xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                        //xAxis.setLabelRotationAngle(-45);
                     }
 
                     @Override
@@ -342,5 +357,76 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
     @Override
     public void onNothingSelected() {
         Log.d(TAG, "onNothingSelected: ");
+    }
+
+    public void startingGraph(){
+        long today = Calendar.getInstance().getTimeInMillis();
+        today /= 1000;
+        Query q = myRef.orderByChild("time").startAt(today - 86400).endAt(today);
+
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
+                Timestamp timestamp;
+                Date date;
+                String formattedDateTime;
+                float i = 0;
+
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    String snapTemp = snaps.child("val").getValue().toString();
+                    Float temp = Float.parseFloat(snapTemp) / 10;
+
+                    yValues.add(new Entry(i, temp));
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+                    Long snapTimestamp = snaps.child("time").getValue(Long.class);
+                    timestamp = new Timestamp(snapTimestamp);
+                    date = new Date(timestamp.getTime() * 1000);
+                    formattedDateTime = dateFormat.format(date);
+
+                    xValues.add(formattedDateTime);
+                    i += 1;
+                }
+                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
+                LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature");
+
+                //DESIGN OF THE LINES
+                lineDataSet.setFillAlpha(0);
+                lineDataSet.setColor(Color.CYAN);
+                lineDataSet.setLineWidth(5f);
+                lineDataSet.setValueTextSize(0);
+                lineDataSet.setHighlightEnabled(true);
+                lineDataSet.setDrawHighlightIndicators(true);
+                lineDataSet.setHighLightColor(Color.BLUE);
+                lineDataSet.setCircleHoleRadius(-1);
+                lineDataSet.setCircleColor(Color.BLUE);
+                //lineDataSet.setValueTextColor(Color.BLACK);
+
+                LineData lineData = new LineData(lineDataSet);
+                //lineData.setValueFormatter(new myValueFormatter());
+
+                lineChart.getAxisRight().setEnabled(false);
+                lineChart.setData(lineData);
+                lineChart.notifyDataSetChanged();
+                lineChart.invalidate();
+
+                lineChart.setVisibleXRangeMinimum(5f);
+                //lineChart.setVisibleXRangeMaximum(6f);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setValueFormatter(new myXValueFormatter(xValues));
+                xAxis.setDrawLabels(false);
+
+                Entry entry = yValues.get(yValues.size() - 1);
+                showTemp.setText(entry.getY() + " C");
+                showDateTime.setText(xValues.get(yValues.size() - 1));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
