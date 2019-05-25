@@ -93,35 +93,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
         lineChart.getLegend().setEnabled(false);
         lineChart.setExtraOffsets(5, 0, 5, 10);
         startingGraph();
-
-        /***********************************
-         * START OF THE DATE PICKING LOGIC *
-         ***********************************/
-        startDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDate.setText(null);
-                DialogFragment pickStartDate = new DatePickerFragment();
-                pickStartDate.show(getSupportFragmentManager(), "From Date");
-            }
-        });
-
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(startDate.getText().toString().isEmpty()){
-                    Toast.makeText(GraphTempActivity.this, "Set a starting date first.", Toast.LENGTH_SHORT).show();
-                } else {
-                    DialogFragment pickEndDate = new DatePickerFragment();
-                    pickEndDate.show(getSupportFragmentManager(), "To Date");
-                }
-            }
-        });
-        /*********************************
-         * END OF THE DATE PICKING LOGIC *
-         *********************************/
-
-
     }
 
     public class myXValueFormatter implements IAxisValueFormatter {
@@ -199,6 +170,33 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
     @Override
     protected void onStart() {
         super.onStart();
+        /***********************************
+         * START OF THE DATE PICKING LOGIC *
+         ***********************************/
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDate.setText(null);
+                DialogFragment pickStartDate = new DatePickerFragment();
+                pickStartDate.show(getSupportFragmentManager(), "From Date");
+            }
+        });
+
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(startDate.getText().toString().isEmpty()){
+                    Toast.makeText(GraphTempActivity.this, "Set a starting date first.", Toast.LENGTH_SHORT).show();
+                } else {
+                    DialogFragment pickEndDate = new DatePickerFragment();
+                    pickEndDate.show(getSupportFragmentManager(), "To Date");
+                }
+            }
+        });
+        /*********************************
+         * END OF THE DATE PICKING LOGIC *
+         *********************************/
+
         plotGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,6 +262,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                         lineDataSet.setHighLightColor(Color.BLUE);
                         lineDataSet.setCircleHoleRadius(-1);
                         lineDataSet.setCircleColor(Color.BLUE);
+                        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
                         //lineDataSet.setValueTextColor(Color.BLACK);
 
                         LineData lineData = new LineData(lineDataSet);
@@ -401,6 +400,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 lineDataSet.setHighLightColor(Color.BLUE);
                 lineDataSet.setCircleHoleRadius(-1);
                 lineDataSet.setCircleColor(Color.BLUE);
+                lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
                 //lineDataSet.setValueTextColor(Color.BLACK);
 
                 LineData lineData = new LineData(lineDataSet);

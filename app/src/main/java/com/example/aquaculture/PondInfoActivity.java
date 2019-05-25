@@ -1,5 +1,6 @@
 package com.example.aquaculture;
 
+import android.app.ActivityOptions;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,16 +17,29 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private CardView graphCheck;
+    private LineChart lineChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +50,8 @@ public class PondInfoActivity extends AppCompatActivity {
         setTitle("Pond Details");
 
         graphCheck = findViewById(R.id.cardView);
+        lineChart = findViewById(R.id.lineChart);
+        startingGraph();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -89,10 +105,10 @@ public class PondInfoActivity extends AppCompatActivity {
         myRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Integer tempRead = dataSnapshot.child("temp").getValue(Integer.class);
+                Float tempRead = dataSnapshot.child("temp").getValue(Float.class) / 10;
                 TextView textElement = (TextView) findViewById(R.id.tempRead);
-                textElement.setText(tempRead.toString());
-                //get current tempeature data from database and display
+                textElement.setText(tempRead.toString() + " °C");
+                //get current temperature data from database and display
 
                 final Integer val4 = dataSnapshot.child("auto").getValue(Integer.class);
                 final Switch sw = (Switch) findViewById(R.id.autosw);
@@ -202,7 +218,7 @@ public class PondInfoActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        graphCheck.setOnClickListener(new View.OnClickListener() {
+        lineChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent toGraphActivity = new Intent (PondInfoActivity.this, GraphTempActivity.class);
@@ -211,5 +227,62 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
+    public void startingGraph(){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("pi1-temp");
+        final ArrayList<Entry> yValues = new ArrayList<>();
+        lineChart.setDragEnabled(false);
+        lineChart.setEnabled(true);
+        lineChart.setPinchZoom(false);
+        lineChart.setDoubleTapToZoomEnabled(false);
+        lineChart.setHighlightPerTapEnabled(false);
+        lineChart.getDescription().setText("Within 12 Hours Time");
+        lineChart.getLegend().setEnabled(false);
 
+        long today = Calendar.getInstance().getTimeInMillis();
+        today /= 1000;
+        Query q = myRef.orderByChild("time").startAt(today - 43200).endAt(today);
+
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
+                float i = 0;
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    String snapTemp = snaps.child("val").getValue().toString();
+                    Float temp = Float.parseFloat(snapTemp) / 10;
+                    yValues.add(new Entry(i, temp));
+                    i += 1;
+                }
+                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
+                LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature");
+
+                //DESIGN OF THE LINES
+                lineDataSet.setFillAlpha(0);
+                lineDataSet.setColor(Color.BLUE);
+                lineDataSet.setLineWidth(2f);
+                lineDataSet.setValueTextSize(0);
+                lineDataSet.setCircleHoleRadius(-1);
+                lineDataSet.setCircleColor(Color.BLUE);
+                lineDataSet.setDrawCircles(false);
+                lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                //lineDataSet.setValueTextColor(Color.BLACK);
+
+                LineData lineData = new LineData(lineDataSet);
+                //lineData.setValueFormatter(new myValueFormatter());
+                lineChart.getXAxis().setEnabled(false);
+                lineChart.getAxisRight().setEnabled(false);
+                lineChart.setData(lineData);
+                lineChart.notifyDataSetChanged();
+                lineChart.invalidate();
+
+                //lineChart.setVisibleXRangeMinimum(5f);
+                //lineChart.setVisibleXRangeMaximum(6f);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
