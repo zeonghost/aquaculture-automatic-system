@@ -47,10 +47,12 @@ public class PondInfoActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.item2:
+                        Intent intent2 = new Intent(PondInfoActivity.this, TaskActivity.class);
+                        startActivity(intent2);
                         break;
                     case R.id.item3:
-                        Intent intent2 = new Intent(PondInfoActivity.this, ProfileActivity.class);
-                        startActivity(intent2);
+                        Intent intent3 = new Intent(PondInfoActivity.this, ProfileActivity.class);
+                        startActivity(intent3);
                         break;
                 }
                 return false;
@@ -208,4 +210,6 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

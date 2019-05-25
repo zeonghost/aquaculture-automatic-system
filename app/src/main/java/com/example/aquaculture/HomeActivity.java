@@ -172,16 +172,16 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.item2://btn 2 -> task
+                        Intent intent2 = new Intent(HomeActivity.this, TaskActivity.class);
+                        startActivity(intent2);
                         break;
                     case R.id.item3://btn 3 -> profile
-                        Intent intent2 = new Intent(HomeActivity.this, ProfileActivity.class);
-                        startActivity(intent2);
+                        Intent intent3 = new Intent(HomeActivity.this, ProfileActivity.class);
+                        startActivity(intent3);
                         break;
                 }
                 return false;
             }
         });//bottom navigation
-
-
     }
 }
