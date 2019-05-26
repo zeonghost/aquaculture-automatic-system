@@ -18,12 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 //import under are for firebase
 import com.example.aquaculture.Model.Pond;
-import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -112,13 +112,18 @@ public class HomeActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
+    private long firstPressedTime;//first time press back buttom
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return true;
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - firstPressedTime < 2000) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(HomeActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
+            firstPressedTime = System.currentTimeMillis();
         }
-        return false;
-    }//ban back button
+    }
+
 
     private void addPondButton(){
         addPond = findViewById(R.id.btnAddPond);
@@ -131,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
                 IntentIntegrator intentIntegrator = new IntentIntegrator(HomeActivity.this);
                 intentIntegrator.setPrompt("QR Scanner");//set display context
                 intentIntegrator.setTimeout(60000);//set time out
-                intentIntegrator.setBeepEnabled(true);
+                intentIntegrator.setBeepEnabled(true);//set scan notice voice
                 intentIntegrator.initiateScan();
 
                 //use this code for real scan
@@ -167,26 +172,16 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.item2://btn 2 -> task
+                        Intent intent2 = new Intent(HomeActivity.this, TaskActivity.class);
+                        startActivity(intent2);
                         break;
                     case R.id.item3://btn 3 -> profile
-                        Intent intent2 = new Intent(HomeActivity.this, MainActivity.class);
-                        startActivity(intent2);
+                        Intent intent3 = new Intent(HomeActivity.this, ProfileActivity.class);
+                        startActivity(intent3);
                         break;
                 }
                 return false;
             }
         });//bottom navigation
-
-        btr1 = (Button)findViewById(R.id.exit_log);
-        btr1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
-                sp.edit()
-                        .clear()
-                        .apply();
-                Log.d(TAG,"Result: delete");
-            }
-        });
     }
 }
