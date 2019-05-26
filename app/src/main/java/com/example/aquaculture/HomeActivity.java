@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+import android.app.Activity;
 
 import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -38,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView pondInfo;
     private FirebaseRecyclerOptions<Pond> options;
     private FirebaseRecyclerAdapter<Pond, PondViewHolder> adapter;
-    private Button addPond;
+    private FloatingActionButton addPond;
     public static String transferData;
     public static String qrResult;
     @Override
@@ -117,13 +119,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - firstPressedTime < 2000) {
-            super.onBackPressed();
+            //super.onBackPressed();
+            //System.exit(0);
+            finish();
         } else {
             Toast.makeText(HomeActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
             firstPressedTime = System.currentTimeMillis();
         }
     }
-
 
     private void addPondButton(){
         addPond = findViewById(R.id.btnAddPond);
