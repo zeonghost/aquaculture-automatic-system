@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Login");
+        //setTitle("Login");
+        getSupportActionBar().hide();
         FirebaseApp.initializeApp(this);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -200,9 +201,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-            // i don't know why i can't delete those four(onChildChanged, Removed, Moved,Cancelled)
-            // it will cause error if delete
-            // the one actual work is onChildAdded
         });
     }
 

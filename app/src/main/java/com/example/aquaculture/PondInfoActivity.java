@@ -47,8 +47,8 @@ public class PondInfoActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         basicReadWrite();
         setContentView(R.layout.activity_pond_info);
-        setTitle("Pond Details");
-
+        //setTitle("Pond Details");
+        getSupportActionBar().hide();
         graphCheck = findViewById(R.id.cardView);
         lineChart = findViewById(R.id.lineChart);
         startingGraph();

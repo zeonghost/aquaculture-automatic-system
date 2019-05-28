@@ -33,7 +33,8 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        setTitle("Profile");
+        //setTitle("Profile");
+        getSupportActionBar().hide();
         buttonNavigationSettings();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         TextView un = (TextView) findViewById(R.id.username);
