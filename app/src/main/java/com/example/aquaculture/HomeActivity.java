@@ -21,6 +21,10 @@ import android.widget.Toast;
 import android.app.Activity;
 
 import com.example.aquaculture.ViewHolder.PondViewHolder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -31,6 +35,8 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.FirebaseApp;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
@@ -57,11 +63,12 @@ public class HomeActivity extends AppCompatActivity {
         pondInfo.setHasFixedSize(true);
         pondInfo.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
 
+        String username = MainActivity.sp.getString("username", "");
         myRef = database.getReference("/PondDetail");
-        //Query query = myRef.orderByKey().equalTo("pi1");
+        Query query = myRef.orderByChild(username).equalTo(1);
 
         options = new FirebaseRecyclerOptions.Builder<Pond>()
-                .setQuery(myRef, Pond.class)   //mRef in this parameter can be changed into a more specific query like in LINE 50.
+                .setQuery(query, Pond.class)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<Pond, PondViewHolder>(options) {
@@ -125,6 +132,7 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             Toast.makeText(HomeActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
             firstPressedTime = System.currentTimeMillis();
+
         }
     }
 

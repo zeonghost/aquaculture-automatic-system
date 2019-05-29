@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox al;//auto login
     private String rem_pass;
     private String auto_log;
-    private SharedPreferences sp;
+    public static SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
-
             }
         });
 
