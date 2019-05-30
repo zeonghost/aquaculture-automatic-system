@@ -393,7 +393,12 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(!dataSnapshot.exists()){
+                    return;
+                }
+
                 Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
                 Timestamp timestamp;
                 Date date;

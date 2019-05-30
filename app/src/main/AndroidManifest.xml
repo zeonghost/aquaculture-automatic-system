@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AutomationActivity"></activity>
         <activity android:name=".TaskActivity" />
         <activity android:name=".GraphTempActivity" />
         <activity android:name=".ProfileActivity" />
