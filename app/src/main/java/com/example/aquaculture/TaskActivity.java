@@ -57,6 +57,7 @@ public class TaskActivity extends AppCompatActivity {
     private FirebaseRecyclerOptions<Task> options;
     private FirebaseRecyclerAdapter<Task, TaskViewHolder> adapter;
     private String status;
+    private SharedPreferences sp;
     public static String transId;
 
     @Override
@@ -143,7 +144,6 @@ public class TaskActivity extends AppCompatActivity {
                 showAddDialog();
             }
         });
-
     }
 
     @Override
@@ -151,6 +151,11 @@ public class TaskActivity extends AppCompatActivity {
         super.onStart();
         adapter.startListening();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -202,7 +207,6 @@ public class TaskActivity extends AppCompatActivity {
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 myRef1 = database.getReference("/task");
-                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                 String un = sp.getString("username", null);
                 //DatabaseReference hopperRef = myRef1.child(transId);
                 Task newUser = new Task(date.getText().toString(), receiver.getText().toString(), status, task.getText().toString(), time.getText().toString(), un);

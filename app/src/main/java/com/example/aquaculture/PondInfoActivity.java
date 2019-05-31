@@ -1,6 +1,8 @@
 package com.example.aquaculture;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.content.Intent;
@@ -38,14 +42,19 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private CardView graphCheck;
+    private CardView tempSet;
     private LineChart lineChart;
     private TextView piID;
     private TextView location;
     private TextView pondName;
+    TextView highTemp;
+    TextView lowTemp;
     private Smart smart;
 
     @Override
@@ -60,6 +69,9 @@ public class PondInfoActivity extends AppCompatActivity {
         location = findViewById(R.id.txtViewPondLocation);
         graphCheck = findViewById(R.id.cardView);
         lineChart = findViewById(R.id.lineChart);
+        tempSet = findViewById(R.id.cardViewTempSet);
+        highTemp = findViewById(R.id.txtViewHighTemp);
+        lowTemp = findViewById(R.id.txtViewLowTemp);
         smart = new Smart();
         startingGraph();
         basicReadWrite();
@@ -74,6 +86,13 @@ public class PondInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toGraphActivity = new Intent (PondInfoActivity.this, GraphTempActivity.class);
                 startActivity(toGraphActivity);
+            }
+        });
+
+        tempSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tempSetDialog();
             }
         });
     }
@@ -170,8 +189,12 @@ public class PondInfoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 final Float tempRead = dataSnapshot.child("temp").getValue(Float.class) / 10;
+                final Float highTempRead = dataSnapshot.child("high").getValue(Float.class) / 10;
+                final Float lowTempRead = dataSnapshot.child("low").getValue(Float.class) / 10;
                 TextView textElement = (TextView) findViewById(R.id.tempRead);
                 textElement.setText(tempRead.toString() + " °C");
+                highTemp.setText(highTempRead.toString() + " °C");
+                lowTemp.setText(lowTempRead.toString() + " °C");
                 //get current temperature data from database and display
 
                 final Integer val4 = dataSnapshot.child("auto").getValue(Integer.class);
@@ -308,5 +331,30 @@ public class PondInfoActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    protected void tempSetDialog() {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View textEntryView = factory.inflate(R.layout.dialog, null);
+        final EditText top = (EditText) textEntryView.findViewById(R.id.editTextNum1);
+        final EditText bottom = (EditText)textEntryView.findViewById(R.id.editTextNum2);
+        AlertDialog.Builder ad1 = new AlertDialog.Builder(PondInfoActivity.this);
+        ad1.setTitle("Update Critical level:");
+        ad1.setIcon(android.R.drawable.ic_dialog_info);
+        ad1.setView(textEntryView);
+        ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int i) {
+                int topnum = Integer.parseInt(top.getText().toString());
+                int botnum = Integer.parseInt(bottom.getText().toString());
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("pi1-pond1");
+                Map<String, Object> passUpdate = new HashMap<>();
+                passUpdate.put("high", topnum);
+                passUpdate.put("low", botnum);
+                myRef.updateChildren(passUpdate);
+            }
+        });
+        ad1.show();
     }
 }
