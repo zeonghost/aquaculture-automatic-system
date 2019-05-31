@@ -67,7 +67,7 @@ public class TaskActivity extends AppCompatActivity {
         //setTitle("Task");
         getSupportActionBar().hide();
         buttonNavigationSettings();
-
+        sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         taskInfo = findViewById(R.id.recyclerview);
         taskInfo.setHasFixedSize(true);
         taskInfo.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
