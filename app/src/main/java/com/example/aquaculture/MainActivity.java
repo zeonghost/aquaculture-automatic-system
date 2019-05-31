@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
     private Button fgt;//forget password
     private String a;//uid get from username
     private String b;//uid get from password
-    private CheckBox rp;//remember password
+    //private CheckBox rp;//remember password
     private CheckBox al;//auto login
-    private String rem_pass;
+    //private String rem_pass;
     private String auto_log;
     public static SharedPreferences sp;
 
@@ -76,30 +76,11 @@ public class MainActivity extends AppCompatActivity {
         login = (Button)findViewById(R.id.loginBtn);
         sign = (Button)findViewById(R.id.sinbtr);
         fgt = (Button)findViewById(R.id.fgt_pass);
-        rp=(CheckBox)findViewById(R.id.cb_rp);
+        //rp=(CheckBox)findViewById(R.id.cb_rp);
         al=(CheckBox)findViewById(R.id.cd_al);
         //basicReadWrite();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
-        rp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    rem_pass="Y";
-                    sp.edit()
-                            .putString("rem_pass1", rem_pass)
-                            .apply();
-                    //Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
-                }
-                else{
-                    rem_pass="N";
-                    sp.edit()
-                            .putString("rem_pass1", rem_pass)
-                            .apply();
-                    //Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
-                }
-            }
-        });//detech remember password and save in SharedPreferences
         al.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -120,16 +101,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });//detech auto login and saved in SharedPreference
 
-        if(Objects.equals(sp.getString("rem_pass1", null), "Y")){//if Y, then auto fill up username and password
-            rp.setChecked(true);
-            name.setText(sp.getString("username", null));
-            pass.setText(sp.getString("password", null));
-            Log.d(TAG, "Reading sp");
             if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to HomeActivity page.
                 al.setChecked(true);
+                name.setText(sp.getString("username", null));
+                pass.setText(sp.getString("password", null));
                 login();
             }
-        }
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,14 +143,12 @@ public class MainActivity extends AppCompatActivity {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
                 if(Objects.equals(b, pass.getText().toString())){
-                    if(rp.isChecked())
-                    {
                         SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
                                 .putString("username", name.getText().toString())
                                 .putString("password", pass.getText().toString())
                                 .apply();
-                    }//save password and auto login status
+                    //save password and auto login status
                     //jump to HomeActivity page
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
