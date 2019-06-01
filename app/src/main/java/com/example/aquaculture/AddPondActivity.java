@@ -1,8 +1,10 @@
 package com.example.aquaculture;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddPondActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -37,6 +40,9 @@ public class AddPondActivity extends AppCompatActivity {
     private String piId;
     private TextView dev;
     public static boolean exist = false;
+    private FirebaseDatabase database;
+    private DatabaseReference addPondRef;
+    private DatabaseReference linkPondRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +64,11 @@ public class AddPondActivity extends AppCompatActivity {
         depth = (EditText)findViewById(R.id.depth);
         btr =(Button) findViewById(R.id.btr);
 
-        final FirebaseDatabase database =  FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference();
-        final DatabaseReference ref1 = database.getReference("/PondDetail");
+        database =  FirebaseDatabase.getInstance();
+        addPondRef = database.getReference();
+        linkPondRef = database.getReference("/PondDetail");
 
-        ref1.orderByChild("piId").equalTo(piId).addChildEventListener(new ChildEventListener() {
+        linkPondRef.orderByChild("piId").equalTo(piId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 showDialog();
@@ -106,8 +112,6 @@ public class AddPondActivity extends AppCompatActivity {
                 int len = Integer.parseInt(le);
                 int dep = Integer.parseInt(d);
 
-
-
                 if(p.isEmpty() || l.isEmpty() || c1.isEmpty() || c2.isEmpty()|| c3.isEmpty()|| s.isEmpty()|| w.isEmpty()|| le.isEmpty()|| d.isEmpty()){
                     Toast.makeText(AddPondActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();
                     return;
@@ -115,7 +119,7 @@ public class AddPondActivity extends AppCompatActivity {
                     pondAdd newPond = new pondAdd(pi, p, l, c1, c2, c3, s, wid, len, dep);
                     //String key = ref.push().getKey();
                     String key = piId + "-detail";
-                    ref.child(key).setValue(newPond);
+                    addPondRef.child(key).setValue(newPond);
                     Toast.makeText(AddPondActivity.this, "Registered Account Successfully.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AddPondActivity.this, HomeActivity.class);
                     startActivity(intent);
@@ -125,7 +129,9 @@ public class AddPondActivity extends AppCompatActivity {
     }
 
     private void showDialog(){
+        final SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         AlertDialog.Builder normalDialog = new AlertDialog.Builder(AddPondActivity.this);
+        normalDialog.setCancelable(false);
         normalDialog.setTitle("Warning").setMessage("Pond exist");
         normalDialog.setPositiveButton("Back to Home page",
                 new DialogInterface.OnClickListener() {
@@ -135,6 +141,18 @@ public class AddPondActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-        normalDialog.show();
+        normalDialog.setNegativeButton("Link Account",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final FirebaseDatabase database =  FirebaseDatabase.getInstance();
+                        String username = sp.getString("username", "");
+                        String role = sp.getString("role", "");
+                        linkPondRef.child(piId).child(username).setValue(role);
+                        Intent intent = new Intent(AddPondActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                });
+        normalDialog.show().setCanceledOnTouchOutside(false);
     }
 }

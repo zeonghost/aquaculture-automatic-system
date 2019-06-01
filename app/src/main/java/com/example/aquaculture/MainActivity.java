@@ -28,6 +28,8 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private String b;//uid get from password
     //private CheckBox rp;//remember password
     private CheckBox al;//auto login
+
     //private String rem_pass;
     private String auto_log;
     public static SharedPreferences sp;
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //setTitle("Login");
         getSupportActionBar().hide();
         FirebaseApp.initializeApp(this);
 
@@ -81,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         //basicReadWrite();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
+        al=(CheckBox)findViewById(R.id.cd_al);
+        //basicReadWrite();
+        sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         al.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -109,6 +114,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
+        if(Objects.equals(sp.getString("auto_log1", null), "Y")){//if Y, then auto fill up username and password
+            name.setText(sp.getString("username", null));
+            pass.setText(sp.getString("password", null));
+            Log.d(TAG, "SharedPref: AUTO LOG IN: " + sp.getAll().toString());
+            al.setChecked(true);
+            login();
+        }
+
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,20 +148,46 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void login(){
-        showWaitingDialog();
+        //showWaitingDialog();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("/user");
         myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+            public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
                 if(Objects.equals(b, pass.getText().toString())){
-                        SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                    showWaitingDialog();
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.w(TAG, "getInstanceId failed", task.getException());
+                                        return;
+                                    }
+                                    // Get new Instance ID token
+                                    String token = task.getResult().getToken();
+                                    DatabaseReference Ref3 = myRef.child(a);
+                                    Map<String, Object> childUpdates = new HashMap<>();
+                                    childUpdates.put("/token", token);
+                                    Ref3.updateChildren(childUpdates);
+                                    // Log and toast
+                                    //String msg = getString(R.string.msg_token_fmt, token);
+                                    Log.d(TAG, token);
+                                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
-                                .putString("username", name.getText().toString())
-                                .putString("password", pass.getText().toString())
-                                .apply();
+                            .putString("username", name.getText().toString())
+                            .putString("password", pass.getText().toString())
+                            .putString("role", dataSnapshot.child("role").getValue(String.class))
+                            .putString("firstname", dataSnapshot.child("fname").getValue(String.class))
+                            .putString("lastname", dataSnapshot.child("lname").getValue(String.class))
+                            .apply();
+                    Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
                     //save password and auto login status
                     //jump to HomeActivity page
                     Intent intent = new Intent();
@@ -157,8 +197,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                //Log.d(TAG,"Result1:" + a);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -187,7 +227,4 @@ public class MainActivity extends AppCompatActivity {
         waitingDialog.setCancelable(false);
         waitingDialog.show();
     }
-
-
-
 }

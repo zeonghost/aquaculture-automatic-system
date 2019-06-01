@@ -11,20 +11,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import android.app.Activity;
 
 import com.example.aquaculture.ViewHolder.PondViewHolder;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -36,11 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.FirebaseApp;
 
-import java.util.ArrayList;
-
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
-    private Button btr1;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef;
     private RecyclerView pondInfo;
@@ -63,9 +55,13 @@ public class HomeActivity extends AppCompatActivity {
         pondInfo.setHasFixedSize(true);
         pondInfo.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
 
-        String username = MainActivity.sp.getString("username", "");
+        SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+        String username = sp.getString("username", "");
+        String role = sp.getString("role", "");
+
+        Log.d(TAG, "SP: " + sp.getAll().toString());
         myRef = database.getReference("/PondDetail");
-        Query query = myRef.orderByChild(username).equalTo(1);
+        Query query = myRef.orderByChild(username).equalTo(role);
 
         options = new FirebaseRecyclerOptions.Builder<Pond>()
                 .setQuery(query, Pond.class)
@@ -121,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    private long firstPressedTime;//first time press back buttom
+    private long firstPressedTime;//first time press back button
 
     @Override
     public void onBackPressed() {
@@ -143,14 +139,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Intent toQRScanner = new Intent(HomeActivity.this, AddPondActivity.class);
                 //startActivity(toQRScanner);//this jump is only for testing
-
                 IntentIntegrator intentIntegrator = new IntentIntegrator(HomeActivity.this);
                 intentIntegrator.setPrompt("QR Scanner");//set display context
                 intentIntegrator.setTimeout(60000);//set time out
                 intentIntegrator.setBeepEnabled(true);//set scan notice voice
                 intentIntegrator.initiateScan();
-
-                //use this code for real scan
             }
         });
     }
