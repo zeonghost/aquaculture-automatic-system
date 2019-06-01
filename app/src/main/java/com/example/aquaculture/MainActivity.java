@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                                     String token = task.getResult().getToken();
                                     DatabaseReference Ref3 = myRef.child(a);
                                     Map<String, Object> childUpdates = new HashMap<>();
-                                    childUpdates.put("/token", token);
+                                    childUpdates.put("/pushToken", token);
                                     Ref3.updateChildren(childUpdates);
                                     // Log and toast
                                     //String msg = getString(R.string.msg_token_fmt, token);
