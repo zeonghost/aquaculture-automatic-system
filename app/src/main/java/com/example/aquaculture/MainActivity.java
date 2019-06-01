@@ -27,6 +27,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void login(){
         //showWaitingDialog();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("/user");
         myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
             @Override
@@ -158,27 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 b = dataSnapshot.child("password").getValue().toString();
                 if(Objects.equals(b, pass.getText().toString())){
                     showWaitingDialog();
-                    FirebaseInstanceId.getInstance().getInstanceId()
-                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    if (!task.isSuccessful()) {
-                                        Log.w(TAG, "getInstanceId failed", task.getException());
-                                        return;
-                                    }
-                                    // Get new Instance ID token
-                                    String token = task.getResult().getToken();
-                                    DatabaseReference Ref3 = myRef.child(a);
-                                    Map<String, Object> childUpdates = new HashMap<>();
-                                    childUpdates.put("/token", token);
-                                    Ref3.updateChildren(childUpdates);
-                                    // Log and toast
-                                    //String msg = getString(R.string.msg_token_fmt, token);
-                                    Log.d(TAG, token);
-                                    Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
                             .putString("username", name.getText().toString())

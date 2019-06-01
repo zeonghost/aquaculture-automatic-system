@@ -31,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.FirebaseApp;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -50,6 +53,8 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         addPondButton();
         buttonNavigationSettings();
+
+
 
         pondInfo = findViewById(R.id.recyclerview);
         pondInfo.setHasFixedSize(true);

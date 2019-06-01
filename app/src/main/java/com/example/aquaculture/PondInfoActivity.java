@@ -2,7 +2,9 @@ package com.example.aquaculture;
 
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -29,6 +31,8 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -44,6 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -164,12 +170,70 @@ public class PondInfoActivity extends AppCompatActivity {
     }
 
     public void basicReadWrite() {
-        String getData = HomeActivity.transferData;
+        final String getData = HomeActivity.transferData;
         Log.d(TAG, "Result-transfer Data: "+ getData);
         String path1 = getData + "-detail";
         String path2 = getData + "-pond1";
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference loc = database.getReference(path2);
+
+        DatabaseReference hopperRef = loc;
+        Map<String, Object> hopperUpdates = new HashMap<>();
+        hopperUpdates.put("set", 0);
+        hopperRef.updateChildren(hopperUpdates);
+
+        final SharedPreferences sp = getSharedPreferences("push", Context.MODE_PRIVATE);
+        String push = sp.getString("push", "");
+
+        Switch sw1 = (Switch) findViewById(R.id.switch1);
+
+        if(Objects.equals(push, "Y")){
+            sw1.setChecked(true);
+        }
+        else
+        {
+            sw1.setChecked(false);
+        }
+
+        sw1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    sp.edit()
+                            .putString("push", "Y")
+                            .apply();
+                    FirebaseMessaging.getInstance().subscribeToTopic(getData)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    //String msg = getString(R.string.msg_subscribed);
+                                    if (!task.isSuccessful()) {
+                                        Toast.makeText(PondInfoActivity.this, "Subscribe ERROR", Toast.LENGTH_SHORT).show();
+                                    }
+                                    Toast.makeText(PondInfoActivity.this, "Subscribe Success!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    sp.edit()
+                            .putString("push", "N")
+                            .apply();
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(getData)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    //String msg = getString(R.string.msg_subscribed);
+                                    if (!task.isSuccessful()) {
+                                        Toast.makeText(PondInfoActivity.this, "Unsubscribe ERROR", Toast.LENGTH_SHORT).show();
+                                    }
+                                    Toast.makeText(PondInfoActivity.this, "Unsubscribe Success!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+        });
+
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference(path1);
         final DatabaseReference myRef1 = database.getReference(path2);
 
