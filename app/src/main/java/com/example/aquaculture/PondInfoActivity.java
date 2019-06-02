@@ -174,13 +174,15 @@ public class PondInfoActivity extends AppCompatActivity {
         Log.d(TAG, "Result-transfer Data: "+ getData);
         String path1 = getData + "-detail";
         String path2 = getData + "-pond1";
+        String path3 = getData + "-push";
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference loc = database.getReference(path2);
+        DatabaseReference loc = database.getReference(path3);
 
         DatabaseReference hopperRef = loc;
         Map<String, Object> hopperUpdates = new HashMap<>();
         hopperUpdates.put("set", 0);
+        hopperUpdates.put("warn", 0);
         hopperRef.updateChildren(hopperUpdates);
 
         final SharedPreferences sp = getSharedPreferences("push", Context.MODE_PRIVATE);
