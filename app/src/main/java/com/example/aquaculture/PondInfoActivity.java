@@ -59,9 +59,10 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView piID;
     private TextView location;
     private TextView pondName;
-    TextView highTemp;
-    TextView lowTemp;
-    private Smart smart;
+    private TextView highTemp;
+    private TextView lowTemp;
+    private TextView ch2OnTimeInt;
+    private TextView ch2OffTimeInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,8 @@ public class PondInfoActivity extends AppCompatActivity {
         tempSet = findViewById(R.id.cardViewTempSet);
         highTemp = findViewById(R.id.txtViewHighTemp);
         lowTemp = findViewById(R.id.txtViewLowTemp);
-        smart = new Smart();
+        ch2OnTimeInt = findViewById(R.id.txtCh2OnTime);
+        ch2OffTimeInt = findViewById(R.id.txtCh2OffTime);
         startingGraph();
         basicReadWrite();
         buttomNavigation();
@@ -103,9 +105,6 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     /*******************
      * FUNCTIONS
      *******************/
@@ -118,17 +117,17 @@ public class PondInfoActivity extends AppCompatActivity {
         lineChart.setPinchZoom(false);
         lineChart.setDoubleTapToZoomEnabled(false);
         lineChart.setHighlightPerTapEnabled(false);
-        lineChart.getDescription().setText("Within 12 Hours Time");
+        lineChart.getDescription().setText("Within 6 Hours Time");
         lineChart.getLegend().setEnabled(false);
 
         long today = Calendar.getInstance().getTimeInMillis();
         today /= 1000;
-        Query q = myRef.orderByChild("time").startAt(today - 43200).endAt(today);
+        Query q = myRef.orderByChild("time").startAt(today - 21600).endAt(today);
 
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
+                Log.d(TAG, "Count Starting Graph: " + dataSnapshot.getChildrenCount());
                 float i = 0;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
                     String snapTemp = snaps.child("val").getValue().toString();
@@ -147,7 +146,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineDataSet.setCircleHoleRadius(-1);
                 lineDataSet.setCircleColor(Color.BLUE);
                 lineDataSet.setDrawCircles(false);
-                lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+                //lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
                 //lineDataSet.setValueTextColor(Color.BLACK);
 
                 LineData lineData = new LineData(lineDataSet);
@@ -257,10 +256,15 @@ public class PondInfoActivity extends AppCompatActivity {
                 final Float tempRead = dataSnapshot.child("temp").getValue(Float.class) / 10;
                 final Float highTempRead = dataSnapshot.child("high").getValue(Float.class) / 10;
                 final Float lowTempRead = dataSnapshot.child("low").getValue(Float.class) / 10;
+                final Integer ch2OnTimeInterval = dataSnapshot.child("gap1").getValue(Integer.class);
+                final Integer ch2OffTimeInterval = dataSnapshot.child("gap2").getValue(Integer.class);
                 TextView textElement = (TextView) findViewById(R.id.tempRead);
                 textElement.setText(tempRead.toString() + " °C");
                 highTemp.setText(highTempRead.toString() + " °C");
                 lowTemp.setText(lowTempRead.toString() + " °C");
+                ch2OnTimeInt.setText(ch2OnTimeInterval.toString() + " minute/s");
+                ch2OffTimeInt.setText(ch2OffTimeInterval.toString() + " minute/s");
+
                 //get current temperature data from database and display
 
                 final Integer val4 = dataSnapshot.child("auto").getValue(Integer.class);
@@ -268,14 +272,15 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 if(val4 == 1){
                     sw.setChecked(true);
-
-                    float lowTemp = dataSnapshot.child("low").getValue(Float.class) / 10;
-                    float highTemp = dataSnapshot.child("high").getValue(Float.class) / 10;
-                    smart.turnOnChannel1(lowTemp, highTemp, tempRead);
-                    myRef1.child("ch1").setValue(smart.getCh1());
+                    tempSet.setClickable(false);
+                    //float lowTemp = dataSnapshot.child("low").getValue(Float.class) / 10;
+                    //float highTemp = dataSnapshot.child("high").getValue(Float.class) / 10;
+                    //smart.turnOnChannel1(lowTemp, highTemp, tempRead);
+                    //myRef1.child("ch1").setValue(smart.getCh1());
                 }
                 else{
                     sw.setChecked(false);
+                    tempSet.setClickable(true);
                 }//check auto model status and change switch display
 
                 sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -404,20 +409,27 @@ public class PondInfoActivity extends AppCompatActivity {
         final View textEntryView = factory.inflate(R.layout.dialog, null);
         final EditText top = (EditText) textEntryView.findViewById(R.id.editTextNum1);
         final EditText bottom = (EditText)textEntryView.findViewById(R.id.editTextNum2);
+        final EditText ch2OnTime = textEntryView.findViewById(R.id.editTextCh2TurnOnTime);
+        final EditText ch2OffTime = textEntryView.findViewById(R.id.editTextCh2TurnOffTime);
+
         AlertDialog.Builder ad1 = new AlertDialog.Builder(PondInfoActivity.this);
-        ad1.setTitle("Update Critical level:");
+        ad1.setTitle("Smart Settings:");
         ad1.setIcon(android.R.drawable.ic_dialog_info);
         ad1.setView(textEntryView);
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 int topnum = Integer.parseInt(top.getText().toString());
                 int botnum = Integer.parseInt(bottom.getText().toString());
+                int onTime = Integer.parseInt(ch2OnTime.getText().toString());
+                int offTime = Integer.parseInt(ch2OffTime.getText().toString());
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("pi1-pond1");
                 Map<String, Object> passUpdate = new HashMap<>();
                 passUpdate.put("high", topnum);
                 passUpdate.put("low", botnum);
+                passUpdate.put("gap1", onTime);
+                passUpdate.put("gap2", offTime);
                 myRef.updateChildren(passUpdate);
             }
         });

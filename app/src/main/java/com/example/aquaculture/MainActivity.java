@@ -107,12 +107,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });//detech auto login and saved in SharedPreference
 
-            if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to HomeActivity page.
-                al.setChecked(true);
-                name.setText(sp.getString("username", null));
-                pass.setText(sp.getString("password", null));
-                login();
-            }
+        if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to HomeActivity page.
+            al.setChecked(true);
+            name.setText(sp.getString("username", null));
+            pass.setText(sp.getString("password", null));
+            login();
+        }
 
 
         if(Objects.equals(sp.getString("auto_log1", null), "Y")){//if Y, then auto fill up username and password

@@ -7,13 +7,11 @@
     tools:context=".PondInfoActivity"
     tools:layout_editor_absoluteY="81dp">
 
-    <!--
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="257dp">
-      -->
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -178,50 +176,111 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/cardViewTempSet"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_gravity="center_horizontal"
                 app:cardBackgroundColor="#00BCD4"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top|center"
-                    android:textSize="20sp"
-                    android:text="CRITICAL TEMPERATURE SETTING"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:textSize="18sp"
-                    android:text="Highest Temperature Level:"/>
-                <TextView
-                    android:id="@+id/txtViewHighTemp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:textSize="20sp"
-                    android:text="xxx"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|start"
-                    android:textSize="18sp"
-                    android:text="Lowest Temperature Level:"/>
-                <TextView
-                    android:id="@+id/txtViewLowTemp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:textSize="20sp"
-                    android:text="xxx"/>
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:textSize="20sp"
+                        android:text="SMART SETTINGS"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:text="Highest Temperature Level:"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/txtViewHighTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:textSize="20sp"
+                            android:text="xxx"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|start"
+                            android:textSize="18sp"
+                            android:text="Lowest Temperature Level:"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/txtViewLowTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:textSize="20sp"
+                            android:text="xxx"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|start"
+                            android:textSize="18sp"
+                            android:text="Channel 2 On Time:"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/txtCh2OnTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:textSize="20sp"
+                            android:text="xxx"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|start"
+                            android:textSize="18sp"
+                            android:text="Channel 2 Off Time:"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/txtCh2OffTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:textSize="20sp"
+                            android:text="xxx"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
-        <!--
     </ScrollView>
-        -->
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"
