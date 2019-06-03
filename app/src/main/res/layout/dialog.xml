@@ -8,7 +8,8 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Top level" />
+        android:layout_marginTop="30dp"
+        android:text="Highest Critical Water Temperature (Celsius):" />
 
     <EditText
         android:id="@+id/editTextNum1"
@@ -22,10 +23,28 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bottom Level" />
+        android:text="Lowest Critical Water Temperature (Celsius):" />
 
     <EditText
         android:id="@+id/editTextNum2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Channel 2 Turn On Time (minutes):"/>
+    <EditText
+        android:id="@+id/editTextCh2TurnOnTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Channel 2 Turn Off Time (minutes):"/>
+    <EditText
+        android:id="@+id/editTextCh2TurnOffTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

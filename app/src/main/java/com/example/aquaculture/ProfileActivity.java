@@ -26,14 +26,14 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-
     private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        setTitle("Profile");
+        //setTitle("Profile");
+        getSupportActionBar().hide();
         buttonNavigationSettings();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         TextView un = (TextView) findViewById(R.id.username);
@@ -50,10 +50,10 @@ public class ProfileActivity extends AppCompatActivity {
         btr2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                 sp.edit()
                         .clear()
                         .apply();
+                //MainActivity.sp.edit().clear().apply();
                 Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(intent4);
             }

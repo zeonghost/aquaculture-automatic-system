@@ -8,7 +8,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="date:" />
+        android:text="Date:" />
 
     <EditText
         android:id="@+id/editTextDate"
@@ -45,10 +45,25 @@
         android:layout_height="wrap_content"
         android:text="Status: " />
 
-    <EditText
-        android:id="@+id/editTextStatus"
+    <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/radioPending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pending"
+            android:onClick="radioCheck"/>
+
+        <RadioButton
+            android:id="@+id/radioDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done"
+            android:onClick="radioCheck"/>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textView5"
