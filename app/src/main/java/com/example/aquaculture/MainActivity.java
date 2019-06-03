@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void login(){
-        //showWaitingDialog();
+        showWaitingDialog();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("/user");
         myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
                 if(Objects.equals(b, pass.getText().toString())){
-                    showWaitingDialog();
+                    //showWaitingDialog();
                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
                             .putString("username", name.getText().toString())

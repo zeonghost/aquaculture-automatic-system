@@ -63,6 +63,9 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView lowTemp;
     private TextView ch2OnTimeInt;
     private TextView ch2OffTimeInt;
+    private Button channel1;
+    private Button channel2;
+    private Button channel3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,9 @@ public class PondInfoActivity extends AppCompatActivity {
         lowTemp = findViewById(R.id.txtViewLowTemp);
         ch2OnTimeInt = findViewById(R.id.txtCh2OnTime);
         ch2OffTimeInt = findViewById(R.id.txtCh2OffTime);
+        channel1 = findViewById(R.id.ch1);
+        channel2 = findViewById(R.id.ch2);
+        channel3 = findViewById(R.id.ch3);
         startingGraph();
         basicReadWrite();
         buttomNavigation();
@@ -234,7 +240,6 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference(path1);
         final DatabaseReference myRef1 = database.getReference(path2);
 
@@ -262,8 +267,8 @@ public class PondInfoActivity extends AppCompatActivity {
                 textElement.setText(tempRead.toString() + " °C");
                 highTemp.setText(highTempRead.toString() + " °C");
                 lowTemp.setText(lowTempRead.toString() + " °C");
-                ch2OnTimeInt.setText(ch2OnTimeInterval.toString() + " minute/s");
-                ch2OffTimeInt.setText(ch2OffTimeInterval.toString() + " minute/s");
+                ch2OnTimeInt.setText(ch2OnTimeInterval.toString() + " second/s");
+                ch2OffTimeInt.setText(ch2OffTimeInterval.toString() + " second/s");
 
                 //get current temperature data from database and display
 
@@ -272,15 +277,17 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 if(val4 == 1){
                     sw.setChecked(true);
-                    tempSet.setClickable(false);
-                    //float lowTemp = dataSnapshot.child("low").getValue(Float.class) / 10;
-                    //float highTemp = dataSnapshot.child("high").getValue(Float.class) / 10;
-                    //smart.turnOnChannel1(lowTemp, highTemp, tempRead);
-                    //myRef1.child("ch1").setValue(smart.getCh1());
+                    tempSet.setEnabled(false);
+                    channel1.setEnabled(false);
+                    channel2.setEnabled(false);
+                    channel3.setEnabled(false);
                 }
                 else{
                     sw.setChecked(false);
-                    tempSet.setClickable(true);
+                    tempSet.setEnabled(true);
+                    channel1.setEnabled(true);
+                    channel2.setEnabled(true);
+                    channel3.setEnabled(true);
                 }//check auto model status and change switch display
 
                 sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -300,13 +307,13 @@ public class PondInfoActivity extends AppCompatActivity {
                 final Button btr1 = (Button) findViewById(R.id.ch1);
                 if(val1 ==1)//1 means on
                 {
-                    btr1.setBackgroundColor(Color.RED);//change color
+                    channel1.setBackgroundColor(Color.RED);//change color
                 }
                 if(val1 ==0)//0 means off
                 {
-                    btr1.setBackgroundColor(Color.GREEN);
+                    channel1.setBackgroundColor(Color.GREEN);
                 }
-                btr1.setOnClickListener(new View.OnClickListener() {
+                channel1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick (View v){
                         if (val1 == 1) {
@@ -324,13 +331,13 @@ public class PondInfoActivity extends AppCompatActivity {
                 final Button btr2 = (Button) findViewById(R.id.ch2);
                 if(val2 ==1)
                 {
-                    btr2.setBackgroundColor(Color.RED);
+                    channel2.setBackgroundColor(Color.RED);
                 }
                 if(val2 ==0)
                 {
-                    btr2.setBackgroundColor(Color.GREEN);
+                    channel2.setBackgroundColor(Color.GREEN);
                 }
-                btr2.setOnClickListener(new View.OnClickListener()
+                channel2.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick (View v){
@@ -349,13 +356,13 @@ public class PondInfoActivity extends AppCompatActivity {
                 final Button btr3 = (Button) findViewById(R.id.ch3);
                 if(val3 == 1)
                 {
-                    btr3.setBackgroundColor(Color.RED);
+                    channel3.setBackgroundColor(Color.RED);
                 }
                 if(val3 == 0)
                 {
-                    btr3.setBackgroundColor(Color.GREEN);
+                    channel3.setBackgroundColor(Color.GREEN);
                 }
-                btr3.setOnClickListener(new View.OnClickListener() {
+                channel3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if(val3 == 1)
@@ -411,20 +418,78 @@ public class PondInfoActivity extends AppCompatActivity {
         final EditText bottom = (EditText)textEntryView.findViewById(R.id.editTextNum2);
         final EditText ch2OnTime = textEntryView.findViewById(R.id.editTextCh2TurnOnTime);
         final EditText ch2OffTime = textEntryView.findViewById(R.id.editTextCh2TurnOffTime);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("pi1-pond1");
 
         AlertDialog.Builder ad1 = new AlertDialog.Builder(PondInfoActivity.this);
         ad1.setTitle("Smart Settings:");
         ad1.setIcon(android.R.drawable.ic_dialog_info);
         ad1.setView(textEntryView);
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                top.setText(dataSnapshot.child("high").getValue().toString());
+                bottom.setText(dataSnapshot.child("low").getValue().toString());
+                ch2OnTime.setText(dataSnapshot.child("gap1").getValue().toString());
+                ch2OffTime.setText(dataSnapshot.child("gap2").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
+                if(top.getText().toString().isEmpty() || bottom.getText().toString().isEmpty() || ch2OnTime.getText().toString().isEmpty() || ch2OffTime.getText().toString().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 int topnum = Integer.parseInt(top.getText().toString());
                 int botnum = Integer.parseInt(bottom.getText().toString());
                 int onTime = Integer.parseInt(ch2OnTime.getText().toString());
                 int offTime = Integer.parseInt(ch2OffTime.getText().toString());
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("pi1-pond1");
+                if(topnum <= botnum){
+                    Toast.makeText(getApplicationContext(), "Highest Critical Water Temperature must be greater than the Lowest Critical Water Temperature!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(onTime == 0 && offTime == 0){
+                    Toast.makeText(getApplicationContext(), "ARE YOU CRAZY???!!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(onTime == 0){
+                    final AlertDialog.Builder channel2ErrorDialog = new AlertDialog.Builder(PondInfoActivity.this);
+                    channel2ErrorDialog.setTitle("Warning!").setMessage("Channel 2 is always OFF when automatic mode is enabled!");
+                    channel2ErrorDialog.setPositiveButton("Understood!",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    channel2ErrorDialog.show();
+                }
+
+                if(offTime == 0){
+                    final AlertDialog.Builder channel2ErrorDialog = new AlertDialog.Builder(PondInfoActivity.this);
+                    channel2ErrorDialog.setTitle("Warning!").setMessage("Channel 2 is always ON when automatic mode is enabled!");
+                    channel2ErrorDialog.setPositiveButton("Understood!",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    channel2ErrorDialog.show();
+                }
+
                 Map<String, Object> passUpdate = new HashMap<>();
                 passUpdate.put("high", topnum);
                 passUpdate.put("low", botnum);
