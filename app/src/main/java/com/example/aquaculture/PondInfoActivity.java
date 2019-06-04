@@ -1,13 +1,10 @@
 package com.example.aquaculture;
 
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -26,9 +23,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 //import com.example.aquaculture.Model.Loga;
-import com.example.aquaculture.Model.Smart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -134,7 +129,7 @@ public class PondInfoActivity extends AppCompatActivity {
         logview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toGraphActivity = new Intent (PondInfoActivity.this, logviewActivity.class);
+                Intent toGraphActivity = new Intent (PondInfoActivity.this, LogViewActivity.class);
                 startActivity(toGraphActivity);
             }
         });

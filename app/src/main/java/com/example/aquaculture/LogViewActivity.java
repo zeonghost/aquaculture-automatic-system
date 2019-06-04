@@ -1,6 +1,5 @@
 package com.example.aquaculture;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,12 +11,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.aquaculture.Model.Log;
-import com.example.aquaculture.Model.Pond;
 import com.example.aquaculture.ViewHolder.LogViewHolder;
-import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -27,10 +23,9 @@ import com.google.firebase.database.Query;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
-public class logviewActivity extends AppCompatActivity {
+public class LogViewActivity extends AppCompatActivity {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef;
@@ -47,7 +42,7 @@ public class logviewActivity extends AppCompatActivity {
 
         logInfo = findViewById(R.id.Recycle);
         logInfo.setHasFixedSize(true);
-        logInfo.setLayoutManager(new LinearLayoutManager(logviewActivity.this));
+        logInfo.setLayoutManager(new LinearLayoutManager(LogViewActivity.this));
 
         String getData = HomeActivity.transferData;
         String path = getData + "-log";
@@ -79,7 +74,7 @@ public class logviewActivity extends AppCompatActivity {
             @NonNull
             @Override
             public LogViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(logviewActivity.this).inflate(R.layout.activity_home_cardview, viewGroup, false);
+                View view = LayoutInflater.from(LogViewActivity.this).inflate(R.layout.activity_home_cardview, viewGroup, false);
                 LogViewHolder holder = new LogViewHolder(view);
                 return holder;
             }
@@ -108,15 +103,15 @@ public class logviewActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item1:
-                        Intent intent1 = new Intent(logviewActivity.this, HomeActivity.class);
+                        Intent intent1 = new Intent(LogViewActivity.this, HomeActivity.class);
                         startActivity(intent1);
                         break;
                     case R.id.item2:
-                        Intent intent2 = new Intent(logviewActivity.this, TaskActivity.class);
+                        Intent intent2 = new Intent(LogViewActivity.this, TaskActivity.class);
                         startActivity(intent2);
                         break;
                     case R.id.item3:
-                        Intent intent3 = new Intent(logviewActivity.this, ProfileActivity.class);
+                        Intent intent3 = new Intent(LogViewActivity.this, ProfileActivity.class);
                         startActivity(intent3);
                         break;
                 }

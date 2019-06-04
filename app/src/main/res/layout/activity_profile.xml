@@ -48,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="162dp"
         android:layout_marginBottom="8dp"
-        android:text="TempSet"
+        android:text="Partners Page Test"
         app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

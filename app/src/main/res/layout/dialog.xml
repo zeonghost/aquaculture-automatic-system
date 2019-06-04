@@ -13,6 +13,7 @@
 
     <EditText
         android:id="@+id/editTextNum1"
+        android:hint="Water Temperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -27,6 +28,7 @@
 
     <EditText
         android:id="@+id/editTextNum2"
+        android:hint="Water Temperature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -36,6 +38,7 @@
         android:text="Channel 2 Turn On Time (seconds):"/>
     <EditText
         android:id="@+id/editTextCh2TurnOnTime"
+        android:hint="Time in seconds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -45,6 +48,7 @@
         android:text="Channel 2 Turn Off Time (seconds):"/>
     <EditText
         android:id="@+id/editTextCh2TurnOffTime"
+        android:hint="Time in seconds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

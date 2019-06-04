@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:clickable="true"
+        android:focusable="true"
         app:backgroundTint="#009688"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"

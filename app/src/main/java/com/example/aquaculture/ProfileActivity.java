@@ -42,7 +42,8 @@ public class ProfileActivity extends AppCompatActivity {
         btr1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddDialog();
+                Intent intent = new Intent(ProfileActivity.this, PartnerAdminActivity.class);
+                startActivity(intent);
             }
         });
 
