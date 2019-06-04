@@ -54,8 +54,6 @@ public class HomeActivity extends AppCompatActivity {
         addPondButton();
         buttonNavigationSettings();
 
-
-
         pondInfo = findViewById(R.id.recyclerview);
         pondInfo.setHasFixedSize(true);
         pondInfo.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
