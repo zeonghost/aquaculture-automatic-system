@@ -3,24 +3,24 @@ package com.example.aquaculture.Model;
 import com.google.firebase.database.PropertyName;
 
 public class Log {
-    private long time;
-    private String detail;
+    private long logTime;
+    private String logDetail;
 
     public Log(){}
 
-    public Log(long time, String detail){
-        this.time = time;
-        this.detail = detail;
+    public Log(long logTime, String logDetail){
+        this.logTime = logTime;
+        this.logDetail = logDetail;
     }
 
-    @PropertyName("log_detail")
+    @PropertyName("logDetail")
     public String getdetail() {
-        return detail;
+        return logDetail;
     }
 
-    @PropertyName("log_time")
+    @PropertyName("logTime")
     public long getTime() {
-        return time;
+        return logTime;
     }
 
 }

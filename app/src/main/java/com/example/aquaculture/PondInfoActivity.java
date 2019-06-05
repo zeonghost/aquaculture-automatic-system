@@ -125,7 +125,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 tempSetDialog();
             }
         });
-        /*
+
         logview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +133,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 startActivity(toGraphActivity);
             }
         });
-        */
+
     }
 
     /*******************
@@ -206,17 +206,17 @@ public class PondInfoActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference logPath = database.getReference(path4);
 
-        logPath.orderByValue().limitToLast(4).addListenerForSingleValueEvent(new ValueEventListener() {
+        logPath.orderByChild("logTime").limitToLast(4).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int i = 0;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                    String logDetail = snaps.getKey();
-                    //Log.d(TAG, "Result111: "+ logDetail);
+                    String logDetail = snaps.child("logDetail").getValue().toString();
+                    Log.d(TAG, "Result111: "+ logDetail);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-                    Long logTime = snaps.getValue(Long.class);
-                    //Log.d(TAG, "Result111: "+ logTime);
+                    Long logTime = snaps.child("logTime").getValue(Long.class);
+                    Log.d(TAG, "Result112: "+ logTime);
                     Timestamp timestamp = new Timestamp(logTime);
                     Date date = new Date(timestamp.getTime());
                     String formattedDateTime = dateFormat.format(date);
@@ -378,17 +378,21 @@ public class PondInfoActivity extends AppCompatActivity {
                             Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
                             String log = un + " turned on Automatic Model";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         } else {
                             myRef1.child("auto").setValue(0);
                             Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off Automatic Model";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         }
                     }
                 });
@@ -411,18 +415,22 @@ public class PondInfoActivity extends AppCompatActivity {
                             Toast.makeText(PondInfoActivity.this, "Turned off ch 1", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off ch 1";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         }
                         if (val1 == 0) {
                             myRef1.child("ch1").setValue(1);
                             Toast.makeText(PondInfoActivity.this, "Turned on ch 1", Toast.LENGTH_SHORT).show();
                             String log = un + " turned on ch 1";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         }
                     }
                 });
@@ -446,18 +454,22 @@ public class PondInfoActivity extends AppCompatActivity {
                             Toast.makeText(PondInfoActivity.this, "Turned off ch 2", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off ch 2";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         }
                         if (val2 == 0) {
                             myRef1.child("ch2").setValue(1);
                             Toast.makeText(PondInfoActivity.this, "Turned on ch 2", Toast.LENGTH_SHORT).show();
                             String log = un + " turned on ch 2";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         }
                     }
                 });
@@ -481,9 +493,11 @@ public class PondInfoActivity extends AppCompatActivity {
                             Toast.makeText(PondInfoActivity.this, "Turned off ch 3", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off ch 3";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         }
                         if(val3 == 0)
                         {
@@ -491,9 +505,11 @@ public class PondInfoActivity extends AppCompatActivity {
                             Toast.makeText(PondInfoActivity.this, "Turned on ch 3", Toast.LENGTH_SHORT).show();
                             String log = un + " turned on ch3";
                             Long time = System.currentTimeMillis();
-                            //Loga newLog = new Loga(time, log);
-                            //String key = logWrite.push().getKey();
-                            logWrite.child(log).setValue(time);
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
                         }
                     }
                 });
@@ -623,9 +639,11 @@ public class PondInfoActivity extends AppCompatActivity {
                 String un = sp.getString("username", "");
                 String log = un + " edit the highedt Critical temp to "+ topnum+" lowest Critical temp to "+botnum+" ch2 on time to "+onTime+" off time to "+ offTime;
                 Long time = System.currentTimeMillis();
-                //Loga newLog = new Loga(time, log);
-                //String key = logWrite.push().getKey();
-                logWrite.child(log).setValue(time);
+                Map<String, Object> logPut = new HashMap<>();
+                logPut.put("logDetail", log);
+                logPut.put("logTime", time);
+                String key = logWrite.push().getKey();
+                logWrite.child(key).updateChildren(logPut);
             }
         });
         ad1.show();

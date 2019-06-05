@@ -32,6 +32,7 @@ public class LogViewActivity extends AppCompatActivity {
     private RecyclerView logInfo;
     private FirebaseRecyclerOptions<Log> options;
     private FirebaseRecyclerAdapter<Log, LogViewHolder> adapter;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,10 @@ public class LogViewActivity extends AppCompatActivity {
 
         String getData = HomeActivity.transferData;
         String path = getData + "-log";
+        android.util.Log.d("TAG", "Result 123: " + path);
 
         myRef = database.getReference(path);
-        Query query = myRef.orderByValue();
+        Query query = myRef.orderByChild("logTime");
 
         options = new FirebaseRecyclerOptions.Builder<Log>()
                 .setQuery(query, Log.class)
@@ -68,26 +70,23 @@ public class LogViewActivity extends AppCompatActivity {
 
                 holder.logTime.setText(formattedDateTime);
                 holder.logDetail.setText(logDetail);
-
             }
 
             @NonNull
             @Override
             public LogViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(LogViewActivity.this).inflate(R.layout.activity_home_cardview, viewGroup, false);
+                View view = LayoutInflater.from(LogViewActivity.this).inflate(R.layout.log_info, viewGroup, false);
                 LogViewHolder holder = new LogViewHolder(view);
                 return holder;
             }
         };
         logInfo.setAdapter(adapter);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
-
     }
 
     @Override
