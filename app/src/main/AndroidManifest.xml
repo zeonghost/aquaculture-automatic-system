@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PartnerAdminActivity"/>
+        <activity android:name=".LinkUserPondActivity"></activity>
+        <activity android:name=".SearchUserActivity" />
+        <activity android:name=".PartnerAdminActivity" />
         <activity android:name=".LogViewActivity" />
         <activity android:name=".TaskActivity" />
         <activity android:name=".GraphTempActivity" />

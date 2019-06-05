@@ -105,7 +105,7 @@ public class PondInfoActivity extends AppCompatActivity {
         startingGraph();
         basicReadWrite();
         buttomNavigation();
-        logRead();
+        //logRead();
     }
 
     @Override

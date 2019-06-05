@@ -1,8 +1,10 @@
 package com.example.aquaculture;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,16 +37,19 @@ public class PartnerAdminActivity extends AppCompatActivity {
     private FirebaseRecyclerAdapter<Partner, PartnerViewHolder> adapter;
     private String path;
     private SharedPreferences sp;
+    private FloatingActionButton linkUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partner_admin);
-
+        getSupportActionBar().hide();
+        linkUser = findViewById(R.id.btnLinkUser);
         recyclerPartner = findViewById(R.id.partnerRecyclerView);
         recyclerPartner.setHasFixedSize(true);
         recyclerPartner.setLayoutManager(new LinearLayoutManager(PartnerAdminActivity.this));
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+
         path = "Partners/" + sp.getString("username", "");
         ref = database.getReference(path);
         options = new FirebaseRecyclerOptions.Builder<Partner>()
@@ -67,13 +72,19 @@ public class PartnerAdminActivity extends AppCompatActivity {
             }
         };
         recyclerPartner.setAdapter(adapter);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+        linkUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PartnerAdminActivity.this, SearchUserActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -82,44 +93,8 @@ public class PartnerAdminActivity extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
+
 }
-
-/*
-        ref = database.getReference("Partners/");
-        ref.child("user0").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        Query query = ref.orderByKey().equalTo("user0");
-
-        options = new FirebaseRecyclerOptions.Builder<Partner>()
-                .setQuery(query, Partner.class)
-                .build();
-
-        adapter = new FirebaseRecyclerAdapter<Partner, PartnerViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull PartnerViewHolder holder, int position, @NonNull Partner model) {
-                Log.d(TAG, "onBindViewHolder: " + model.getPartner().get("user1"));
-
-            }
-
-            @NonNull
-            @Override
-            public PartnerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View v = LayoutInflater.from(PartnerAdminActivity.this).inflate(R.layout.activity_partner_card, viewGroup, false);
-                return new PartnerViewHolder(v);
-            }
-        };
-        recyclerPartner.setAdapter(adapter);
-        */
         /*
         Map<String, Map<String, String>> link = new HashMap<>();
         Map<String, String> partner = new HashMap<>();
