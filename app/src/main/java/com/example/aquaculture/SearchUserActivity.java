@@ -42,6 +42,7 @@ public class SearchUserActivity extends AppCompatActivity {
     private EditText getUserName;
     private Button searchUserButton;
     private SharedPreferences sp;
+    private SharedPreferences getUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class SearchUserActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child("user");
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+        getUser = this.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 
         getUserName = findViewById(R.id.editTxtUserSearch);
         searchUserButton = findViewById(R.id.btnSearchUser);
@@ -83,7 +85,7 @@ public class SearchUserActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        //adapter.stopListening();
     }
 
     private void queryUsers(){
@@ -111,7 +113,7 @@ public class SearchUserActivity extends AppCompatActivity {
 
         adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
+            protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull final User model) {
                 holder.userName.setText("User ID: " + model.getUsername());
                 holder.lastName.setText("Last name: " + model.getLname());
                 holder.firstName.setText("First name: " + model.getFname());
@@ -120,6 +122,11 @@ public class SearchUserActivity extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        getUser.edit().putString("userID", model.getUsername()).apply();
+                        getUser.edit().putString("firstName", model.getFname()).apply();
+                        getUser.edit().putString("lastName", model.getLname()).apply();
+                        getUser.edit().putString("userRole", model.getRole()).apply();
+                        Log.d(TAG, "SP - getUser: " + getUser.getAll().toString());
                         Intent intent = new Intent(SearchUserActivity.this, LinkUserPondActivity.class);
                         startActivity(intent);
                     }

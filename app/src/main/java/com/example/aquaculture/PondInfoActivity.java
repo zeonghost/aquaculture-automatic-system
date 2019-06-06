@@ -105,7 +105,7 @@ public class PondInfoActivity extends AppCompatActivity {
         startingGraph();
         basicReadWrite();
         buttomNavigation();
-        //logRead();
+        logRead();
     }
 
     @Override
@@ -637,7 +637,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 myRef.updateChildren(passUpdate);
                 SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                 String un = sp.getString("username", "");
-                String log = un + " edit the highedt Critical temp to "+ topnum+" lowest Critical temp to "+botnum+" ch2 on time to "+onTime+" off time to "+ offTime;
+                String log = un + " edit the highest Critical temp to "+ topnum+" lowest Critical temp to "+botnum+" ch2 on time to "+onTime+" off time to "+ offTime;
                 Long time = System.currentTimeMillis();
                 Map<String, Object> logPut = new HashMap<>();
                 logPut.put("logDetail", log);
