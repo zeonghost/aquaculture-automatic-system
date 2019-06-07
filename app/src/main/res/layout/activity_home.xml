@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#009688"
         android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />

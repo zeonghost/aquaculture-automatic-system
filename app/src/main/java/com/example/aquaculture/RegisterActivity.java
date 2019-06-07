@@ -1,6 +1,7 @@
 package com.example.aquaculture;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +13,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.aquaculture.Model.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -24,21 +30,48 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner role;//role
     private Button btr;
     private String getRole;
+    private FirebaseDatabase database;
+    private DatabaseReference ref;
+    private boolean duplicate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        setTitle("Register");
+        //setTitle("Register");
+        getSupportActionBar().hide();
         name = (EditText)findViewById(R.id.un);
         pass = (EditText)findViewById(R.id.pass);
         fname = (EditText)findViewById(R.id.Fname);
         lname = (EditText)findViewById(R.id.Lname);
         role =(Spinner) findViewById(R.id.roleSele);
         btr =(Button) findViewById(R.id.btr);
+        database =  FirebaseDatabase.getInstance();
+        ref = database.getReference("user");
 
-        final FirebaseDatabase database =  FirebaseDatabase.getInstance();
-        final DatabaseReference ref = database.getReference("user");
+        name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    String username = name.getText().toString();
+                    ref.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Log.d(TAG, "User name duplicate count: " + dataSnapshot.getChildrenCount());
+                            if(dataSnapshot.getValue() != null){
+                                Toast.makeText(RegisterActivity.this, "Username: " + name.getText().toString() + " is already taken.", Toast.LENGTH_SHORT).show();
+                                name.getText().clear();
+                                name.requestFocus();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+        });
 
         role.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -60,7 +93,6 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = pass.getText().toString();
                 String firstname = fname.getText().toString();
                 String lastname = lname.getText().toString();
-
 
                 if(username.isEmpty() || password.isEmpty() || firstname.isEmpty() || lastname.isEmpty()){
                     Toast.makeText(RegisterActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();

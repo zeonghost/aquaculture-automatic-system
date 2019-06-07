@@ -44,4 +44,6 @@
     <string name="select_start_date">Select Start Date</string>
     <string name="plot_graph">Plot Graph</string>
     <string name="select_end_date">Select End Date</string>
+    <string name="done">Done</string>
+    <string name="pending">Pending</string>
 </resources>

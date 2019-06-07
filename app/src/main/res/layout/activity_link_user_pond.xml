@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LinkUserPondActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtViewOnly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WHERE DO YOU WANT TO LINK THIS USER TO?"
+        android:textSize="35sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/linkUserPondRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="42dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

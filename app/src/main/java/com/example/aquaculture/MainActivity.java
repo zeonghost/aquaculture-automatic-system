@@ -17,13 +17,20 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -37,47 +44,49 @@ public class MainActivity extends AppCompatActivity {
     private Button fgt;//forget password
     private String a;//uid get from username
     private String b;//uid get from password
-    private CheckBox rp;//remember password
+    //private CheckBox rp;//remember password
     private CheckBox al;//auto login
-    private String rem_pass;
+
+    //private String rem_pass;
     private String auto_log;
-    private SharedPreferences sp;
+    public static SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("Login");
+        getSupportActionBar().hide();
         FirebaseApp.initializeApp(this);
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        // Log and toast
+                        //String msg = getString(R.string.msg_token_fmt, token);
+                        //Log.d(TAG, msg);
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         name = (EditText)findViewById(R.id.nameInput);
         pass = (EditText)findViewById(R.id.passInput);
         login = (Button)findViewById(R.id.loginBtn);
         sign = (Button)findViewById(R.id.sinbtr);
         fgt = (Button)findViewById(R.id.fgt_pass);
-        rp=(CheckBox)findViewById(R.id.cb_rp);
+        //rp=(CheckBox)findViewById(R.id.cb_rp);
         al=(CheckBox)findViewById(R.id.cd_al);
         //basicReadWrite();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
-        rp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    rem_pass="Y";
-                    sp.edit()
-                            .putString("rem_pass1", rem_pass)
-                            .apply();
-                    //Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
-                }
-                else{
-                    rem_pass="N";
-                    sp.edit()
-                            .putString("rem_pass1", rem_pass)
-                            .apply();
-                    //Log.d(TAG, "Result sp-rp1-changed: "+ sp.getString("rem_pass1", null));
-                }
-            }
-        });//detech remember password and save in SharedPreferences
+        al=(CheckBox)findViewById(R.id.cd_al);
+        //basicReadWrite();
+        sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         al.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -98,22 +107,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });//detech auto login and saved in SharedPreference
 
-        if(Objects.equals(sp.getString("rem_pass1", null), "Y")){//if Y, then auto fill up username and password
-            rp.setChecked(true);
+        if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to HomeActivity page.
+            al.setChecked(true);
             name.setText(sp.getString("username", null));
             pass.setText(sp.getString("password", null));
-            Log.d(TAG, "Reading sp");
-            if(Objects.equals(sp.getString("auto_log1", null), "Y")){//auto login, which is directly jump to HomeActivity page.
-                al.setChecked(true);
-                login();
-            }
+            login();
         }
+
+
+        if(Objects.equals(sp.getString("auto_log1", null), "Y")){//if Y, then auto fill up username and password
+            name.setText(sp.getString("username", null));
+            pass.setText(sp.getString("password", null));
+            Log.d(TAG, "SharedPref: AUTO LOG IN: " + sp.getAll().toString());
+            al.setChecked(true);
+            login();
+        }
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
-
             }
         });
 
@@ -136,22 +150,25 @@ public class MainActivity extends AppCompatActivity {
     }
     public void login(){
         showWaitingDialog();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("/user");
         myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+            public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
                 if(Objects.equals(b, pass.getText().toString())){
-                    if(rp.isChecked())
-                    {
-                        SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                    //showWaitingDialog();
+                    sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
-                                .putString("username", name.getText().toString())
-                                .putString("password", pass.getText().toString())
-                                .apply();
-                    }//save password and auto login status
+                            .putString("username", name.getText().toString())
+                            .putString("password", pass.getText().toString())
+                            .putString("role", dataSnapshot.child("role").getValue(String.class))
+                            .putString("firstname", dataSnapshot.child("fname").getValue(String.class))
+                            .putString("lastname", dataSnapshot.child("lname").getValue(String.class))
+                            .apply();
+                    Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
+                    //save password and auto login status
                     //jump to HomeActivity page
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -160,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                //Log.d(TAG,"Result1:" + a);
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -179,9 +196,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-            // i don't know why i can't delete those four(onChildChanged, Removed, Moved,Cancelled)
-            // it will cause error if delete
-            // the one actual work is onChildAdded
         });
     }
 
@@ -193,5 +207,4 @@ public class MainActivity extends AppCompatActivity {
         waitingDialog.setCancelable(false);
         waitingDialog.show();
     }
-
 }
