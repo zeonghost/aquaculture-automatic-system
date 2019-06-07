@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private Button partnerPage;
     private SharedPreferences sp;
 
     @Override
@@ -35,6 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
         //setTitle("Profile");
         getSupportActionBar().hide();
         buttonNavigationSettings();
+        partnerPage = findViewById(R.id.btnPartnerPartnerPage);
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         TextView un = (TextView) findViewById(R.id.username);
         un.setText(sp.getString("username", null));
@@ -60,34 +62,15 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    protected void showAddDialog() {
-
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View textEntryView = factory.inflate(R.layout.dialog, null);
-        final EditText top = (EditText) textEntryView.findViewById(R.id.editTextNum1);
-        final EditText bottom = (EditText)textEntryView.findViewById(R.id.editTextNum2);
-        AlertDialog.Builder ad1 = new AlertDialog.Builder(ProfileActivity.this);
-        ad1.setTitle("Update Critical level:");
-        ad1.setIcon(android.R.drawable.ic_dialog_info);
-        ad1.setView(textEntryView);
-        ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int i) {
-                int topnum = Integer.parseInt(top.getText().toString());
-                int botnum = Integer.parseInt(bottom.getText().toString());
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("pi1-pond1");
-                Map<String, Object> passUpdate = new HashMap<>();
-                passUpdate.put("high", topnum);
-                passUpdate.put("low", botnum);
-                myRef.updateChildren(passUpdate);
+        partnerPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, PartnerPartnerActivity.class);
+                startActivity(intent);
             }
         });
-        ad1.show();
-    }
 
+    }
 
     private void buttonNavigationSettings() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
