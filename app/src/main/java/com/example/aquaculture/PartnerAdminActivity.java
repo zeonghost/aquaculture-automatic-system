@@ -68,6 +68,7 @@ public class PartnerAdminActivity extends AppCompatActivity {
                 final String username = model.getUsername();
                 final String fullname = model.getFullname();
                 final String deviceId = model.getDevice();
+                final String key = model.getId();
 
                 holder.username.setText(username);
                 holder.fullNamePartner.setText(fullname);
@@ -78,6 +79,7 @@ public class PartnerAdminActivity extends AppCompatActivity {
                     public boolean onLongClick(View v) {
                         partnerTemp.edit().putString("deviceId", deviceId).apply();
                         partnerTemp.edit().putString("username", username).apply();
+                        partnerTemp.edit().putString("key", key).apply();
                         unLinkPartnerDialog();
                         return true;
                     }
@@ -123,6 +125,7 @@ public class PartnerAdminActivity extends AppCompatActivity {
 
     private void unLinkPartnerDialog(){
         final String username = partnerTemp.getString("username", "");
+        final String key = partnerTemp.getString("key", "");
         final String device = partnerTemp.getString("deviceId","");
         Log.d(TAG, "unLinkPartnerDialog: " + partnerTemp.getAll().toString());
         final String pathToPondDetailNode = "PondDetail/" + device + "/" + username;
@@ -137,7 +140,7 @@ public class PartnerAdminActivity extends AppCompatActivity {
         unLinkPartner.setPositiveButton("Unlink", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                removeLinkFromPartner.child(username).removeValue();
+                removeLinkFromPartner.child(key).removeValue();
                 removeLinkFromPondDetail.removeValue();
                 Toast.makeText(PartnerAdminActivity.this, "User has been removed access to the pond.", Toast.LENGTH_SHORT).show();
             }

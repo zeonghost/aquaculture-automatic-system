@@ -177,8 +177,7 @@ public class LinkUserPondActivity extends AppCompatActivity {
         final DatabaseReference myRefPartner = database.getReference(pathToPartnerNode);
         final DatabaseReference myRefPondDetail = database.getReference(pathToPondDetailNode);
 
-        Query q = myRefPartner.orderByChild("username").equalTo(username).limitToFirst(1);
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRefPondDetail.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: " + dataSnapshot.getChildrenCount());
@@ -186,9 +185,9 @@ public class LinkUserPondActivity extends AppCompatActivity {
                     Toast.makeText(LinkUserPondActivity.this, "This user is already linked.", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    //String key = myRefPartner.push().getKey();
-                    Partner newPartner = new Partner(username, fullname, device);
-                    myRefPartner.child(username).setValue(newPartner);
+                    String key = myRefPartner.push().getKey();
+                    Partner newPartner = new Partner(username, fullname, device, key);
+                    myRefPartner.child(key).setValue(newPartner);
                     myRefPondDetail.setValue(role);
                     Toast.makeText(LinkUserPondActivity.this, "User successfully linked!", Toast.LENGTH_SHORT).show();
                 }
