@@ -170,6 +170,27 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
                     //save password and auto login status
                     //jump to HomeActivity page
+
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.w(TAG, "getInstanceId failed", task.getException());
+                                        return;
+                                    }
+                                    // Get new Instance ID token
+                                    String token = task.getResult().getToken();
+                                    Map<String, Object> pushT = new HashMap<>();
+                                    pushT.put("pushToken", token);
+                                    myRef.child(a).updateChildren(pushT);
+                                    // Log and toast
+                                    //String msg = getString(R.string.msg_token_fmt, token);
+                                    //Log.d(TAG, msg);
+                                    //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setClass(MainActivity.this, HomeActivity.class);
