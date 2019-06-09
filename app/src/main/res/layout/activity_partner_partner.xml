@@ -18,13 +18,13 @@
         map:mapType="normal"
         map:uiCompass="true"
         map:uiRotateGestures="true"
-        map:uiScrollGestures="false"
+        map:uiScrollGestures="true"
         map:uiTiltGestures="true"
         map:uiZoomControls="false"
         map:uiZoomGestures="true"
         />
 
-
+    <!--
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -105,5 +105,5 @@
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
-
+    -->
 </RelativeLayout>

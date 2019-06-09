@@ -1,7 +1,5 @@
 package com.example.aquaculture.Model;
 
-import java.util.Map;
-
 public class Partner {
     private String username;
     private String fullname;
@@ -16,6 +14,12 @@ public class Partner {
         this.fullname = fullname;
         this.device = device;
         this.id = id;
+    }
+
+    public Partner(String username, String fullname, String device){
+        this.username = username;
+        this.fullname = fullname;
+        this.device = device;
     }
 
     public String getUsername() {

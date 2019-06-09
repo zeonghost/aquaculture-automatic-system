@@ -1,10 +1,13 @@
 package com.example.aquaculture;
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private Button fgt;//forget password
     private String a;//uid get from username
     private String b;//uid get from password
-    //private CheckBox rp;//remember password
     private CheckBox al;//auto login
 
     //private String rem_pass;
@@ -228,4 +230,6 @@ public class MainActivity extends AppCompatActivity {
         waitingDialog.setCancelable(false);
         waitingDialog.show();
     }
+
+
 }

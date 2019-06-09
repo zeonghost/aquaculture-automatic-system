@@ -9,10 +9,13 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/Recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bottomNavigationView"
         tools:layout_editor_absoluteY="4dp" />
 
     <android.support.design.widget.BottomNavigationView
