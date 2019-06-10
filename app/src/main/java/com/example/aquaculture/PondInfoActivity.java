@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -72,6 +73,7 @@ public class PondInfoActivity extends AppCompatActivity {
     private Button channel1;
     private Button channel2;
     private Button channel3;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,7 @@ public class PondInfoActivity extends AppCompatActivity {
         channel1 = findViewById(R.id.ch1);
         channel2 = findViewById(R.id.ch2);
         channel3 = findViewById(R.id.ch3);
+        sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         startingGraph();
         basicReadWrite();
         buttomNavigation();
@@ -530,8 +533,13 @@ public class PondInfoActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item1:
-                        Intent intent1 = new Intent(PondInfoActivity.this, HomeActivity.class);
-                        startActivity(intent1);
+                        if(Objects.equals(sp.getString("role",""), "Partner")){
+                            Intent intent0 = new Intent(PondInfoActivity.this, PartnerLogActivity.class);
+                            startActivity(intent0);
+                        } else {
+                            Intent intent1 = new Intent(PondInfoActivity.this, HomeActivity.class);
+                            startActivity(intent1);
+                        }
                         break;
                     case R.id.item2:
                         Intent intent2 = new Intent(PondInfoActivity.this, TaskActivity.class);

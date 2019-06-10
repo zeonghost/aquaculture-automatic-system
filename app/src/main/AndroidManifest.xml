@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PartnerPartnerActivity">
+        <activity android:name=".PartnerLogActivity">
         </activity>
         <activity android:name=".LinkUserPondActivity" />
         <activity android:name=".SearchUserActivity" />

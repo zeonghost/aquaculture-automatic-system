@@ -78,8 +78,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull PondViewHolder holder, int position, @NonNull Pond model) {
                 final String piID = model.getPiId();
-                String pondName = model.getPondName();
-                String location = model.getLocation();
+                final String pondName = model.getPondName();
+                final String location = model.getLocation();
 
                 holder.piId.setText("Pi ID: " + piID);
                 holder.pondName.setText("Pond: " + pondName);
@@ -95,7 +95,10 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "Result-2: "+ transferData);
                         //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
-                            checkInOutDialog();
+                            sp.edit().putString("device", piID).apply();
+                            sp.edit().putString("location", location).apply();
+                            Intent toPartnerLogActivity = new Intent(HomeActivity.this, PartnerLogActivity.class);
+                            startActivity(toPartnerLogActivity);
                         } else {
                             Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
                             startActivity(toPondInfoActivity);

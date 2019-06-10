@@ -21,6 +21,9 @@ import com.example.aquaculture.Model.Partner;
 import com.example.aquaculture.ViewHolder.PartnerViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +45,7 @@ public class PartnerAdminActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private SharedPreferences partnerTemp;
     private FloatingActionButton linkUser;
+    private MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
