@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
@@ -74,6 +75,7 @@ public class PondInfoActivity extends AppCompatActivity {
     private Button channel2;
     private Button channel3;
     private SharedPreferences sp;
+    private static long lastClickTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,27 +217,27 @@ public class PondInfoActivity extends AppCompatActivity {
                 int i = 0;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
                     String logDetail = snaps.child("logDetail").getValue().toString();
-                    Log.d(TAG, "Result111: "+ logDetail);
+                    //Log.d(TAG, "Result111: "+ logDetail);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                     Long logTime = snaps.child("logTime").getValue(Long.class);
-                    Log.d(TAG, "Result112: "+ logTime);
+                    //Log.d(TAG, "Result112: "+ logTime);
                     Timestamp timestamp = new Timestamp(logTime);
                     Date date = new Date(timestamp.getTime());
                     String formattedDateTime = dateFormat.format(date);
-                    if(i == 0) {
+                    if(i == 3) {
                         time1.setText(formattedDateTime);
                         log1.setText(logDetail);
                     }
-                    if(i == 1){
+                    if(i == 2){
                         time2.setText(formattedDateTime);
                         log2.setText(logDetail);
                     }
-                    if(i == 2){
+                    if(i == 1){
                         time3.setText(formattedDateTime);
                         log3.setText(logDetail);
                     }
-                    if(i == 3){
+                    if(i == 0){
                         time4.setText(formattedDateTime);
                         log4.setText(logDetail);
                     }
@@ -376,27 +378,34 @@ public class PondInfoActivity extends AppCompatActivity {
                 sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            myRef1.child("auto").setValue(1);
-                            Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
-                            String log = un + " turned on Automatic Model";
-                            Long time = System.currentTimeMillis();
-                            Map<String, Object> logPut = new HashMap<>();
-                            logPut.put("logDetail", log);
-                            logPut.put("logTime", time);
-                            String key = logWrite.push().getKey();
-                            logWrite.child(key).updateChildren(logPut);
-                        } else {
-                            myRef1.child("auto").setValue(0);
-                            Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned off Automatic Model";
-                            Long time = System.currentTimeMillis();
-                            Map<String, Object> logPut = new HashMap<>();
-                            logPut.put("logDetail", log);
-                            logPut.put("logTime", time);
-                            String key = logWrite.push().getKey();
-                            logWrite.child(key).updateChildren(logPut);
+                        if(!isFastDoubleClick()){
+                            if (isChecked) {
+                                myRef1.child("auto").setValue(1);
+                                Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
+                                String log = un + " turned on Automatic Model";
+
+                                Long time = System.currentTimeMillis();
+                                Map<String, Object> logPut = new HashMap<>();
+                                logPut.put("logDetail", log);
+                                logPut.put("logTime", time);
+                                String key = logWrite.push().getKey();
+                                logWrite.child(key).updateChildren(logPut);
+                            } else {
+                                myRef1.child("auto").setValue(0);
+                                Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
+                                String log = un + " turned off Automatic Model";
+                                Long time = System.currentTimeMillis();
+                                Map<String, Object> logPut = new HashMap<>();
+                                logPut.put("logDetail", log);
+                                logPut.put("logTime", time);
+                                String key = logWrite.push().getKey();
+                                logWrite.child(key).updateChildren(logPut);
+                            }
                         }
+                        else{
+                            Toast.makeText(PondInfoActivity.this, "Operation Too Fast", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                 });
 
@@ -524,6 +533,15 @@ public class PondInfoActivity extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+    }
+
+    public static boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        if (time - lastClickTime < 2000) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
     }
 
     public void buttomNavigation(){

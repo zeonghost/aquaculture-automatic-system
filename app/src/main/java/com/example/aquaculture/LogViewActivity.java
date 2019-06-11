@@ -43,14 +43,21 @@ public class LogViewActivity extends AppCompatActivity {
 
         logInfo = findViewById(R.id.Recycle);
         logInfo.setHasFixedSize(true);
-        logInfo.setLayoutManager(new LinearLayoutManager(LogViewActivity.this));
+
+        LinearLayoutManager layout = new LinearLayoutManager(LogViewActivity.this);
+        layout.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
+        layout.setReverseLayout(true);//列表翻转
+        //rView.setLayoutManager(layout);
+
+        logInfo.setLayoutManager(layout);
+
 
         String getData = HomeActivity.transferData;
         String path = getData + "-log";
         android.util.Log.d("TAG", "Result 123: " + path);
 
         myRef = database.getReference(path);
-        Query query = myRef.orderByChild("logTime");
+        Query query = myRef.orderByChild("logTime").limitToLast(100);
 
         options = new FirebaseRecyclerOptions.Builder<Log>()
                 .setQuery(query, Log.class)

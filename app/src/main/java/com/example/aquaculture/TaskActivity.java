@@ -49,8 +49,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.example.aquaculture.HomeActivity.transferData;
-
 public class TaskActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -64,7 +62,6 @@ public class TaskActivity extends AppCompatActivity {
     public SharedPreferences sp1;
     public static String transId;
     public String pushToken;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +88,6 @@ public class TaskActivity extends AppCompatActivity {
         {
             query = myRef.orderByChild("receiver").equalTo(un);
         }
-
 
         options = new FirebaseRecyclerOptions.Builder<Task>()
                 .setQuery(query, Task.class)   //mRef in this parameter can be changed into a more specific query like in LINE 50.
@@ -193,8 +189,6 @@ public class TaskActivity extends AppCompatActivity {
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
         final EditText receiver = (EditText)textEntryView.findViewById(R.id.editTextReceiver);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
-
-
 
         date.setFocusable(false);
         date.setClickable(true);
@@ -332,7 +326,6 @@ public class TaskActivity extends AppCompatActivity {
         });
         ad1.show();
     }
-
 
     private void showDeleteDialog(){
         AlertDialog.Builder normalDialog =
