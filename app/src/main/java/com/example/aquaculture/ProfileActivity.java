@@ -24,7 +24,6 @@ public class ProfileActivity extends AppCompatActivity {
         //setTitle("Profile");
         getSupportActionBar().hide();
         buttonNavigationSettings();
-        partnerPage = findViewById(R.id.btnPartnerPartnerPage);
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         TextView un = (TextView) findViewById(R.id.username);
         un.setText(sp.getString("username", null));
@@ -49,15 +48,6 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent4);
             }
         });
-
-        partnerPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     private void buttonNavigationSettings() {

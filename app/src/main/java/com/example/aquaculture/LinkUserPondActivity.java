@@ -121,7 +121,7 @@ public class LinkUserPondActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         getUser.edit().clear().apply();
-        finish();
+        super.onBackPressed();
     }
 
     private void confirmDialog(){
@@ -130,11 +130,11 @@ public class LinkUserPondActivity extends AppCompatActivity {
         TextView userInfoDetail = view.findViewById(R.id.txtViewUserInfo);
         TextView pondInfoDetail = view.findViewById(R.id.txtViewPondInfo);
 
-        String userInfo = getUser.getString("userID", "") + ": "
+        String userInfo = getUser.getString("userID", "") + ":\n"
                 + getUser.getString("firstName", "") + " "
                 + getUser.getString("lastName", "");
 
-        String pondInfo = getPond.getString("piID", "") + ": "
+        String pondInfo = getPond.getString("piID", "") + ":\n"
                 + getPond.getString("pondName", "") + " at "
                 + getPond.getString("location","");
 

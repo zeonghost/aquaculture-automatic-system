@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aquaculture.Model.PartnerLocationLog;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -62,6 +63,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     private TextView txtLocation;
     private TextView txtTimeIn;
     private TextView txtTimeOut;
+    private Button backToPond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         txtLocation = findViewById(R.id.txtViewLocationName);
         txtTimeIn = findViewById(R.id.txtViewTimeIn);
         txtTimeOut = findViewById(R.id.txtViewTimeOut);
+        backToPond = findViewById(R.id.btnBackToPond);
 
         //NOTES: PERMISSIONS MUST BE REQUESTED PRIOR CALLING GOOGLE MAPS SERVICES, OTHERWISE SOME FUNCTION CALLS WILL CRASH THE APP.
         checkGPSServices();
@@ -119,9 +122,11 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         if(TIME_IN_STATUS == 1){
             timeOut.setEnabled(true);
             timeIn.setEnabled(false);
+            backToPond.setEnabled(true);
         } else {
             timeOut.setEnabled(false);
             timeIn.setEnabled(true);
+            backToPond.setEnabled(false);
         }
 
         txtName.setText("Name: " + sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
@@ -175,6 +180,24 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                 startActivity(toHomeActivity);
             }
         });
+
+        backToPond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toPondInfoActivity = new Intent (PartnerLogActivity.this, PondInfoActivity.class);
+                startActivity(toPondInfoActivity);
+            }
+        });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if(TIME_IN_STATUS == 1){
+            Toast.makeText(PartnerLogActivity.this,"You need to time out before you can exit this page or transfer to another pond.", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void checkGPSServices() {
