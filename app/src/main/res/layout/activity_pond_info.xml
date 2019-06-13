@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/plain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PondInfoActivity"
@@ -19,12 +20,12 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView2"
-                android:layout_margin="5dp"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                app:cardBackgroundColor="#00BCD4"
+                android:layout_margin="5dp"
+                android:padding="10dp"
+                app:cardBackgroundColor="#128C7E"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 
@@ -100,23 +101,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="@android:color/holo_green_dark"
-                        android:text="@string/ch1" />
+                        android:background="#0F7D63"
+                        android:text="@string/ch1"
+                        android:textColor="#FFFFFF" />
 
                     <Button
                         android:id="@+id/ch2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
-                        android:background="@android:color/holo_green_dark"
-                        android:text="@string/ch2" />
+                        android:background="#0F7D63"
+                        android:text="@string/ch2"
+                        android:textColor="#FFFFFF" />
 
                     <Button
                         android:id="@+id/ch3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/holo_green_dark"
-                        android:text="@string/ch3" />
+                        android:background="#0F7D63"
+                        android:text="@string/ch3"
+                        android:textColor="#FFFFFF" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -165,6 +169,7 @@
                 app:cardElevation="5dp">
 
                 <com.github.mikephil.charting.charts.LineChart
+
                     android:id="@+id/lineChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -179,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_gravity="center_horizontal"
-                app:cardBackgroundColor="#00BCD4"
+                app:cardBackgroundColor="#128C7E"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 

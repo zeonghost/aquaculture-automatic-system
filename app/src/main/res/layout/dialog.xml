@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/plain"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -13,8 +14,9 @@
 
     <EditText
         android:id="@+id/editTextNum1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_width="354dp"
+        android:layout_height="wrap_content"
+        android:textColorLink="#0F7D63">
 
         <requestFocus />
     </EditText>
@@ -27,25 +29,27 @@
 
     <EditText
         android:id="@+id/editTextNum2"
-        android:layout_width="match_parent"
+        android:layout_width="354dp"
         android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Channel 2 Turn On Time (minutes):"/>
+
     <EditText
         android:id="@+id/editTextCh2TurnOnTime"
-        android:layout_width="match_parent"
+        android:layout_width="354dp"
         android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Channel 2 Turn Off Time (minutes):"/>
+
     <EditText
         android:id="@+id/editTextCh2TurnOffTime"
-        android:layout_width="match_parent"
+        android:layout_width="354dp"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
