@@ -22,7 +22,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".PartnerLogActivity">
         </activity>
-        <activity android:name=".LinkUserPondActivity" />
         <activity android:name=".SearchUserActivity" />
         <activity android:name=".PartnerAdminActivity" />
         <activity android:name=".LogViewActivity" />

@@ -53,7 +53,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_home);
-        //setTitle("Home");
         getSupportActionBar().hide();
         addPondButton();
         buttonNavigationSettings();

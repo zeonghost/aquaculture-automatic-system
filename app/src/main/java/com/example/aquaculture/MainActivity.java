@@ -5,9 +5,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,9 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private String a;//uid get from username
     private String b;//uid get from password
     private CheckBox al;//auto login
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
     //public  boolean unCheck = false;
 
     //private String rem_pass;
@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         login = (Button)findViewById(R.id.loginBtn);
         sign = (Button)findViewById(R.id.sinbtr);
         fgt = (Button)findViewById(R.id.fgt_pass);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("/user");
 
         al=(CheckBox)findViewById(R.id.cd_al);
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -108,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                checkUserNameThenLogin();
+                //login();
             }
         });
 
@@ -136,9 +139,6 @@ public class MainActivity extends AppCompatActivity {
         waitingDialog.setIndeterminate(true);
         waitingDialog.setCancelable(true);
         waitingDialog.show();
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("/user");
         myRef.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                                     myRef.child(a).updateChildren(pushT);
                                 }
                             });
-
+                    waitingDialog.dismiss();
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setClass(MainActivity.this, HomeActivity.class);
@@ -217,4 +217,21 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    private void checkUserNameThenLogin(){
+        myRef.orderByChild("username").equalTo(name.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    Toast.makeText(MainActivity.this, "User does not exist!", Toast.LENGTH_SHORT).show();
+                } else {
+                    login();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
