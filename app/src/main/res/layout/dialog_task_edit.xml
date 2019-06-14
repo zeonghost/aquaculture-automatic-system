@@ -18,9 +18,7 @@
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:textColorHighlight="#3DB9AE"
-        android:textColorLink="#009688"
-        android:textCursorDrawable="#009688">
+        android:textColorHighlight="#3DB9AE">
 
         <requestFocus />
     </EditText>
