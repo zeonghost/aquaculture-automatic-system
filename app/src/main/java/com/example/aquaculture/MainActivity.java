@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         FirebaseApp.initializeApp(this);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
                 if(Objects.equals(b, pass.getText().toString())){
-                    showWaitingDialog();
+//                    showWaitingDialog();
                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
                             .putString("username", name.getText().toString())
@@ -205,6 +205,6 @@ public class MainActivity extends AppCompatActivity {
         waitingDialog.setMessage("Connecting...");
         waitingDialog.setIndeterminate(true);
         waitingDialog.setCancelable(false);
-        waitingDialog.show();
+//        waitingDialog.show();
     }
 }
