@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         //setTitle("Register");
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         name = (EditText)findViewById(R.id.un);
         pass = (EditText)findViewById(R.id.pass);
         fname = (EditText)findViewById(R.id.Fname);
