@@ -68,7 +68,7 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         //setTitle("Task");
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         buttonNavigationSettings();
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         sp1 = getSharedPreferences("temp", Context.MODE_PRIVATE);

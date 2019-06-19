@@ -50,7 +50,7 @@ public class LinkUserPondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_link_user_pond);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         linkToPond = findViewById(R.id.linkUserPondRecyclerView);
         linkToPond.setHasFixedSize(true);

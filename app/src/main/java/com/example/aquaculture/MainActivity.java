@@ -1,13 +1,10 @@
 package com.example.aquaculture;
 
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private String a;//uid get from username
     private String b;//uid get from password
     private CheckBox al;//auto login
-    //public  boolean unCheck = false;
 
     //private String rem_pass;
     private String auto_log;
@@ -59,16 +55,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         FirebaseApp.initializeApp(this);
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        // Log and toast
+                        //String msg = getString(R.string.msg_token_fmt, token);
+                        //Log.d(TAG, msg);
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         name = (EditText)findViewById(R.id.nameInput);
         pass = (EditText)findViewById(R.id.passInput);
         login = (Button)findViewById(R.id.loginBtn);
         sign = (Button)findViewById(R.id.sinbtr);
         fgt = (Button)findViewById(R.id.fgt_pass);
+        //rp=(CheckBox)findViewById(R.id.cb_rp);
+        al=(CheckBox)findViewById(R.id.cd_al);
+        //basicReadWrite();
+        sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
         al=(CheckBox)findViewById(R.id.cd_al);
+        //basicReadWrite();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         al.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -97,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             login();
         }
 
+
         if(Objects.equals(sp.getString("auto_log1", null), "Y")){//if Y, then auto fill up username and password
             name.setText(sp.getString("username", null));
             pass.setText(sp.getString("password", null));
@@ -104,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             al.setChecked(true);
             login();
         }
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
-                //unCheck = true;
                 if(Objects.equals(b, pass.getText().toString())){
                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
@@ -154,32 +172,15 @@ public class MainActivity extends AppCompatActivity {
                             .putString("firstname", dataSnapshot.child("fname").getValue(String.class))
                             .putString("lastname", dataSnapshot.child("lname").getValue(String.class))
                             .apply();
+                    Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
                     //save password and auto login status
                     //jump to HomeActivity page
-
-                    FirebaseInstanceId.getInstance().getInstanceId()
-                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    if (!task.isSuccessful()) {
-                                        Log.w(TAG, "getInstanceId failed", task.getException());
-                                        return;
-                                    }
-                                    // Get new Instance ID token
-                                    String token = task.getResult().getToken();
-                                    Map<String, Object> pushT = new HashMap<>();
-                                    pushT.put("pushToken", token);
-                                    myRef.child(a).updateChildren(pushT);
-                                }
-                            });
-
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setClass(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    waitingDialog.dismiss();
                     Toast.makeText(MainActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -198,16 +199,9 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+
             }
         });
-
-        //if(!unCheck){
-         //   waitingDialog.dismiss();
-           // Toast.makeText(MainActivity.this, "Wrong Username", Toast.LENGTH_SHORT).show();
-            //return;
-        //}
-
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -216,5 +210,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
 }

@@ -51,7 +51,7 @@ public class PartnerAdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partner_admin);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         linkUser = findViewById(R.id.btnLinkUser);
         recyclerPartner = findViewById(R.id.partnerRecyclerView);
         recyclerPartner.setHasFixedSize(true);

@@ -67,7 +67,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partner_log);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("PartnerLog");
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/plain"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -8,12 +9,17 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="50dp"
         android:text="Date:" />
 
     <EditText
         android:id="@+id/editTextDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:textColorHighlight="#3DB9AE">
+
         <requestFocus />
     </EditText>
 
@@ -21,26 +27,31 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
         android:text="Time: " />
 
     <EditText
         android:id="@+id/editTextTime"
-        android:layout_width="match_parent"
+        android:layout_width="330dp"
+        android:layout_marginStart="40dp"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
         android:text="Receiver: " />
 
     <EditText
         android:id="@+id/editTextReceiver"
-        android:layout_width="match_parent"
+        android:layout_marginStart="40dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/textView4"
+        android:layout_marginStart="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Status: " />
@@ -48,6 +59,7 @@
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
+        android:layout_marginStart="40dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <RadioButton
@@ -67,13 +79,15 @@
 
     <TextView
         android:id="@+id/textView5"
+        android:layout_marginStart="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Task: " />
 
     <EditText
         android:id="@+id/editTextTask"
-        android:layout_width="match_parent"
+        android:layout_marginStart="40dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +7,7 @@
     android:layout_margin="10dp"
     android:elevation="10dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="#03A9F4"
+    app:cardBackgroundColor="#66128C7E"
     app:cardCornerRadius="15dp"
     tools:layout_editor_absoluteX="20dp">
 
@@ -62,27 +61,33 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="85dp"
+            android:layout_height="35dp"
             android:layout_gravity="right|top"
-            android:layout_marginTop="-125dp"
-            android:text="Edit" />
+            android:layout_marginTop="-120dp"
+            android:background="#075E54"
+            android:text="Edit"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="85dp"
+            android:layout_height="32dp"
             android:layout_gravity="right|center"
-            android:layout_marginTop="0dp"
-            android:text="Delete" />
+            android:layout_marginTop="5dp"
+            android:background="#075E54"
+            android:text="Delete"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="85dp"
+            android:layout_height="32dp"
             android:layout_gravity="right|end"
-            android:layout_marginTop="0dp"
-            android:text="Done" />
+            android:layout_marginTop="5dp"
+            android:background="#075E54"
+            android:text="Done"
+            android:textColor="#F7FFFFFF" />
 
     </LinearLayout>
 
