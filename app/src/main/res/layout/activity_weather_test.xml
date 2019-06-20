@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WeatherActivityTest">
+
+    <EditText
+        android:id="@+id/editTxtCityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
+    <Button
+        android:id="@+id/btnGetWeatherInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:layout_toRightOf="@id/editTxtCityName"/>
+
+    <TextView
+        android:id="@+id/txtViewTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TEMP"
+        android:textSize="20sp"
+        android:layout_below="@id/editTxtCityName"/>
+
+    <TextView
+        android:id="@+id/txtViewTempMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TEMP_MIN"
+        android:textSize="20sp"
+        android:layout_below="@id/txtViewTemp"
+        />
+
+    <TextView
+        android:id="@+id/txtViewTempMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TEMP_MAX"
+        android:textSize="20sp"
+        android:layout_below="@id/txtViewTempMin"
+        />
+
+</RelativeLayout>
