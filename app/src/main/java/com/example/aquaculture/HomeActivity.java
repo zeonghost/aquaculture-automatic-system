@@ -77,13 +77,13 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Pond, PondViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull PondViewHolder holder, int position, @NonNull Pond model) {
-                final String piID = "Pi ID: " + model.getPiId();
-                final String pondName = "Pond: " + model.getPondName();
-                final String location = "Location: " + model.getLocation();
+                final String piID = model.getPiId();
+                final String pondName = model.getPondName();
+                final String location = model.getLocation();
 
-                holder.piId.setText(piID);
-                holder.pondName.setText(pondName);
-                holder.location.setText(location);
+                holder.piId.setText("Pi ID: " + piID);
+                holder.pondName.setText("Pond: " + pondName);
+                holder.location.setText("Location: " + location);
 
                 transferData = piID;
                 Log.d(TAG, "Result-2: "+ transferData);

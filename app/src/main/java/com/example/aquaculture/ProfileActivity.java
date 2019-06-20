@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private Button partnerPage;
     private SharedPreferences sp;
 
     @Override
@@ -46,6 +45,24 @@ public class ProfileActivity extends AppCompatActivity {
                 //MainActivity.sp.edit().clear().apply();
                 Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(intent4);
+            }
+        });
+
+        Button btr3 = findViewById(R.id.btr3);
+        btr3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, ForecastActivityTest.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btr4 = findViewById(R.id.btr4);
+        btr4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, WeatherActivityTest.class);
+                startActivity(intent);
             }
         });
     }
