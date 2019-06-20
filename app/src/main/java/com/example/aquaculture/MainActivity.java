@@ -1,7 +1,6 @@
 package com.example.aquaculture;
 
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -59,8 +58,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         FirebaseApp.initializeApp(this);
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        // Log and toast
+                        //String msg = getString(R.string.msg_token_fmt, token);
+                        //Log.d(TAG, msg);
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         name = (EditText)findViewById(R.id.nameInput);
         pass = (EditText)findViewById(R.id.passInput);
@@ -69,8 +84,13 @@ public class MainActivity extends AppCompatActivity {
         fgt = (Button)findViewById(R.id.fgt_pass);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("/user");
+        //rp=(CheckBox)findViewById(R.id.cb_rp);
+        al=(CheckBox)findViewById(R.id.cd_al);
+        //basicReadWrite();
+        sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
         al=(CheckBox)findViewById(R.id.cd_al);
+        //basicReadWrite();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         al.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -99,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             login();
         }
 
+
         if(Objects.equals(sp.getString("auto_log1", null), "Y")){//if Y, then auto fill up username and password
             name.setText(sp.getString("username", null));
             pass.setText(sp.getString("password", null));
@@ -106,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             al.setChecked(true);
             login();
         }
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
-                //unCheck = true;
                 if(Objects.equals(b, pass.getText().toString())){
                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
@@ -154,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                             .putString("firstname", dataSnapshot.child("fname").getValue(String.class))
                             .putString("lastname", dataSnapshot.child("lname").getValue(String.class))
                             .apply();
+                    Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
                     //save password and auto login status
                     //jump to HomeActivity page
 
@@ -179,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
-                    waitingDialog.dismiss();
                     Toast.makeText(MainActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -198,16 +219,9 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+
             }
         });
-
-        //if(!unCheck){
-         //   waitingDialog.dismiss();
-           // Toast.makeText(MainActivity.this, "Wrong Username", Toast.LENGTH_SHORT).show();
-            //return;
-        //}
-
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -216,7 +230,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
     private void checkUserNameThenLogin(){
         myRef.orderByChild("username").equalTo(name.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
