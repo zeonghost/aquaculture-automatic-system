@@ -22,7 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         //setTitle("Profile");
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         buttonNavigationSettings();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         TextView un = (TextView) findViewById(R.id.username);

@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/plain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddPondActivity">
@@ -22,25 +23,31 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Device ID: " />
+                android:layout_marginStart="90dp"
+                android:layout_marginTop="40dp"
+                android:text="Device ID: "
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/piId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="80dp"
-                android:layout_marginTop="-19dp"
-                android:text="TextView" />
+                android:layout_marginStart="180dp"
+                android:layout_marginTop="-24.5dp"
+                android:text="TextView"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/pond"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:hint="Pond ID"
+                android:inputType="textPersonName"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/locat"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -48,22 +55,22 @@
 
             <EditText
                 android:id="@+id/locat"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
-                android:inputType="textPersonName"
                 android:hint="Location"
+                android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pond" />
 
             <EditText
                 android:id="@+id/ch1n"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:ems="10"
@@ -77,9 +84,9 @@
 
             <EditText
                 android:id="@+id/ch2n"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -91,9 +98,9 @@
 
             <EditText
                 android:id="@+id/ch3n"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -105,9 +112,9 @@
 
             <EditText
                 android:id="@+id/spec"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -119,9 +126,9 @@
 
             <EditText
                 android:id="@+id/width"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -133,9 +140,9 @@
 
             <EditText
                 android:id="@+id/length"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -147,9 +154,9 @@
 
             <EditText
                 android:id="@+id/depth"
-                android:layout_width="wrap_content"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -160,9 +167,13 @@
 
             <Button
                 android:id="@+id/btr"
-                android:layout_width="match_parent"
+                android:layout_width="225dp"
                 android:layout_height="wrap_content"
-                android:text="Add" />
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="#0F7D63"
+                android:text="Add"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>
 

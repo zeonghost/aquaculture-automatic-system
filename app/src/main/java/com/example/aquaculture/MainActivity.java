@@ -1,10 +1,13 @@
 package com.example.aquaculture;
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +32,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
         al=(CheckBox)findViewById(R.id.cd_al);
-        //basicReadWrite();
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
         al.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -119,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
             login();
         }
 
-
         if(Objects.equals(sp.getString("auto_log1", null), "Y")){//if Y, then auto fill up username and password
             name.setText(sp.getString("username", null));
             pass.setText(sp.getString("password", null));
@@ -127,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             al.setChecked(true);
             login();
         }
-
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,22 +179,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
                     //save password and auto login status
                     //jump to HomeActivity page
-
-                    FirebaseInstanceId.getInstance().getInstanceId()
-                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                    if (!task.isSuccessful()) {
-                                        Log.w(TAG, "getInstanceId failed", task.getException());
-                                        return;
-                                    }
-                                    // Get new Instance ID token
-                                    String token = task.getResult().getToken();
-                                    Map<String, Object> pushT = new HashMap<>();
-                                    pushT.put("pushToken", token);
-                                    myRef.child(a).updateChildren(pushT);
-                                }
-                            });
                     waitingDialog.dismiss();
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -201,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else {
+                    waitingDialog.dismiss();
                     Toast.makeText(MainActivity.this, "Wrong Password", Toast.LENGTH_SHORT).show();
                     return;
                 }

@@ -82,7 +82,7 @@ public class PondInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_pond_info);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         piID = findViewById(R.id.txtViewPiID);
         pondName = findViewById(R.id.txtViewPondName);
