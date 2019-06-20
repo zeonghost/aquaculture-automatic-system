@@ -77,13 +77,13 @@ public class HomeActivity extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Pond, PondViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull PondViewHolder holder, int position, @NonNull Pond model) {
-                final String piID = model.getPiId();
-                final String pondName = model.getPondName();
-                final String location = model.getLocation();
+                final String piID = "Pi ID: " + model.getPiId();
+                final String pondName = "Pond: " + model.getPondName();
+                final String location = "Location: " + model.getLocation();
 
-                holder.piId.setText("Pi ID: " + piID);
-                holder.pondName.setText("Pond: " + pondName);
-                holder.location.setText("Location: " + location);
+                holder.piId.setText(piID);
+                holder.pondName.setText(pondName);
+                holder.location.setText(location);
 
                 transferData = piID;
                 Log.d(TAG, "Result-2: "+ transferData);
@@ -111,8 +111,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public PondViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.activity_home_cardview, viewGroup, false);
-                PondViewHolder holder = new PondViewHolder(view);
-                return holder;
+                return new PondViewHolder(view);
             }
         };
         pondInfo.setAdapter(adapter);
@@ -180,7 +179,7 @@ public class HomeActivity extends AppCompatActivity {
     }//get result of qr scanner
 
     private void buttonNavigationSettings(){
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
