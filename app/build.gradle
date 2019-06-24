@@ -61,5 +61,7 @@ dependencies {
 
     // GOOGLE LOCATIONS AND ACTIVITY RECOGNITION
     implementation 'com.google.android.gms:play-services-location:16.0.0'
+    //for status bar
+    implementation 'com.githang:status-bar-compat:0.7'
 
 }
