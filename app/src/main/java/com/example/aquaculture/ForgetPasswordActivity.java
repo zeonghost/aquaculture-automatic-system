@@ -133,9 +133,3 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
     }
 }
-
-/*
-
-
-
- */

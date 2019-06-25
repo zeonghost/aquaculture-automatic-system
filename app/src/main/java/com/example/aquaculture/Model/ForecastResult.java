@@ -26,6 +26,7 @@ public class ForecastResult {
     private float time21;
     private float time22;
     private float time23;
+    private long dateUpdated;
 
     public ForecastResult() {
     }

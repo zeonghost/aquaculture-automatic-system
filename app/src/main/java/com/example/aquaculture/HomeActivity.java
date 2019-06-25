@@ -95,6 +95,7 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "Result-2: "+ transferData);
                         //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
+                            checkInOutDialog();
                             sp.edit().putString("device", piID).apply();
                             sp.edit().putString("location", location).apply();
                             Intent toPartnerLogActivity = new Intent(HomeActivity.this, PartnerLogActivity.class);

@@ -212,7 +212,7 @@ public class PondInfoActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference logPath = database.getReference(path4);
 
-        logPath.orderByChild("logTime").limitToLast(4).addListenerForSingleValueEvent(new ValueEventListener() {
+        logPath.orderByChild("logTime").limitToLast(4).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int i = 0;
@@ -356,7 +356,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
-                final String un = u1 + " "+ u2;
+                final String un = u2 + " "+ u1;
 
                 //get current temperature data from database and display
                 final Integer val4 = dataSnapshot.child("auto").getValue(Integer.class);
@@ -602,7 +602,7 @@ public class PondInfoActivity extends AppCompatActivity {
         ad1.setIcon(android.R.drawable.ic_dialog_info);
         ad1.setView(textEntryView);
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 top.setText(dataSnapshot.child("high").getValue().toString());
