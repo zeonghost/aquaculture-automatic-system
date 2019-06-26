@@ -43,6 +43,8 @@ public class AddPondActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference addPondRef;
     private DatabaseReference linkPondRef;
+    private String username;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +70,18 @@ public class AddPondActivity extends AppCompatActivity {
         addPondRef = database.getReference();
         linkPondRef = database.getReference("/PondDetail");
 
+        sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
+
         linkPondRef.orderByChild("piId").equalTo(piId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                showDialog();
+                Log.d(TAG, "linkPondRef DataSnap: " + dataSnapshot.child(username).getValue());
+                if(dataSnapshot.child(username).getValue() == null){
+                    showDialog();
+                } else {
+                    showDialogAlreadyLinked();
+                }
             }
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -129,10 +139,9 @@ public class AddPondActivity extends AppCompatActivity {
     }
 
     private void showDialog(){
-        final SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         AlertDialog.Builder normalDialog = new AlertDialog.Builder(AddPondActivity.this);
         normalDialog.setCancelable(false);
-        normalDialog.setTitle("Warning").setMessage("Pond exist");
+        normalDialog.setTitle("Good News,").setMessage("Pond exists!");
         normalDialog.setPositiveButton("Back to Home page",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -149,6 +158,21 @@ public class AddPondActivity extends AppCompatActivity {
                         String username = sp.getString("username", "");
                         String role = sp.getString("role", "");
                         linkPondRef.child(piId).child(username).setValue(role);
+                        Intent intent = new Intent(AddPondActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
+                });
+        normalDialog.show().setCanceledOnTouchOutside(false);
+    }
+
+    private void showDialogAlreadyLinked(){
+        AlertDialog.Builder normalDialog = new AlertDialog.Builder(AddPondActivity.this);
+        normalDialog.setCancelable(false);
+        normalDialog.setTitle("Oops!").setMessage("This account is already linked to this hardware.");
+        normalDialog.setPositiveButton("Back to Home page",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(AddPondActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }

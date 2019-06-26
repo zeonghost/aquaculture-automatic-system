@@ -9,11 +9,11 @@
 
     <EditText
         android:id="@+id/nameInput"
-        android:layout_width="0dp"
+        android:layout_width="270dp"
         android:layout_height="0dp"
-        android:layout_marginStart="74dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="274dp"
-        android:layout_marginEnd="74dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="13dp"
         android:background="#F1F1F1"
         android:backgroundTint="#90FFFFFF"
@@ -31,8 +31,10 @@
 
     <EditText
         android:id="@+id/passInput"
-        android:layout_width="0dp"
+        android:layout_width="270dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="13dp"
         android:background="#F1F1F1"
         android:backgroundTint="#90FFFFFF"
@@ -44,12 +46,12 @@
         android:textColorHint="#3E000000"
         android:textColorLink="#0C3F6B"
         app:layout_constraintBottom_toTopOf="@+id/cd_al"
-        app:layout_constraintEnd_toEndOf="@+id/loginBtn"
-        app:layout_constraintStart_toStartOf="@+id/cd_al"
-        app:layout_constraintTop_toBottomOf="@+id/nameInput"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent
-"/>
+"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameInput" />
 
     <Button
         android:id="@+id/loginBtn"

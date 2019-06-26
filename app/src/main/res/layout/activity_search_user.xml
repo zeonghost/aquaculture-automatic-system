@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchUserActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search user"
+        android:textSize="50sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <EditText
+        android:id="@+id/editTxtUserSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter username"/>
+
+    <Button
+        android:id="@+id/btnSearchUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="search"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/userRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

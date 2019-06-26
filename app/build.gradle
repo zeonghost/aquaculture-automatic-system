@@ -56,4 +56,10 @@ dependencies {
     // FOR GRAPH//
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 
+    // GOOGLE MAPS
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
+    // GOOGLE LOCATIONS AND ACTIVITY RECOGNITION
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+
 }

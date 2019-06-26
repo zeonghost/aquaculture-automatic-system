@@ -9,9 +9,9 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp"
         app:itemBackground="@color/colorPrimary"
         app:itemHorizontalTranslationEnabled="true"
         app:itemIconTint="@color/colorPrimaryDark"
@@ -19,56 +19,43 @@
         app:labelVisibilityMode="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/menu_bottom_navigation_items" />
 
     <TextView
         android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="13dp"
-        android:layout_marginStart="175dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="177dp"
-        android:layout_marginBottom="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/btr1"
+        android:layout_width="432dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/box"
+        android:gravity="center"
+        android:text="Username"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
         android:id="@+id/btr1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginBottom="8dp"
-        android:text="TempSet"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomNavigationView"
+        android:layout_marginTop="104dp"
+        android:text="Partners Page for ADMIN"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.55"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.169" />
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <Button
         android:id="@+id/btr2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginBottom="327dp"
+        android:layout_marginBottom="56dp"
         android:text="EXIT"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btr1" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

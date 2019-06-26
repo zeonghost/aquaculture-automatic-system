@@ -1,31 +1,20 @@
 package com.example.aquaculture;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private Button partnerPage;
     private SharedPreferences sp;
 
     @Override
@@ -42,7 +31,8 @@ public class ProfileActivity extends AppCompatActivity {
         btr1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddDialog();
+                Intent intent = new Intent(ProfileActivity.this, PartnerAdminActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -58,35 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent4);
             }
         });
-
     }
-
-    protected void showAddDialog() {
-
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View textEntryView = factory.inflate(R.layout.dialog, null);
-        final EditText top = (EditText) textEntryView.findViewById(R.id.editTextNum1);
-        final EditText bottom = (EditText)textEntryView.findViewById(R.id.editTextNum2);
-        AlertDialog.Builder ad1 = new AlertDialog.Builder(ProfileActivity.this);
-        ad1.setTitle("Update Critical level:");
-        ad1.setIcon(android.R.drawable.ic_dialog_info);
-        ad1.setView(textEntryView);
-        ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int i) {
-                int topnum = Integer.parseInt(top.getText().toString());
-                int botnum = Integer.parseInt(bottom.getText().toString());
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("pi1-pond1");
-                Map<String, Object> passUpdate = new HashMap<>();
-                passUpdate.put("high", topnum);
-                passUpdate.put("low", botnum);
-                myRef.updateChildren(passUpdate);
-            }
-        });
-        ad1.show();
-    }
-
 
     private void buttonNavigationSettings() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);

@@ -7,7 +7,7 @@
     android:layout_margin="10dp"
     android:elevation="10dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="#66128C7E"
+    app:cardBackgroundColor="#7CFFFFFF"
     app:cardCornerRadius="15dp"
     tools:layout_editor_absoluteX="20dp">
 

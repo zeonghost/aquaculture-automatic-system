@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -34,10 +35,12 @@ import com.example.aquaculture.Model.Task;
 import com.example.aquaculture.ViewHolder.TaskViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
@@ -45,8 +48,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.example.aquaculture.HomeActivity.transferData;
 
 public class TaskActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
@@ -58,7 +59,9 @@ public class TaskActivity extends AppCompatActivity {
     private FirebaseRecyclerAdapter<Task, TaskViewHolder> adapter;
     private String status;
     private SharedPreferences sp;
+    public SharedPreferences sp1;
     public static String transId;
+    public String pushToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +71,26 @@ public class TaskActivity extends AppCompatActivity {
         //getSupportActionBar().hide();
         buttonNavigationSettings();
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+        sp1 = getSharedPreferences("temp", Context.MODE_PRIVATE);
         taskInfo = findViewById(R.id.recyclerview);
         taskInfo.setHasFixedSize(true);
         taskInfo.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
+        Query query = myRef;
 
         myRef = database.getReference("/task");
-        //Query query = myRef.orderByKey().equalTo("pi1");
+        String role = sp.getString("role", null);
+        String un = sp.getString("username", null);
+        if(Objects.equals(role, "Admin"))
+        {
+            query = myRef.orderByChild("uploader").equalTo(un);
+        }
+        else
+        {
+            query = myRef.orderByChild("receiver").equalTo(un);
+        }
 
         options = new FirebaseRecyclerOptions.Builder<Task>()
-                .setQuery(myRef, Task.class)   //mRef in this parameter can be changed into a more specific query like in LINE 50.
+                .setQuery(query, Task.class)   //mRef in this parameter can be changed into a more specific query like in LINE 50.
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<Task, TaskViewHolder>(options) {
@@ -112,19 +126,13 @@ public class TaskActivity extends AppCompatActivity {
                         showDeleteDialog();
                     }
                 });
-
-                /*
-
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                holder.done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        transferData = piID;
-                        Log.d(TAG, "Result-2: "+ transferData);
-                        //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
-                        Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
-                        startActivity(toPondInfoActivity);
+                        transId = taskId;
+                        showDoneDialog();
                     }
-                });*/
+                });
             }
 
             @NonNull
@@ -207,11 +215,43 @@ public class TaskActivity extends AppCompatActivity {
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 myRef1 = database.getReference("/task");
+                DatabaseReference tokRef = database.getReference("/user");
+                tokRef.orderByChild("username").equalTo(receiver.getText().toString()).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        pushToken = dataSnapshot.child("pushToken").getValue().toString();
+                        sp1.edit()
+                                .putString("pushToken", pushToken)
+                                .apply();
+                        Log.d(TAG, "Push Token111: "+ pushToken);
+                    }
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 String un = sp.getString("username", null);
+                String token = sp1.getString("pushToken", null);
                 //DatabaseReference hopperRef = myRef1.child(transId);
-                Task newUser = new Task(date.getText().toString(), receiver.getText().toString(), status, task.getText().toString(), time.getText().toString(), un);
                 String key = myRef1.push().getKey();
+                Task newUser = new Task(date.getText().toString(), receiver.getText().toString(), status, task.getText().toString(), time.getText().toString(), un);
                 myRef1.child(key).setValue(newUser);
+                Map<String, Object> pushT = new HashMap<>();
+                pushT.put("receiveToken", token);
+                Log.d(TAG, "Push Token: "+ token);
+                myRef1.child(key).updateChildren(pushT);
                 Toast.makeText(TaskActivity.this, "Add Success", Toast.LENGTH_SHORT).show();
             }
         });
@@ -287,7 +327,6 @@ public class TaskActivity extends AppCompatActivity {
         ad1.show();
     }
 
-
     private void showDeleteDialog(){
         AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(TaskActivity.this);
@@ -299,6 +338,24 @@ public class TaskActivity extends AppCompatActivity {
                         myRef1 = database.getReference("/task");
                         myRef1.child(transId).removeValue();
                         Toast.makeText(TaskActivity.this, "Delete Success", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        normalDialog.show();
+    }
+
+    private void showDoneDialog(){
+        AlertDialog.Builder normalDialog =
+                new AlertDialog.Builder(TaskActivity.this);
+        normalDialog.setTitle("Warning").setMessage("You sure you want to set this task to Done?");
+        normalDialog.setPositiveButton("Done",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        myRef1 = database.getReference("/task");
+                        Map<String, Object> upStatus = new HashMap<>();
+                        upStatus.put("status", "Done");
+                        myRef1.child(transId).updateChildren(upStatus);
+                        Toast.makeText(TaskActivity.this, "Done!", Toast.LENGTH_SHORT).show();
                     }
                 });
         normalDialog.show();

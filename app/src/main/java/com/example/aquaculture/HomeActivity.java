@@ -1,6 +1,8 @@
 package com.example.aquaculture;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -33,6 +35,7 @@ import com.google.firebase.FirebaseApp;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
@@ -42,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseRecyclerOptions<Pond> options;
     private FirebaseRecyclerAdapter<Pond, PondViewHolder> adapter;
     private FloatingActionButton addPond;
+    private SharedPreferences sp;
     public static String transferData;
     public static String qrResult;
     @Override
@@ -49,18 +53,14 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_home);
-        //setTitle("Home");
-        //getSupportActionBar().hide();
         addPondButton();
         buttonNavigationSettings();
-
-
 
         pondInfo = findViewById(R.id.recyclerview);
         pondInfo.setHasFixedSize(true);
         pondInfo.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
 
-        SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+        sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         String username = sp.getString("username", "");
         String role = sp.getString("role", "");
 
@@ -76,8 +76,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull PondViewHolder holder, int position, @NonNull Pond model) {
                 final String piID = model.getPiId();
-                String pondName = model.getPondName();
-                String location = model.getLocation();
+                final String pondName = model.getPondName();
+                final String location = model.getLocation();
 
                 holder.piId.setText("Pi ID: " + piID);
                 holder.pondName.setText("Pond: " + pondName);
@@ -92,8 +92,15 @@ public class HomeActivity extends AppCompatActivity {
                         transferData = piID;
                         Log.d(TAG, "Result-2: "+ transferData);
                         //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
-                        Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
-                        startActivity(toPondInfoActivity);
+                        if(Objects.equals(sp.getString("role", ""), "Partner")){
+                            sp.edit().putString("device", piID).apply();
+                            sp.edit().putString("location", location).apply();
+                            Intent toPartnerLogActivity = new Intent(HomeActivity.this, PartnerLogActivity.class);
+                            startActivity(toPartnerLogActivity);
+                        } else {
+                            Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
+                            startActivity(toPondInfoActivity);
+                        }
                     }
                 });
             }
@@ -193,5 +200,18 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });//bottom navigation
+    }
+
+    private void checkInOutDialog(){
+        AlertDialog.Builder checkInOut = new AlertDialog.Builder (HomeActivity.this);
+        checkInOut.setMessage("Do you want to clock in?");
+        checkInOut.setPositiveButton("Clock In", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
+                startActivity(toPondInfoActivity);
+            }
+        });
+        checkInOut.show();
     }
 }
