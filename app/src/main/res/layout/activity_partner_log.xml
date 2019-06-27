@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:elevation="10dp"
         android:orientation="vertical"
-        app:cardBackgroundColor="#03A9F4"
+        app:cardBackgroundColor="#9FD5B5"
         app:cardCornerRadius="10dp"
         tools:layout_editor_absoluteX="20dp"
         android:layout_alignParentTop="true"
@@ -41,13 +41,16 @@
         android:id="@+id/cardviewHolder2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:elevation="10dp"
         android:orientation="vertical"
-        app:cardBackgroundColor="#03A9F4"
+        app:cardBackgroundColor="#9FD5B5"
         app:cardCornerRadius="10dp"
-        tools:layout_editor_absoluteX="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp">
+        tools:layout_editor_absoluteX="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,49 +60,54 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/txtViewTimeIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="--- --, ---- --:-- AM/PM"
                     android:layout_weight="1"
+                    android:text="--- --, ---- --:-- AM/PM"
                     android:textAlignment="center"
-                    android:textSize="30sp"/>
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/txtViewTimeOut"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="--- --, ---- --:-- AM/PM"
                     android:layout_weight="1"
+                    android:text="--- --, ---- --:-- AM/PM"
                     android:textAlignment="center"
-                    android:textSize="30sp"/>
+                    android:textSize="25sp" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btnTimeIn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Time In"
+                    android:layout_height="37dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"/>
+                    android:background="#0F7D63"
+                    android:text="Time In"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF" />
 
                 <Button
                     android:id="@+id/btnTimeOut"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Time Out"
+                    android:layout_height="37dp"
                     android:layout_weight="1"
-                    android:textAlignment="center"/>
+                    android:background="#0F7D63"
+                    android:text="Time Out"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 
@@ -107,26 +115,33 @@
                 android:id="@+id/txtViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
                 android:text="Name"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/txtViewDeviceName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
                 android:text="Device"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/txtViewLocationName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
                 android:text="Location"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/btnBackToPond"
-                android:layout_width="match_parent"
+                android:layout_width="139dp"
                 android:layout_height="wrap_content"
-                android:text="Back to Pond ->"/>
+                android:layout_marginLeft="20dp"
+                android:text="Back"
+                android:textColor="#0F7D63" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

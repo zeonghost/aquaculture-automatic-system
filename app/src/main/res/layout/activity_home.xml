@@ -49,9 +49,4 @@
         app:layout_constraintVertical_bias="1.0"
         app:menu="@menu/menu_bottom_navigation_items" />
 
-
-
-
-
-
 </android.support.constraint.ConstraintLayout>

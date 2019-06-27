@@ -87,6 +87,7 @@ public class PondInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pond_info);
         StatusBarCompat.setStatusBarColor(this, Color.parseColor("#148D7F"));
 
+
         piID = findViewById(R.id.txtViewPiID);
         pondName = findViewById(R.id.txtViewPondName);
         location = findViewById(R.id.txtViewPondLocation);

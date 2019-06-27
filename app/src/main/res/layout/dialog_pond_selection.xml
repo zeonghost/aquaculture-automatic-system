@@ -4,14 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#B2EBF2">
+    android:background="@drawable/blurr">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:text="Assign to Pond:"
-        android:textSize="20sp"
-        />
+        android:background="@drawable/bg_text"
+        android:paddingTop="15dp"
+        android:textSize="30sp"
+        android:textColor="#075E54"
+        android:paddingBottom="10dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerPondSelection"

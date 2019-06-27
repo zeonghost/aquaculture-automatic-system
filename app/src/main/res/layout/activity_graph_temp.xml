@@ -13,9 +13,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="20dp"
-        app:cardBackgroundColor="#66128C7E"
+        android:layout_marginBottom="48dp"
+        app:cardBackgroundColor="#7CFFFFFF"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/lineChart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,6 +50,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="99dp"
         android:orientation="horizontal"
         android:weightSum="10"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
@@ -89,11 +91,10 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
-        android:layout_width="0dp"
+        android:layout_width="424dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -101,7 +102,7 @@
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="1dp"
         app:itemBackground="@color/colorPrimary"
         app:itemHorizontalTranslationEnabled="true"

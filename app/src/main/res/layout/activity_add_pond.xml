@@ -167,7 +167,7 @@
 
             <Button
                 android:id="@+id/btr"
-                android:layout_width="225dp"
+                android:layout_width="233dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"

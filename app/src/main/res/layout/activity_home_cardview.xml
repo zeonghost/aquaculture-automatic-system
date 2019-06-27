@@ -8,7 +8,7 @@
 
     android:elevation="10dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="#66128C7E"
+    app:cardBackgroundColor="#7CFFFFFF"
     app:cardCornerRadius="7dp"
     app:cardElevation="100dp">
 
@@ -22,7 +22,7 @@
             android:id="@+id/txtViewPiID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="3dp"
             android:text="@string/pi_id"
@@ -34,7 +34,7 @@
             android:id="@+id/txtViewPondName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="3dp"
             android:text="@string/pond_name"
@@ -45,7 +45,7 @@
             android:id="@+id/txtViewPondLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="5dp"
             android:text="@string/pond_location"

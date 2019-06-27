@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:elevation="10dp"
+    android:layout_margin="15dp"
+    android:layout_marginStart="50dp"
+    app:cardElevation="100dp"
     android:orientation="vertical"
-    app:cardBackgroundColor="#66128C7E"
-    app:cardCornerRadius="15dp"
+    app:cardBackgroundColor="#7CFFFFFF"
+    app:cardCornerRadius="7dp"
     tools:layout_editor_absoluteX="20dp">
 
     <LinearLayout

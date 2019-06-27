@@ -91,6 +91,7 @@ public class TaskActivity extends AppCompatActivity {
         String un = sp.getString("username", null);
         String name = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
         String lookUser = un + " - " + name;
+
         if(Objects.equals(role, "Admin"))
         {
             query = myRef.orderByChild("uploader").equalTo(un);
@@ -198,13 +199,53 @@ public class TaskActivity extends AppCompatActivity {
         final View textEntryView = factory.inflate(R.layout.dialog_task_edit, null);
         final EditText date = (EditText) textEntryView.findViewById(R.id.editTextDate);
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
-        final EditText receiver = (EditText)textEntryView.findViewById(R.id.editTextReceiver);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
         final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         receiverTest.setAdapter(arrayAdapter);
+        receiverTest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                DatabaseReference tokRef = database.getReference("/user");
+                tokRef.orderByChild("username").equalTo(receiverTest.getSelectedItem().toString().split(" ")[0]).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        pushToken = dataSnapshot.child("pushToken").getValue().toString();
+                        sp1.edit()
+                                .putString("pushToken", pushToken)
+                                .apply();
+                        Log.d(TAG, "Push Token111: "+ pushToken);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         date.setFocusable(false);
         date.setClickable(true);
@@ -226,41 +267,15 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         AlertDialog.Builder ad1 = new AlertDialog.Builder(TaskActivity.this);
+
         ad1.setTitle("Add New Task:");
         ad1.setView(textEntryView);
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 myRef1 = database.getReference("/task");
-                DatabaseReference tokRef = database.getReference("/user");
-                tokRef.orderByChild("username").equalTo(receiver.getText().toString()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        pushToken = dataSnapshot.child("pushToken").getValue().toString();
-                        sp1.edit()
-                                .putString("pushToken", pushToken)
-                                .apply();
-                        Log.d(TAG, "Push Token111: "+ pushToken);
-                    }
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
                 String un = sp.getString("username", null);
                 String token = sp1.getString("pushToken", null);
-                String rt = receiverTest.getSelectedItem().toString();
+                String rt = receiverTest.getSelectedItem().toString().split(" ")[0];
                 //DatabaseReference hopperRef = myRef1.child(transId);
                 String key = myRef1.push().getKey();
                 Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un);
@@ -280,7 +295,6 @@ public class TaskActivity extends AppCompatActivity {
         final View textEntryView = factory.inflate(R.layout.dialog_task_edit, null);
         final EditText date = (EditText) textEntryView.findViewById(R.id.editTextDate);
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
-        final EditText receiver = (EditText)textEntryView.findViewById(R.id.editTextReceiver);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
         final RadioGroup radioGroup = textEntryView.findViewById(R.id.radioGroup);
         final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
@@ -302,7 +316,7 @@ public class TaskActivity extends AppCompatActivity {
                 Log.d(TAG, "Datasnapshot: " + dataSnapshot.getValue().toString());
                 date.setText(taskTemp.getDate());
                 time.setText(taskTemp.getTime());
-                receiver.setText(taskTemp.getReceiver());
+                //receiver.setText(taskTemp.getReceiver());
                 if (Objects.equals(taskTemp.getStatus(), "Pending")){
                     radioGroup.check(R.id.radioPending);
                     //status = getString(R.string.pending);
@@ -340,7 +354,7 @@ public class TaskActivity extends AppCompatActivity {
                 Map<String, Object> hopperUpdates = new HashMap<>();
                 hopperUpdates.put("date", date.getText().toString());
                 hopperUpdates.put("time", time.getText().toString());
-                hopperUpdates.put("receiver", receiver.getText().toString());
+                hopperUpdates.put("receiver", receiverTest.getSelectedItem().toString().split(" ")[0]);
                 hopperUpdates.put("status", status);
                 hopperUpdates.put("task", task.getText().toString());
                 hopperRef.updateChildren(hopperUpdates);
