@@ -89,8 +89,8 @@ public class TaskActivity extends AppCompatActivity {
         myRef = database.getReference("/task");
         String role = sp.getString("role", null);
         String un = sp.getString("username", null);
-        String name = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
-        String lookUser = un + " - " + name;
+        //String name = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
+        //String lookUser = un + " - " + name;
 
         if(Objects.equals(role, "Admin"))
         {
@@ -98,7 +98,7 @@ public class TaskActivity extends AppCompatActivity {
         }
         else
         {
-            query = myRef.orderByChild("receiver").equalTo(lookUser);
+            query = myRef.orderByChild("receiver").equalTo(un);
         }
 
         options = new FirebaseRecyclerOptions.Builder<Task>()
@@ -115,6 +115,8 @@ public class TaskActivity extends AppCompatActivity {
                 String task = model.getTask();
                 String time = model.getTime();
                 String uploader = model.getUploader();
+                String uploaderName = model.getUploaderName();
+                String receiverName = model.getReceiverName();
 
                 holder.TaskId.setText(taskId);
                 holder.date.setText(date);
@@ -123,6 +125,8 @@ public class TaskActivity extends AppCompatActivity {
                 holder.task.setText(task);
                 holder.time.setText(time);
                 holder.uploader.setText(uploader);
+                holder.uploaderName.setText(uploaderName);
+                holder.receiverName.setText(receiverName);
 
                 holder.edit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -276,9 +280,10 @@ public class TaskActivity extends AppCompatActivity {
                 String un = sp.getString("username", null);
                 String token = sp1.getString("pushToken", null);
                 String rt = receiverTest.getSelectedItem().toString().split(" ")[0];
-                //DatabaseReference hopperRef = myRef1.child(transId);
+                String receiverName = receiverTest.getSelectedItem().toString().split(" ")[2] + " " + receiverTest.getSelectedItem().toString().split(" ")[3];
+                String uploaderName = sp.getString("firstname",  "") + " " + sp.getString("lastname","");
                 String key = myRef1.push().getKey();
-                Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un);
+                Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un, receiverName, uploaderName);
                 myRef1.child(key).setValue(newUser);
                 Map<String, Object> pushT = new HashMap<>();
                 pushT.put("receiveToken", token);
@@ -303,6 +308,7 @@ public class TaskActivity extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         receiverTest.setAdapter(arrayAdapter);
 
+
         date.setFocusable(false);
         date.setClickable(true);
         time.setFocusable(false);
@@ -316,13 +322,16 @@ public class TaskActivity extends AppCompatActivity {
                 Log.d(TAG, "Datasnapshot: " + dataSnapshot.getValue().toString());
                 date.setText(taskTemp.getDate());
                 time.setText(taskTemp.getTime());
-                //receiver.setText(taskTemp.getReceiver());
                 if (Objects.equals(taskTemp.getStatus(), "Pending")){
                     radioGroup.check(R.id.radioPending);
-                    //status = getString(R.string.pending);
                 } else {
                     radioGroup.check(R.id.radioDone);
                 }
+
+                String completeReceiverInfo = taskTemp.getReceiver() + " - " + taskTemp.getReceiverName();
+                int position = getPositionOfSpinner(receiverTest, completeReceiverInfo);
+                receiverTest.setSelection(position);
+                receiverTest.setEnabled(false);
                 task.setText(taskTemp.getTask());
             }
 
@@ -354,7 +363,7 @@ public class TaskActivity extends AppCompatActivity {
                 Map<String, Object> hopperUpdates = new HashMap<>();
                 hopperUpdates.put("date", date.getText().toString());
                 hopperUpdates.put("time", time.getText().toString());
-                hopperUpdates.put("receiver", receiverTest.getSelectedItem().toString().split(" ")[0]);
+                //hopperUpdates.put("receiver", receiverTest.getSelectedItem().toString().split(" ")[0]);
                 hopperUpdates.put("status", status);
                 hopperUpdates.put("task", task.getText().toString());
                 hopperRef.updateChildren(hopperUpdates);
@@ -464,5 +473,17 @@ public class TaskActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public int getPositionOfSpinner(Spinner s, String str){
+        int i = 0, found = 0;
+        while(i < s.getCount()){
+            if(Objects.equals(s.getItemAtPosition(i), str)){
+                found = i;
+                break;
+            }
+            i++;
+        }
+        return found;
     }
 }

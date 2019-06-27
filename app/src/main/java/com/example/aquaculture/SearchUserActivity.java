@@ -56,7 +56,6 @@ public class SearchUserActivity extends AppCompatActivity {
     private FirebaseRecyclerOptions<Pond> optionsPond;
     private FirebaseRecyclerAdapter<Pond, PondViewHolder> adapterPond;
     private View pondSelectView;
-
     private RecyclerView pondList;
 
     @Override
@@ -101,20 +100,20 @@ public class SearchUserActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        adapter.stopListening();
-        adapterPond.stopListening();
+        //adapter.stopListening();
+        //adapterPond.stopListening();
         super.onStop();
     }
 
     @Override
     public void onBackPressed() {
-        ViewGroup parentView = (ViewGroup) pondSelectView.getParent();
-        if(parentView != null){
+        if(pondSelectView != null){
+            ViewGroup parentView = (ViewGroup) pondSelectView.getParent();
             parentView.removeView(pondSelectView);
+            adapter.stopListening();
+            adapterPond.stopListening();
         }
         getUser.edit().clear().apply();
-        adapter.stopListening();
-        adapterPond.stopListening();
         super.onBackPressed();
     }
 

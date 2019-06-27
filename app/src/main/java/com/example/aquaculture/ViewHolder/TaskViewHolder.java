@@ -12,16 +12,20 @@ import android.widget.TextView;
 import com.example.aquaculture.MainActivity;
 import com.example.aquaculture.R;
 
+import org.w3c.dom.Text;
+
 import java.util.Objects;
 
 public class TaskViewHolder extends RecyclerView.ViewHolder {
     public TextView TaskId;
     public TextView date;
     public TextView receiver;
+    public TextView receiverName;
     public TextView status;
     public TextView task;
     public TextView time;
     public TextView uploader;
+    public TextView uploaderName;
     public Button edit;
     public Button delete;
     public Button done;
@@ -38,7 +42,11 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         edit = itemView.findViewById(R.id.button);
         delete = itemView.findViewById(R.id.button2);
         done = itemView.findViewById(R.id.button3);
+        uploaderName = itemView.findViewById(R.id.txtUploaderName);
+        receiverName = itemView.findViewById(R.id.txtReceiverName);
         showButtonPerRole();
+        uploader.setVisibility(View.INVISIBLE);
+        receiver.setVisibility(View.INVISIBLE);
     }
 
     private void showButtonPerRole(){

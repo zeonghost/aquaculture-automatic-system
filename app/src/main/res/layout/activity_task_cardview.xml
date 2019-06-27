@@ -137,11 +137,18 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/txtReceiverName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="1"/>
+
+            <TextView
                 android:id="@+id/receiver"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:layout_weight="2"/>
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
@@ -158,11 +165,18 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/txtUploaderName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="1"/>
+
+            <TextView
                 android:id="@+id/uploader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:layout_weight="2"/>
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
@@ -198,7 +212,7 @@
         <Button
             android:id="@+id/button3"
             android:layout_width="185dp"
-            android:layout_height="24dp"
+            android:layout_height="32dp"
             android:layout_gravity="bottom|right"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"

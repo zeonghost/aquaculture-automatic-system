@@ -64,5 +64,6 @@ dependencies {
     //for status bar
     implementation 'com.githang:status-bar-compat:0.7'
     //
+    //
 
 }
