@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
+
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -95,11 +97,11 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "Result-2: "+ transferData);
                         //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
-                            checkInOutDialog();
                             sp.edit().putString("device", piID).apply();
                             sp.edit().putString("location", location).apply();
-                            Intent toPartnerLogActivity = new Intent(HomeActivity.this, PartnerLogActivity.class);
-                            startActivity(toPartnerLogActivity);
+                            if(TIME_IN_STATUS == 0){
+                                checkInOutDialog();
+                            }
                         } else {
                             Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
                             startActivity(toPondInfoActivity);
@@ -210,8 +212,8 @@ public class HomeActivity extends AppCompatActivity {
         checkInOut.setPositiveButton("Clock In", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
-                startActivity(toPondInfoActivity);
+                Intent toPartnerLogActivity = new Intent(HomeActivity.this, PartnerLogActivity.class);
+                startActivity(toPartnerLogActivity);
             }
         });
         checkInOut.show();

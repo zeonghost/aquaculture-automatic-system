@@ -115,13 +115,13 @@ public class TaskActivity extends AppCompatActivity {
                 String time = model.getTime();
                 String uploader = model.getUploader();
 
-                holder.TaskId.setText("Task ID: " + taskId);
-                holder.date.setText("Date: " + date);
-                holder.receiver.setText("Receiver: " + receiver);
-                holder.status.setText("Status: " + status);
-                holder.task.setText("Task: " + task);
-                holder.time.setText("Time: " + time);
-                holder.uploader.setText("Uploader: " + uploader);
+                holder.TaskId.setText(taskId);
+                holder.date.setText(date);
+                holder.receiver.setText(receiver);
+                holder.status.setText(status);
+                holder.task.setText(task);
+                holder.time.setText(time);
+                holder.uploader.setText(uploader);
 
                 holder.edit.setOnClickListener(new View.OnClickListener() {
                     @Override

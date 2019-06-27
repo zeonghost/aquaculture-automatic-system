@@ -156,24 +156,37 @@
             </LinearLayout>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardView"
+                android:id="@+id/graphCardView"
                 android:layout_width="match_parent"
-                android:layout_height="139dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:orientation="vertical"
                 app:cardBackgroundColor="#33128C7E"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                android:animateLayoutChanges="true">
 
-                <com.github.mikephil.charting.charts.LineChart
-
-                    android:id="@+id/lineChart"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                </com.github.mikephil.charting.charts.LineChart>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Water Temperature"/>
 
+                    <com.github.mikephil.charting.charts.LineChart
+
+                        android:id="@+id/lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -193,14 +206,31 @@
                     android:layout_gravity="right|center_horizontal"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView15"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:text="SMART SETTINGS"
-                        android:textSize="20sp" />
+                        android:weightSum="10"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:text="SMART SETTINGS"
+                            android:layout_weight="9"
+                            android:textSize="20sp" />
+
+                        <ImageView
+                            android:id="@+id/imageViewSmartSetting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/common_google_signin_btn_icon_dark"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
 
                     <Switch
                         android:id="@+id/autosw"
@@ -246,37 +276,13 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:text="Push" />
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardViewTempSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                app:cardBackgroundColor="#33128C7E"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="5dp"
-                app:contentPadding="10px">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:text="SMART SETTINGS"
-                        android:textSize="20sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -284,7 +290,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Highest Temperature Level:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtViewHighTemp"
@@ -293,13 +299,15 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -308,7 +316,7 @@
                             android:layout_gravity="bottom|start"
                             android:layout_weight="1"
                             android:text="Lowest Temperature Level:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtViewLowTemp"
@@ -317,13 +325,15 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -332,7 +342,7 @@
                             android:layout_gravity="bottom|start"
                             android:layout_weight="1"
                             android:text="Channel 2 On Time:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtCh2OnTime"
@@ -341,13 +351,15 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -356,7 +368,7 @@
                             android:layout_gravity="bottom|start"
                             android:layout_weight="1"
                             android:text="Channel 2 Off Time:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtCh2OffTime"
@@ -365,9 +377,10 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView

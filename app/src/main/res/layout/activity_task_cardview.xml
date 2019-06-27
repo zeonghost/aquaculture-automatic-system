@@ -13,81 +13,199 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="135dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="3dp">
 
-        <TextView
-            android:id="@+id/taskId"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/date"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TASK ID:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/taskId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/time"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="DATE:"/>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/task"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TIME:"
+                android:layout_weight="1"/>
+
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/status"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TASK:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/task"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/receiver"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="STATUS:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/uploader"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="RECEIVER:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/receiver"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="85dp"
-            android:layout_height="35dp"
-            android:layout_gravity="right|top"
-            android:layout_marginTop="-120dp"
-            android:background="#075E54"
-            android:text="Edit"
-            android:textColor="#FFFFFF" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="UPLOADER:"
+                android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="85dp"
-            android:layout_height="32dp"
-            android:layout_gravity="right|center"
-            android:layout_marginTop="5dp"
-            android:background="#075E54"
-            android:text="Delete"
-            android:textColor="#FFFFFF" />
+            <TextView
+                android:id="@+id/uploader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:background="#075E54"
+                android:text="Edit"
+                android:textColor="#FFFFFF"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:background="#075E54"
+                android:text="Delete"
+                android:textColor="#FFFFFF"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="85dp"
-            android:layout_height="32dp"
-            android:layout_gravity="right|end"
-            android:layout_marginTop="5dp"
+            android:layout_width="185dp"
+            android:layout_height="24dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="#075E54"
             android:text="Done"
-            android:textColor="#F7FFFFFF" />
+            android:textColor="#F7FFFFFF"
+            android:layout_marginTop="-30dp"
+            />
 
     </LinearLayout>
 
