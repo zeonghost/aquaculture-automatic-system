@@ -9,16 +9,18 @@
     tools:layout_editor_absoluteY="81dp">
 
 
+
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#148D7F"
-        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="#7CFFFFFF"
+        app:cardCornerRadius="7dp"
         app:cardElevation="100dp"
-        app:cardMaxElevation="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <TextView
             android:id="@+id/textView5"
