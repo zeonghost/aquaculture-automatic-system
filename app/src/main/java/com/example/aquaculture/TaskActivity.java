@@ -55,6 +55,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
+
 public class TaskActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -89,8 +91,6 @@ public class TaskActivity extends AppCompatActivity {
         myRef = database.getReference("/task");
         String role = sp.getString("role", null);
         String un = sp.getString("username", null);
-        //String name = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
-        //String lookUser = un + " - " + name;
 
         if(Objects.equals(role, "Admin"))
         {
@@ -142,13 +142,19 @@ public class TaskActivity extends AppCompatActivity {
                         showDeleteDialog();
                     }
                 });
-                holder.done.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        transId = taskId;
-                        showDoneDialog();
-                    }
-                });
+
+                if(TIME_IN_STATUS == 1){
+                    holder.done.setVisibility(View.VISIBLE);
+                    holder.done.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            transId = taskId;
+                            showDoneDialog();
+                        }
+                    });
+                } else {
+                    holder.done.setVisibility(View.GONE);
+                }
             }
 
             @NonNull
@@ -204,16 +210,16 @@ public class TaskActivity extends AppCompatActivity {
         final EditText date = (EditText) textEntryView.findViewById(R.id.editTextDate);
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
-        final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
+        final Spinner receiver = textEntryView.findViewById(R.id.spinnerReceiver);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        receiverTest.setAdapter(arrayAdapter);
-        receiverTest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        receiver.setAdapter(arrayAdapter);
+        receiver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DatabaseReference tokRef = database.getReference("/user");
-                tokRef.orderByChild("username").equalTo(receiverTest.getSelectedItem().toString().split(" ")[0]).addChildEventListener(new ChildEventListener() {
+                tokRef.orderByChild("username").equalTo(receiver.getSelectedItem().toString().split(" ")[0]).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         pushToken = dataSnapshot.child("pushToken").getValue().toString();
@@ -279,8 +285,8 @@ public class TaskActivity extends AppCompatActivity {
                 myRef1 = database.getReference("/task");
                 String un = sp.getString("username", null);
                 String token = sp1.getString("pushToken", null);
-                String rt = receiverTest.getSelectedItem().toString().split(" ")[0];
-                String receiverName = receiverTest.getSelectedItem().toString().split(" ")[2] + " " + receiverTest.getSelectedItem().toString().split(" ")[3];
+                String rt = receiver.getSelectedItem().toString().split(" ")[0];
+                String receiverName = receiver.getSelectedItem().toString().split(" ")[2] + " " + receiver.getSelectedItem().toString().split(" ")[3];
                 String uploaderName = sp.getString("firstname",  "") + " " + sp.getString("lastname","");
                 String key = myRef1.push().getKey();
                 Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un, receiverName, uploaderName);
@@ -302,11 +308,11 @@ public class TaskActivity extends AppCompatActivity {
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
         final RadioGroup radioGroup = textEntryView.findViewById(R.id.radioGroup);
-        final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
+        final Spinner receiver = textEntryView.findViewById(R.id.spinnerReceiver);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        receiverTest.setAdapter(arrayAdapter);
+        receiver.setAdapter(arrayAdapter);
 
 
         date.setFocusable(false);
@@ -329,9 +335,9 @@ public class TaskActivity extends AppCompatActivity {
                 }
 
                 String completeReceiverInfo = taskTemp.getReceiver() + " - " + taskTemp.getReceiverName();
-                int position = getPositionOfSpinner(receiverTest, completeReceiverInfo);
-                receiverTest.setSelection(position);
-                receiverTest.setEnabled(false);
+                int position = getPositionOfSpinner(receiver, completeReceiverInfo);
+                receiver.setSelection(position);
+                receiver.setEnabled(false);
                 task.setText(taskTemp.getTask());
             }
 
@@ -363,7 +369,7 @@ public class TaskActivity extends AppCompatActivity {
                 Map<String, Object> hopperUpdates = new HashMap<>();
                 hopperUpdates.put("date", date.getText().toString());
                 hopperUpdates.put("time", time.getText().toString());
-                //hopperUpdates.put("receiver", receiverTest.getSelectedItem().toString().split(" ")[0]);
+                //hopperUpdates.put("receiver", receiver.getSelectedItem().toString().split(" ")[0]);
                 hopperUpdates.put("status", status);
                 hopperUpdates.put("task", task.getText().toString());
                 hopperRef.updateChildren(hopperUpdates);
@@ -417,8 +423,6 @@ public class TaskActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.item2://btn 2 -> task
-                        Intent intent2 = new Intent(TaskActivity.this, TaskActivity.class);
-                        startActivity(intent2);
                         break;
                     case R.id.item3://btn 3 -> profile
                         Intent intent3 = new Intent(TaskActivity.this, ProfileActivity.class);
@@ -475,7 +479,7 @@ public class TaskActivity extends AppCompatActivity {
         });
     }
 
-    public int getPositionOfSpinner(Spinner s, String str){
+    private int getPositionOfSpinner(Spinner s, String str){
         int i = 0, found = 0;
         while(i < s.getCount()){
             if(Objects.equals(s.getItemAtPosition(i), str)){

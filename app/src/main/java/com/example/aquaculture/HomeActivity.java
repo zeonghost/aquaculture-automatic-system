@@ -99,6 +99,9 @@ public class HomeActivity extends AppCompatActivity {
                             sp.edit().putString("location", location).apply();
                             if(TIME_IN_STATUS == 0){
                                 checkInOutDialog();
+                            } else {
+                                Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
+                                startActivity(toPondInfoActivity);
                             }
                         } else {
                             Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
@@ -206,7 +209,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void checkInOutDialog(){
         AlertDialog.Builder checkInOut = new AlertDialog.Builder (HomeActivity.this);
-        checkInOut.setMessage("Do you want to clock in?");
+        checkInOut.setMessage("Please clock in first to proceed.");
         checkInOut.setPositiveButton("Clock In", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

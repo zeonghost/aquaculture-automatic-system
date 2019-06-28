@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
+
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private SharedPreferences sp;
@@ -23,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView signOut;
     private CardView partnerCard;
     private CardView pondCard;
+    private CardView timeCard;
     private LinearLayout pondOptions;
     private LinearLayout partnerOptions;
     private boolean isPondVisible;
@@ -40,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         partnerOptions = findViewById(R.id.layoutPartnerOptions);
         pondCard = findViewById(R.id.cardViewPond);
         pondOptions = findViewById(R.id.layoutPondOptions);
+        timeCard = findViewById(R.id.cardViewTimeClock);
 
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
@@ -82,8 +86,13 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
+        timeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         Button btr1 = (Button)findViewById(R.id.btr1);
@@ -101,7 +110,7 @@ public class ProfileActivity extends AppCompatActivity {
                 sp.edit()
                         .clear()
                         .apply();
-                //MainActivity.sp.edit().clear().apply();
+                TIME_IN_STATUS = 0;
                 Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(intent4);
             }

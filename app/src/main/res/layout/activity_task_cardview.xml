@@ -10,7 +10,8 @@
     android:orientation="vertical"
     app:cardBackgroundColor="#7CFFFFFF"
     app:cardCornerRadius="7dp"
-    tools:layout_editor_absoluteX="20dp">
+    tools:layout_editor_absoluteX="20dp"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:layout_width="match_parent"

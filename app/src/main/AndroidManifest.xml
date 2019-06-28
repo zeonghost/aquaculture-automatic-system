@@ -23,7 +23,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".WeatherActivityTest"></activity>
         <activity android:name=".ForecastActivityTest"></activity>
-        <activity android:name=".PartnerLogActivity" />
+        <activity
+            android:name=".PartnerLogActivity"
+            android:launchMode="singleInstance"/>
         <activity android:name=".SearchUserActivity" />
         <activity android:name=".PartnerAdminActivity" />
         <activity android:name=".LogViewActivity" />
