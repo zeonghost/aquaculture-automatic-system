@@ -4,16 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:elevation="10dp"
+    android:layout_margin="15dp"
+    android:layout_marginStart="50dp"
+    app:cardElevation="100dp"
     android:orientation="vertical"
     app:cardBackgroundColor="#7CFFFFFF"
-    app:cardCornerRadius="15dp"
+    app:cardCornerRadius="7dp"
     tools:layout_editor_absoluteX="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="135dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="93dp"
+            android:layout_height="35dp"
+            android:layout_gravity="right|center"
+            android:layout_marginLeft="261dp"
+            android:layout_marginTop="68dp"
+            android:background="#075E54"
+            android:text="Done"
+            android:textColor="#F7FFFFFF"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="93dp"
+            android:layout_height="35dp"
+            android:layout_gravity="right|top"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="150.5dp"
+            android:background="#075E54"
+            android:text="Edit"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="93dp"
+            android:layout_height="35dp"
+            android:layout_gravity="right|center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="68dp"
+            android:background="#075E54"
+            android:text="Delete"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:orientation="vertical"
         android:padding="3dp">
 
@@ -21,73 +71,58 @@
             android:id="@+id/taskId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:text="TextView"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:paddingLeft="10dp"
+            android:text="TextView"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:paddingLeft="10dp"
+            android:text="TextView"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:paddingLeft="10dp"
+            android:text="TextView"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:paddingLeft="10dp"
+            android:text="TextView"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/receiver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:paddingLeft="10dp"
+            android:text="TextView"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/uploader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="85dp"
-            android:layout_height="35dp"
-            android:layout_gravity="right|top"
-            android:layout_marginTop="-120dp"
-            android:background="#075E54"
-            android:text="Edit"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="85dp"
-            android:layout_height="32dp"
-            android:layout_gravity="right|center"
-            android:layout_marginTop="5dp"
-            android:background="#075E54"
-            android:text="Delete"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="85dp"
-            android:layout_height="32dp"
-            android:layout_gravity="right|end"
-            android:layout_marginTop="5dp"
-            android:background="#075E54"
-            android:text="Done"
-            android:textColor="#F7FFFFFF" />
+            android:paddingLeft="10dp"
+            android:text="TextView"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

@@ -39,15 +39,14 @@ public class LogViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logview);
         buttomNavigation();
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         logInfo = findViewById(R.id.Recycle);
         logInfo.setHasFixedSize(true);
 
         LinearLayoutManager layout = new LinearLayoutManager(LogViewActivity.this);
-        layout.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
-        layout.setReverseLayout(true);//列表翻转
-        //rView.setLayoutManager(layout);
+        layout.setStackFromEnd(true);
+        layout.setReverseLayout(true);
 
         logInfo.setLayoutManager(layout);
 

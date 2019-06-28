@@ -24,6 +24,14 @@ public class Task {
         this.uploader = uploader;
         //this.receiveToken = receiveToken;
     }
+
+    public Task(String date, String receiver, String status, String task, String time){
+        this.date = date;
+        this.receiver = receiver;
+        this.status = status;
+        this.task = task;
+        this.time = time;
+    }
     //@PropertyName("TaskId")
     //public String getTaskId() {
       //  return TaskId;

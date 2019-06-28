@@ -2,6 +2,7 @@
     <string name="app_name">Aquaculture</string>
     <string name="title_activity_login">Sign in</string>
     <string name="google_maps_api_key">AIzaSyBwVy7I7ml1ioG0yuGvEyC_44uVYu3nusE</string>
+    <string name="open_weather_api_key">6395962d50ad8708214a391bc4147a3c</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

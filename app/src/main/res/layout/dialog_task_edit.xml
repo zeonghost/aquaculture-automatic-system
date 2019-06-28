@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/plain"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/blurr"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
+    <!--android:background="#92CBC2"-->
 
     <TextView
         android:id="@+id/textView1"
@@ -15,10 +17,12 @@
 
     <EditText
         android:id="@+id/editTextDate"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:textColorHighlight="#3DB9AE">
+        android:layout_marginEnd="40dp"
+        android:textColorHighlight="#3DB9AE"
+        android:textColorLink="#3DB9AE">
 
         <requestFocus />
     </EditText>
@@ -32,8 +36,9 @@
 
     <EditText
         android:id="@+id/editTextTime"
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -46,7 +51,8 @@
     <EditText
         android:id="@+id/editTextReceiver"
         android:layout_marginStart="40dp"
-        android:layout_width="330dp"
+        android:layout_marginEnd="40dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -73,8 +79,9 @@
             android:id="@+id/radioDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="radioCheck"
             android:text="@string/done"
-            android:onClick="radioCheck"/>
+            android:textColorLink="#3DB9AE" />
     </RadioGroup>
 
     <TextView
@@ -87,7 +94,21 @@
     <EditText
         android:id="@+id/editTextTask"
         android:layout_marginStart="40dp"
-        android:layout_width="330dp"
+        android:layout_marginEnd="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginStart="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Receiver: " />
+
+    <Spinner
+        android:id="@+id/spinnerReceiver"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -71,7 +71,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
         setContentView(R.layout.activity_graph_temp);
         buttonNavigationSettings();
 
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
         startDate = findViewById(R.id.editTxtStartDate);
         endDate = findViewById(R.id.editTxtEndDate);

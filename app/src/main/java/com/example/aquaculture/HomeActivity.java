@@ -93,6 +93,7 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "Result-2: "+ transferData);
                         //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
+                            checkInOutDialog();
                             sp.edit().putString("device", piID).apply();
                             sp.edit().putString("location", location).apply();
                             Intent toPartnerLogActivity = new Intent(HomeActivity.this, PartnerLogActivity.class);
@@ -109,8 +110,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public PondViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
                 View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.activity_home_cardview, viewGroup, false);
-                PondViewHolder holder = new PondViewHolder(view);
-                return holder;
+                return new PondViewHolder(view);
             }
         };
         pondInfo.setAdapter(adapter);
@@ -178,7 +178,7 @@ public class HomeActivity extends AppCompatActivity {
     }//get result of qr scanner
 
     private void buttonNavigationSettings(){
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

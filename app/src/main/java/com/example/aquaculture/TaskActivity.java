@@ -22,11 +22,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -42,8 +45,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.protobuf.Internal;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +60,7 @@ public class TaskActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef;
     private DatabaseReference myRef1;
+    private DatabaseReference myPartner;
     private RecyclerView taskInfo;
     private FirebaseRecyclerOptions<Task> options;
     private FirebaseRecyclerAdapter<Task, TaskViewHolder> adapter;
@@ -62,35 +69,39 @@ public class TaskActivity extends AppCompatActivity {
     public SharedPreferences sp1;
     public static String transId;
     public String pushToken;
+    private ArrayList<String> partnerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
-        //setTitle("Task");
-        //getSupportActionBar().hide();
-        buttonNavigationSettings();
+        partnerList = new ArrayList<>();
+        partnerList.add("");
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         sp1 = getSharedPreferences("temp", Context.MODE_PRIVATE);
+        buttonNavigationSettings();
+        getPartners();
         taskInfo = findViewById(R.id.recyclerview);
         taskInfo.setHasFixedSize(true);
         taskInfo.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
-        Query query = myRef;
+        Query query;
 
         myRef = database.getReference("/task");
         String role = sp.getString("role", null);
         String un = sp.getString("username", null);
+        String name = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
+        String lookUser = un + " - " + name;
         if(Objects.equals(role, "Admin"))
         {
             query = myRef.orderByChild("uploader").equalTo(un);
         }
         else
         {
-            query = myRef.orderByChild("receiver").equalTo(un);
+            query = myRef.orderByChild("receiver").equalTo(lookUser);
         }
 
         options = new FirebaseRecyclerOptions.Builder<Task>()
-                .setQuery(query, Task.class)   //mRef in this parameter can be changed into a more specific query like in LINE 50.
+                .setQuery(query, Task.class)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<Task, TaskViewHolder>(options) {
@@ -189,6 +200,11 @@ public class TaskActivity extends AppCompatActivity {
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
         final EditText receiver = (EditText)textEntryView.findViewById(R.id.editTextReceiver);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
+        final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        receiverTest.setAdapter(arrayAdapter);
 
         date.setFocusable(false);
         date.setClickable(true);
@@ -244,9 +260,10 @@ public class TaskActivity extends AppCompatActivity {
                 });
                 String un = sp.getString("username", null);
                 String token = sp1.getString("pushToken", null);
+                String rt = receiverTest.getSelectedItem().toString();
                 //DatabaseReference hopperRef = myRef1.child(transId);
                 String key = myRef1.push().getKey();
-                Task newUser = new Task(date.getText().toString(), receiver.getText().toString(), status, task.getText().toString(), time.getText().toString(), un);
+                Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un);
                 myRef1.child(key).setValue(newUser);
                 Map<String, Object> pushT = new HashMap<>();
                 pushT.put("receiveToken", token);
@@ -266,6 +283,12 @@ public class TaskActivity extends AppCompatActivity {
         final EditText receiver = (EditText)textEntryView.findViewById(R.id.editTextReceiver);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
         final RadioGroup radioGroup = textEntryView.findViewById(R.id.radioGroup);
+        final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        receiverTest.setAdapter(arrayAdapter);
+
         date.setFocusable(false);
         date.setClickable(true);
         time.setFocusable(false);
@@ -328,8 +351,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void showDeleteDialog(){
-        AlertDialog.Builder normalDialog =
-                new AlertDialog.Builder(TaskActivity.this);
+        AlertDialog.Builder normalDialog = new AlertDialog.Builder(TaskActivity.this);
         normalDialog.setTitle("Warning").setMessage("You sure you want to delete this task?");
         normalDialog.setPositiveButton("Delete",
                 new DialogInterface.OnClickListener() {
@@ -402,22 +424,31 @@ public class TaskActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(TaskActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String ss;
-                if(hourOfDay >= 12){
-                    hourOfDay %= 12;
-                    if(hourOfDay == 0){
-                        hourOfDay = 12;
-                    }
-                    ss = " PM";
-                } else {
-                    if(hourOfDay == 0){
-                        hourOfDay = 12;
-                    }
-                    ss = " AM";
-                }
-                time.setText(hourOfDay + ":" + minute + ss);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
+                time.setText(new SimpleDateFormat("h:mm a").format(calendar.getTime()));
             }
         }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false);
         timePickerDialog.show();
+    }
+
+    private void getPartners(){
+        myPartner = database.getReference("Partners");
+        myPartner.child(sp.getString("username", "")).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                        partnerList.add(snaps.child("username").getValue().toString() + " - " + snaps.child("fullname").getValue().toString());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

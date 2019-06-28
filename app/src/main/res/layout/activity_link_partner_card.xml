@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:layout_margin="3dp"
-
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
     android:background="@drawable/plain"
-    android:elevation="10dp"
+    android:layout_marginStart="50dp"
+    app:cardElevation="100dp"
     android:orientation="vertical"
     app:cardBackgroundColor="#7CFFFFFF"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="7dp"
     tools:layout_editor_absoluteX="20dp">
 
     <LinearLayout
@@ -23,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:paddingLeft="8dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
             android:text="Username"
             android:textSize="20sp" />
 
@@ -31,7 +32,7 @@
             android:id="@+id/txtLinkFirstName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:paddingLeft="10dp"
             android:text="First name"
             android:textSize="20sp" />
 
@@ -39,7 +40,7 @@
             android:id="@+id/txtLinkLastName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:paddingLeft="10dp"
             android:text="Last name"
             android:textSize="20sp" />
 
@@ -47,7 +48,8 @@
             android:id="@+id/txtLinkUserRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="8dp"
             android:text="Role"
             android:textSize="20sp" />
 
