@@ -159,6 +159,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 myRef.child(username).setValue(partnerLog);
                 txtTimeOut.setText("--- --, ---- --:-- AM/PM");
+                //sp.edit().putBoolean("timeInStatus", true).apply();
                 TIME_IN_STATUS = 1;
                 finish();
                 //Intent toPondInfoActivity = new Intent (PartnerLogActivity.this, PondInfoActivity.class);
@@ -170,6 +171,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 long currentTimestamp = System.currentTimeMillis();
                 myRef.child(username).child("timeOut").setValue(currentTimestamp);
+                //sp.edit().putBoolean("timeInStatus", false).apply();
                 TIME_IN_STATUS = 0;
                 Intent toHomeActivity = new Intent (PartnerLogActivity.this, HomeActivity.class);
                 startActivity(toHomeActivity);

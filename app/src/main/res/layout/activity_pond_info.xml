@@ -175,13 +175,19 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Water Temperature"/>
+                        android:text="WATER TEMPERATURE"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textSize="20sp"/>
 
                     <com.github.mikephil.charting.charts.LineChart
-
-                    android:id="@+id/lineChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="155dp">
+                        android:id="@+id/lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="155dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp">
 
                     </com.github.mikephil.charting.charts.LineChart>
 
@@ -404,55 +410,73 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Log"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="10dp"/>
 
                     <TextView
                         android:id="@+id/T1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:paddingLeft="5dp"/>
 
                     <TextView
                         android:id="@+id/L1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="xxx" />
+                        android:text="xxx"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"/>
 
                     <TextView
                         android:id="@+id/T2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:paddingLeft="5dp"/>
 
                     <TextView
                         android:id="@+id/L2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"/>
 
                     <TextView
                         android:id="@+id/T3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:paddingLeft="5dp"/>
 
                     <TextView
                         android:id="@+id/L3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"
+                        />
 
                     <TextView
                         android:id="@+id/T4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:paddingLeft="5dp"
+                        />
 
                     <TextView
                         android:id="@+id/L4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"
+                        />
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

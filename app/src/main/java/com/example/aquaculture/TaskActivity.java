@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -89,8 +90,8 @@ public class TaskActivity extends AppCompatActivity {
         Query query;
 
         myRef = database.getReference("/task");
-        String role = sp.getString("role", null);
-        String un = sp.getString("username", null);
+        final String role = sp.getString("role", null);
+        final String un = sp.getString("username", null);
 
         if(Objects.equals(role, "Admin"))
         {
@@ -135,6 +136,7 @@ public class TaskActivity extends AppCompatActivity {
                         showEditDialog();
                     }
                 });
+
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -143,8 +145,7 @@ public class TaskActivity extends AppCompatActivity {
                     }
                 });
 
-                if(TIME_IN_STATUS == 1){
-                    holder.done.setVisibility(View.VISIBLE);
+                if(Objects.equals(status, "Pending") && Objects.equals(role, "Partner")){
                     holder.done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -154,6 +155,8 @@ public class TaskActivity extends AppCompatActivity {
                     });
                 } else {
                     holder.done.setVisibility(View.GONE);
+                    holder.edit.setVisibility(View.GONE);
+                    holder.delete.setVisibility(View.GONE);
                 }
             }
 
@@ -186,6 +189,9 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(TIME_IN_STATUS == 0){
+            reminderToClockIn();
+        }
     }
 
     @Override
@@ -489,5 +495,17 @@ public class TaskActivity extends AppCompatActivity {
             i++;
         }
         return found;
+    }
+
+    private void reminderToClockIn(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(TaskActivity.this);
+        dialog.setTitle("Caution").setMessage("Don't forget to clock in!");
+        dialog.setPositiveButton("Understood", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

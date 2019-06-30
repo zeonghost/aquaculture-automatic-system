@@ -16,6 +16,8 @@ import org.w3c.dom.Text;
 
 import java.util.Objects;
 
+import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
+
 public class TaskViewHolder extends RecyclerView.ViewHolder {
     public TextView TaskId;
     public TextView date;
@@ -44,9 +46,9 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         done = itemView.findViewById(R.id.button3);
         uploaderName = itemView.findViewById(R.id.txtUploaderName);
         receiverName = itemView.findViewById(R.id.txtReceiverName);
-        showButtonPerRole();
         uploader.setVisibility(View.INVISIBLE);
         receiver.setVisibility(View.INVISIBLE);
+        showButtonPerRole();
     }
 
     private void showButtonPerRole(){
@@ -56,9 +58,15 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
             delete.setVisibility(View.VISIBLE);
             done.setVisibility(View.INVISIBLE);
         } else {
-            edit.setVisibility(View.INVISIBLE);
-            delete.setVisibility(View.INVISIBLE);
+            edit.setVisibility(View.GONE);
+            delete.setVisibility(View.GONE);
             done.setVisibility(View.VISIBLE);
+            if(TIME_IN_STATUS == 1){
+                done.setVisibility(View.VISIBLE);
+                delete.setVisibility(View.INVISIBLE);
+            } else {
+                done.setVisibility(View.GONE);
+            }
         }
     }
 }

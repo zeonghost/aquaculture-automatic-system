@@ -1,6 +1,8 @@
 package com.example.aquaculture;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -14,6 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
@@ -107,12 +113,23 @@ public class ProfileActivity extends AppCompatActivity {
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sp.edit()
-                        .clear()
-                        .apply();
-                TIME_IN_STATUS = 0;
-                Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
-                startActivity(intent4);
+                if(TIME_IN_STATUS == 1){
+                    AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
+                    timeOutDialog.setTitle("Reminder:");
+                    timeOutDialog.setMessage("Please clock out prior signing out.");
+                    timeOutDialog.setPositiveButton("Clock Out", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    timeOutDialog.show();
+                } else {
+                    sp.edit().clear().apply();
+                    TIME_IN_STATUS = 0;
+                    Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
+                    startActivity(intent4);
+                }
             }
         });
 
