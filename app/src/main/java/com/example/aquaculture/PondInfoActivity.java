@@ -844,11 +844,18 @@ public class PondInfoActivity extends AppCompatActivity {
     }
 
     private String getSystemTime(){
+        String forecastTime;
+        Integer time;
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH");
-        Integer time = Integer.valueOf(timeFormat.format(cal.getTime()));
+        time = Integer.valueOf(timeFormat.format(cal.getTime()));
         time += 1;
-        String forecastTime = "time" + String.valueOf(time);
+        if(time < 10){
+            forecastTime = "time0" + (time);
+        } else {
+            forecastTime = "time" + (time);
+        }
+
         Log.d(TAG, "getSystemTime: " + time);
         Log.d(TAG, "getSystemTime: " + forecastTime);
 
@@ -857,8 +864,8 @@ public class PondInfoActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
-                Integer initialValue = Integer.valueOf((int) (dataSnapshot.getValue(Double.class) * 100));
-                String tempValue = ((double) initialValue/100.00) + " °C";
+                Integer initialValue = Integer.valueOf((int) Math.round(dataSnapshot.getValue(Double.class) * 100.0));
+                String tempValue = (double) initialValue/100.0D + " °C";
                 forecastTemp.setText(tempValue);
             }
 

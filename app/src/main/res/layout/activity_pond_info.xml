@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/read"
-                            android:textSize="45sp" />
+                            android:textSize="40sp" />
                     </LinearLayout>
 
                 </android.support.v7.widget.CardView>
@@ -136,7 +136,7 @@
 
                         <TextView
                             android:id="@+id/textView10"
-                            android:layout_width="128dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
@@ -149,7 +149,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/read"
-                            android:textSize="42sp" />
+                            android:textSize="40sp" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
