@@ -18,9 +18,11 @@
 
     <EditText
         android:id="@+id/editTxtUserSearch"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter username"/>
+        android:hint="Enter username"
+        android:textCursorDrawable="@drawable/cursor" />
 
     <Button
         android:id="@+id/btnSearchUser"

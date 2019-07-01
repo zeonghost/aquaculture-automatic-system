@@ -3,20 +3,20 @@
 
     <item
         android:id="@+id/item1"
-        android:icon="@drawable/ic_menu_camera"
+        android:icon="@drawable/home"
         android:title="Home" />
         <!--android:icon="@drawable/ic_content_copy_24dp"
         android:checked="true"-->
 
     <item
         android:id="@+id/item2"
-        android:icon="@drawable/ic_menu_send"
+        android:icon="@drawable/task"
         android:title="Task" />
         <!--android:icon="@drawable/ic_add_24dp"-->
 
     <item
         android:id="@+id/item3"
-        android:icon="@drawable/ic_menu_manage"
+        android:icon="@drawable/profile"
         android:title="Profile" />
         <!--android:icon="@drawable/ic_link_24dp"-->
 

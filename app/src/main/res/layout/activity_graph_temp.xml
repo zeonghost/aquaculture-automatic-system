@@ -65,6 +65,7 @@
             android:layout_weight="4"
             android:hint="@string/select_start_date"
             android:inputType=""
+            android:textCursorDrawable="@drawable/cursor"
             tools:layout_editor_absoluteX="10dp"
             tools:layout_editor_absoluteY="436dp" />
 
@@ -75,6 +76,7 @@
             android:layout_weight="4"
             android:hint="@string/select_end_date"
             android:inputType=""
+            android:textCursorDrawable="@drawable/cursor"
             tools:layout_editor_absoluteX="212dp"
             tools:layout_editor_absoluteY="436dp" />
 
