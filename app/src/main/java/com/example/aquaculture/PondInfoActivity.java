@@ -852,12 +852,14 @@ public class PondInfoActivity extends AppCompatActivity {
         time += 1;
         if(time < 10){
             forecastTime = "time0" + (time);
+        } else if(time == 24) {
+            forecastTime = "time00";
         } else {
             forecastTime = "time" + (time);
         }
-
-        Log.d(TAG, "getSystemTime: " + time);
-        Log.d(TAG, "getSystemTime: " + forecastTime);
+        Log.d(TAG, "getSystemTime: timeFormat " + timeFormat.format(cal.getTime()));
+        Log.d(TAG, "getSystemTime: time " + time);
+        Log.d(TAG, "getSystemTime:  forecastTime " + forecastTime);
 
         DatabaseReference forecastRef = myDatabase.getReference("pi1-forecast");
         forecastRef.child(forecastTime).addValueEventListener(new ValueEventListener() {
