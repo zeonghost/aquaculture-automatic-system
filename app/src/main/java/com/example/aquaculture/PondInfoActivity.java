@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -76,9 +77,9 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView log4;
     private TextView forecastTemp;
     private ImageView tempSetting;
-    private Switch channel1;
-    private Switch channel2;
-    private Switch channel3;
+    private ImageButton channel1;
+    private ImageButton channel2;
+    private ImageButton channel3;
     private SharedPreferences sp;
     private static long lastClickTime;
     private boolean isGraphVisible;
@@ -113,9 +114,9 @@ public class PondInfoActivity extends AppCompatActivity {
         log3 = findViewById(R.id.L3);
         time4 = findViewById(R.id.T4);
         log4 = findViewById(R.id.L4);
-        channel1 = findViewById(R.id.ch1s);
-        channel2 = findViewById(R.id.ch2s);
-        channel3 = findViewById(R.id.ch3s);
+        channel1 = findViewById(R.id.ch1btr);
+        channel2 = findViewById(R.id.ch2btr);
+        channel3 = findViewById(R.id.ch3btr);
         tempSetting = findViewById(R.id.imageViewSmartSetting);
         forecastTemp = findViewById(R.id.pondforetemp);
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -146,8 +147,7 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
-
-        tempSetting.setOnClickListener(new View.OnClickListener() {
+     tempSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tempSetDialog();
@@ -395,23 +395,54 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 //get current temperature data from database and display
                 final Integer val4 = dataSnapshot.child("auto").getValue(Integer.class);
-                final Switch sw = (Switch) findViewById(R.id.autosw);
+                //final Switch sw = (Switch) findViewById(R.id.autosw);
+                final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
 
                 if(val4 == 1){
-                    sw.setChecked(true);
+                    sw.setImageResource(R.drawable.icons_switch_on_s);
                     tempSetting.setEnabled(false);
                     channel1.setEnabled(false);
                     channel2.setEnabled(false);
                     channel3.setEnabled(false);
                 }
                 else{
-                    sw.setChecked(false);
+                    sw.setImageResource(R.drawable.icons_switch_off_s);
                     tempSetting.setEnabled(true);
                     channel1.setEnabled(true);
                     channel2.setEnabled(true);
                     channel3.setEnabled(true);
                 }//check auto model status and change switch display
 
+                sw.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(val4 == 1){
+                            sw.setImageResource(R.drawable.icons_switch_off_s);
+                            myRef1.child("auto").setValue(0);
+                            Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off Automatic Model";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                        else{
+                            sw.setImageResource(R.drawable.icons_switch_on_s);
+                            myRef1.child("auto").setValue(1);
+                            Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
+                            String log = un + " turned on Automatic Model";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                    }
+                });
+/*
                 sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -444,18 +475,48 @@ public class PondInfoActivity extends AppCompatActivity {
 
                     }
                 });
-
+*/
                 final Integer val1 = dataSnapshot.child("ch1").getValue(Integer.class);
                 //final Button btr1 = (Button) findViewById(R.id.ch1);
                 if(val1 ==1)//1 means on
                 {
-                    channel1.setChecked(true);//change color
+                    channel1.setImageResource(R.drawable.icons_switch_on_s);
                 }
                 if(val1 ==0)//0 means off
                 {
-                    channel1.setChecked(false);
+                    channel1.setImageResource(R.drawable.icons_switch_off_s);
                 }
 
+                channel1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(val1 == 1){
+                            channel1.setImageResource(R.drawable.icons_switch_off_s);
+                            myRef1.child("ch1").setValue(0);//if click then change status
+                            Toast.makeText(PondInfoActivity.this, "Turned off ch 1", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off ch 1";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                        else{
+                            channel1.setImageResource(R.drawable.icons_switch_on_s);
+                            myRef1.child("ch1").setValue(1);
+                            Toast.makeText(PondInfoActivity.this, "Turned on ch 1", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned on ch 1";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                    }
+                });
+/*
                 channel1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -488,16 +549,47 @@ public class PondInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
-
+*/
                 final Integer val2 = dataSnapshot.child("ch2").getValue(Integer.class);
                 if(val2 ==1)
                 {
-                    channel2.setChecked(true);
+                    channel2.setImageResource(R.drawable.icons_switch_on_s);
                 }
                 if(val2 ==0)
                 {
-                    channel2.setChecked(false);
+                    channel2.setImageResource(R.drawable.icons_switch_off_s);
                 }
+
+                channel2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(val2 == 1){
+                            channel2.setImageResource(R.drawable.icons_switch_off_s);
+                            myRef1.child("ch2").setValue(0);
+                            Toast.makeText(PondInfoActivity.this, "Turned off ch 2", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off ch 2";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                        else{
+                            channel2.setImageResource(R.drawable.icons_switch_on_s);
+                            myRef1.child("ch2").setValue(1);
+                            Toast.makeText(PondInfoActivity.this, "Turned on ch 2", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned on ch 2";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                    }
+                });
+                /*
                 channel2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -530,16 +622,47 @@ public class PondInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
-
+*/
                 final Integer val3 = dataSnapshot.child("ch3").getValue(Integer.class);
                 if(val3 == 1)
                 {
-                    channel3.setChecked(true);
+                    channel3.setImageResource(R.drawable.icons_switch_on_s);
                 }
                 if(val3 == 0)
                 {
-                    channel3.setChecked(false);
+                    channel3.setImageResource(R.drawable.icons_switch_off_s);
                 }
+
+                channel3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(val3 == 1){
+                            channel3.setImageResource(R.drawable.icons_switch_off_s);
+                            myRef1.child("ch3").setValue(0);
+                            Toast.makeText(PondInfoActivity.this, "Turned off ch 3", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off ch 3";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                        else{
+                            channel3.setImageResource(R.drawable.icons_switch_on_s);
+                            myRef1.child("ch3").setValue(1);
+                            Toast.makeText(PondInfoActivity.this, "Turned on ch 3", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned on ch3";
+                            Long time = System.currentTimeMillis();
+                            Map<String, Object> logPut = new HashMap<>();
+                            logPut.put("logDetail", log);
+                            logPut.put("logTime", time);
+                            String key = logWrite.push().getKey();
+                            logWrite.child(key).updateChildren(logPut);
+                        }
+                    }
+                });
+                /*
                 channel3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -572,6 +695,7 @@ public class PondInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
+                */
             }
             @Override
             public void onCancelled(DatabaseError error) {
