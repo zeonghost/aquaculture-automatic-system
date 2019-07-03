@@ -63,13 +63,11 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     private TextView txtLocation;
     private TextView txtTimeIn;
     private TextView txtTimeOut;
-    private Button backToPond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partner_log);
-        //getSupportActionBar().hide();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("PartnerLog");
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
@@ -83,7 +81,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         txtLocation = findViewById(R.id.txtViewLocationName);
         txtTimeIn = findViewById(R.id.txtViewTimeIn);
         txtTimeOut = findViewById(R.id.txtViewTimeOut);
-        backToPond = findViewById(R.id.btnBackToPond);
 
         //NOTES: PERMISSIONS MUST BE REQUESTED PRIOR CALLING GOOGLE MAPS SERVICES, OTHERWISE SOME FUNCTION CALLS WILL CRASH THE APP.
         checkGPSServices();
@@ -118,15 +115,12 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onStart() {
         super.onStart();
-
         if(TIME_IN_STATUS == 1){
             timeOut.setEnabled(true);
             timeIn.setEnabled(false);
-            backToPond.setEnabled(true);
         } else {
             timeOut.setEnabled(false);
             timeIn.setEnabled(true);
-            backToPond.setEnabled(false);
         }
 
         txtName.setText("Name: " + sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
@@ -165,9 +159,11 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 myRef.child(username).setValue(partnerLog);
                 txtTimeOut.setText("--- --, ---- --:-- AM/PM");
+                //sp.edit().putBoolean("timeInStatus", true).apply();
                 TIME_IN_STATUS = 1;
-                Intent toPondInfoActivity = new Intent (PartnerLogActivity.this, PondInfoActivity.class);
-                startActivity(toPondInfoActivity);
+                finish();
+                //Intent toPondInfoActivity = new Intent (PartnerLogActivity.this, PondInfoActivity.class);
+                //startActivity(toPondInfoActivity);
             }
         });
         timeOut.setOnClickListener(new View.OnClickListener() {
@@ -175,22 +171,15 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 long currentTimestamp = System.currentTimeMillis();
                 myRef.child(username).child("timeOut").setValue(currentTimestamp);
+                //sp.edit().putBoolean("timeInStatus", false).apply();
                 TIME_IN_STATUS = 0;
                 Intent toHomeActivity = new Intent (PartnerLogActivity.this, HomeActivity.class);
                 startActivity(toHomeActivity);
             }
         });
-
-        backToPond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toPondInfoActivity = new Intent (PartnerLogActivity.this, PondInfoActivity.class);
-                startActivity(toPondInfoActivity);
-            }
-        });
     }
 
-
+    /*
     @Override
     public void onBackPressed() {
         if(TIME_IN_STATUS == 1){
@@ -199,6 +188,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             super.onBackPressed();
         }
     }
+    */
 
     private void checkGPSServices() {
         LocationManager location = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

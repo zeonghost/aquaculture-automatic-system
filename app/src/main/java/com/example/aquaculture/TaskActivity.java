@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -55,6 +56,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
+
 public class TaskActivity extends AppCompatActivity {
     private static final String TAG = "LOG DATA: ";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -87,17 +90,16 @@ public class TaskActivity extends AppCompatActivity {
         Query query;
 
         myRef = database.getReference("/task");
-        String role = sp.getString("role", null);
-        String un = sp.getString("username", null);
-        String name = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
-        String lookUser = un + " - " + name;
+        final String role = sp.getString("role", null);
+        final String un = sp.getString("username", null);
+
         if(Objects.equals(role, "Admin"))
         {
             query = myRef.orderByChild("uploader").equalTo(un);
         }
         else
         {
-            query = myRef.orderByChild("receiver").equalTo(lookUser);
+            query = myRef.orderByChild("receiver").equalTo(un);
         }
 
         options = new FirebaseRecyclerOptions.Builder<Task>()
@@ -114,14 +116,18 @@ public class TaskActivity extends AppCompatActivity {
                 String task = model.getTask();
                 String time = model.getTime();
                 String uploader = model.getUploader();
+                String uploaderName = model.getUploaderName();
+                String receiverName = model.getReceiverName();
 
-                holder.TaskId.setText("Task ID: " + taskId);
-                holder.date.setText("Date: " + date);
-                holder.receiver.setText("Receiver: " + receiver);
-                holder.status.setText("Status: " + status);
-                holder.task.setText("Task: " + task);
-                holder.time.setText("Time: " + time);
-                holder.uploader.setText("Uploader: " + uploader);
+                holder.TaskId.setText(taskId);
+                holder.date.setText(date);
+                holder.receiver.setText(receiver);
+                holder.status.setText(status);
+                holder.task.setText(task);
+                holder.time.setText(time);
+                holder.uploader.setText(uploader);
+                holder.uploaderName.setText(uploaderName);
+                holder.receiverName.setText(receiverName);
 
                 holder.edit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -130,6 +136,7 @@ public class TaskActivity extends AppCompatActivity {
                         showEditDialog();
                     }
                 });
+
                 holder.delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -137,13 +144,20 @@ public class TaskActivity extends AppCompatActivity {
                         showDeleteDialog();
                     }
                 });
-                holder.done.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        transId = taskId;
-                        showDoneDialog();
-                    }
-                });
+
+                if(Objects.equals(status, "Pending") && Objects.equals(role, "Partner")){
+                    holder.done.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            transId = taskId;
+                            showDoneDialog();
+                        }
+                    });
+                } else {
+                    holder.done.setVisibility(View.GONE);
+                    holder.edit.setVisibility(View.GONE);
+                    holder.delete.setVisibility(View.GONE);
+                }
             }
 
             @NonNull
@@ -175,6 +189,9 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(TIME_IN_STATUS == 0){
+            reminderToClockIn();
+        }
     }
 
     @Override
@@ -198,13 +215,53 @@ public class TaskActivity extends AppCompatActivity {
         final View textEntryView = factory.inflate(R.layout.dialog_task_edit, null);
         final EditText date = (EditText) textEntryView.findViewById(R.id.editTextDate);
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
-        final EditText receiver = (EditText)textEntryView.findViewById(R.id.editTextReceiver);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
-        final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
+        final Spinner receiver = textEntryView.findViewById(R.id.spinnerReceiver);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        receiverTest.setAdapter(arrayAdapter);
+        receiver.setAdapter(arrayAdapter);
+        receiver.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                DatabaseReference tokRef = database.getReference("/user");
+                tokRef.orderByChild("username").equalTo(receiver.getSelectedItem().toString().split(" ")[0]).addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        pushToken = dataSnapshot.child("pushToken").getValue().toString();
+                        sp1.edit()
+                                .putString("pushToken", pushToken)
+                                .apply();
+                        Log.d(TAG, "Push Token111: "+ pushToken);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         date.setFocusable(false);
         date.setClickable(true);
@@ -226,44 +283,19 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         AlertDialog.Builder ad1 = new AlertDialog.Builder(TaskActivity.this);
+
         ad1.setTitle("Add New Task:");
         ad1.setView(textEntryView);
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 myRef1 = database.getReference("/task");
-                DatabaseReference tokRef = database.getReference("/user");
-                tokRef.orderByChild("username").equalTo(receiver.getText().toString()).addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        pushToken = dataSnapshot.child("pushToken").getValue().toString();
-                        sp1.edit()
-                                .putString("pushToken", pushToken)
-                                .apply();
-                        Log.d(TAG, "Push Token111: "+ pushToken);
-                    }
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                    }
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
                 String un = sp.getString("username", null);
                 String token = sp1.getString("pushToken", null);
-                String rt = receiverTest.getSelectedItem().toString();
-                //DatabaseReference hopperRef = myRef1.child(transId);
+                String rt = receiver.getSelectedItem().toString().split(" ")[0];
+                String receiverName = receiver.getSelectedItem().toString().split(" ")[2] + " " + receiver.getSelectedItem().toString().split(" ")[3];
+                String uploaderName = sp.getString("firstname",  "") + " " + sp.getString("lastname","");
                 String key = myRef1.push().getKey();
-                Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un);
+                Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un, receiverName, uploaderName);
                 myRef1.child(key).setValue(newUser);
                 Map<String, Object> pushT = new HashMap<>();
                 pushT.put("receiveToken", token);
@@ -280,14 +312,14 @@ public class TaskActivity extends AppCompatActivity {
         final View textEntryView = factory.inflate(R.layout.dialog_task_edit, null);
         final EditText date = (EditText) textEntryView.findViewById(R.id.editTextDate);
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
-        final EditText receiver = (EditText)textEntryView.findViewById(R.id.editTextReceiver);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
         final RadioGroup radioGroup = textEntryView.findViewById(R.id.radioGroup);
-        final Spinner receiverTest = textEntryView.findViewById(R.id.spinnerReceiver);
+        final Spinner receiver = textEntryView.findViewById(R.id.spinnerReceiver);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        receiverTest.setAdapter(arrayAdapter);
+        receiver.setAdapter(arrayAdapter);
+
 
         date.setFocusable(false);
         date.setClickable(true);
@@ -302,13 +334,16 @@ public class TaskActivity extends AppCompatActivity {
                 Log.d(TAG, "Datasnapshot: " + dataSnapshot.getValue().toString());
                 date.setText(taskTemp.getDate());
                 time.setText(taskTemp.getTime());
-                receiver.setText(taskTemp.getReceiver());
                 if (Objects.equals(taskTemp.getStatus(), "Pending")){
                     radioGroup.check(R.id.radioPending);
-                    //status = getString(R.string.pending);
                 } else {
                     radioGroup.check(R.id.radioDone);
                 }
+
+                String completeReceiverInfo = taskTemp.getReceiver() + " - " + taskTemp.getReceiverName();
+                int position = getPositionOfSpinner(receiver, completeReceiverInfo);
+                receiver.setSelection(position);
+                receiver.setEnabled(false);
                 task.setText(taskTemp.getTask());
             }
 
@@ -340,7 +375,7 @@ public class TaskActivity extends AppCompatActivity {
                 Map<String, Object> hopperUpdates = new HashMap<>();
                 hopperUpdates.put("date", date.getText().toString());
                 hopperUpdates.put("time", time.getText().toString());
-                hopperUpdates.put("receiver", receiver.getText().toString());
+                //hopperUpdates.put("receiver", receiver.getSelectedItem().toString().split(" ")[0]);
                 hopperUpdates.put("status", status);
                 hopperUpdates.put("task", task.getText().toString());
                 hopperRef.updateChildren(hopperUpdates);
@@ -394,8 +429,6 @@ public class TaskActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.item2://btn 2 -> task
-                        Intent intent2 = new Intent(TaskActivity.this, TaskActivity.class);
-                        startActivity(intent2);
                         break;
                     case R.id.item3://btn 3 -> profile
                         Intent intent3 = new Intent(TaskActivity.this, ProfileActivity.class);
@@ -450,5 +483,29 @@ public class TaskActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private int getPositionOfSpinner(Spinner s, String str){
+        int i = 0, found = 0;
+        while(i < s.getCount()){
+            if(Objects.equals(s.getItemAtPosition(i), str)){
+                found = i;
+                break;
+            }
+            i++;
+        }
+        return found;
+    }
+
+    private void reminderToClockIn(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(TaskActivity.this);
+        dialog.setTitle("Caution").setMessage("Don't forget to clock in!");
+        dialog.setPositiveButton("Understood", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

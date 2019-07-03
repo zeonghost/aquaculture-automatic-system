@@ -20,6 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignTop="@id/cardviewHolder2"
         android:layout_margin="20dp">
+
         <fragment
             android:id="@+id/fragmentMap"
             android:name="com.google.android.gms.maps.MapFragment"
@@ -91,6 +92,8 @@
 
                 <Button
                     android:id="@+id/btnTimeIn"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="37dp"
                     android:layout_weight="1"
@@ -102,6 +105,8 @@
                 <Button
                     android:id="@+id/btnTimeOut"
                     android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_height="37dp"
                     android:layout_weight="1"
                     android:background="#0F7D63"
@@ -134,14 +139,6 @@
                 android:paddingLeft="15dp"
                 android:text="Location"
                 android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/btnBackToPond"
-                android:layout_width="139dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="Back"
-                android:textColor="#0F7D63" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

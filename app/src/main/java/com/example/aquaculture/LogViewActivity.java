@@ -39,8 +39,6 @@ public class LogViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logview);
         buttomNavigation();
-        //getSupportActionBar().hide();
-
         logInfo = findViewById(R.id.Recycle);
         logInfo.setHasFixedSize(true);
 

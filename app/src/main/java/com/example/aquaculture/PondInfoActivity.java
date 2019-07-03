@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -16,15 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
 
-//import com.example.aquaculture.Model.Loga;
+import com.example.aquaculture.Model.Forecast;
+import com.example.aquaculture.Model.ForecastResult;
+import com.example.aquaculture.Model.SimpleExponentialSmoothing;
+import com.example.aquaculture.ViewHolder.ForecastViewHolder;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -54,7 +57,6 @@ import java.util.TimeZone;
 public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private CardView graphCheck;
-    private CardView tempSet;
     private CardView logview;
     private LineChart lineChart;
     private TextView piID;
@@ -72,11 +74,19 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView log3;
     private TextView time4;
     private TextView log4;
+    private TextView forecastTemp;
+    private ImageView tempSetting;
     private Switch channel1;
     private Switch channel2;
     private Switch channel3;
     private SharedPreferences sp;
     private static long lastClickTime;
+    private boolean isGraphVisible;
+
+    private FirebaseDatabase myDatabase;
+    private DatabaseReference myRef;
+    private Forecast forecast;
+    private SimpleExponentialSmoothing sme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +94,12 @@ public class PondInfoActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_pond_info);
         StatusBarCompat.setStatusBarColor(this, Color.parseColor("#148D7F"));
-
-
+        myDatabase = FirebaseDatabase.getInstance();
         piID = findViewById(R.id.txtViewPiID);
         pondName = findViewById(R.id.txtViewPondName);
         location = findViewById(R.id.txtViewPondLocation);
-        graphCheck = findViewById(R.id.cardView);
+        graphCheck = findViewById(R.id.graphCardView);
         lineChart = findViewById(R.id.lineChart);
-        tempSet = findViewById(R.id.cardViewTempSet);
         logview = findViewById(R.id.logView);
         highTemp = findViewById(R.id.txtViewHighTemp);
         lowTemp = findViewById(R.id.txtViewLowTemp);
@@ -108,28 +116,49 @@ public class PondInfoActivity extends AppCompatActivity {
         channel1 = findViewById(R.id.ch1s);
         channel2 = findViewById(R.id.ch2s);
         channel3 = findViewById(R.id.ch3s);
+        tempSetting = findViewById(R.id.imageViewSmartSetting);
+        forecastTemp = findViewById(R.id.pondforetemp);
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
-        startingGraph();
+        isGraphVisible = false;
+        startingTempGraph();
+        lineChart.setVisibility(View.GONE);
         basicReadWrite();
         buttomNavigation();
         logRead();
+        forecast = new Forecast();
+        sme = new SimpleExponentialSmoothing();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        graphCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isGraphVisible){
+                    lineChart.setVisibility(View.GONE);
+                    isGraphVisible = false;
+                } else {
+                    lineChart.setVisibility(View.VISIBLE);
+                    isGraphVisible = true;
+                }
+            }
+        });
+
+
+        tempSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tempSetDialog();
+            }
+        });
+
         lineChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent toGraphActivity = new Intent (PondInfoActivity.this, GraphTempActivity.class);
                 startActivity(toGraphActivity);
-            }
-        });
-
-        tempSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tempSetDialog();
             }
         });
 
@@ -143,11 +172,16 @@ public class PondInfoActivity extends AppCompatActivity {
 
     }
 
-    /*******************
-     * FUNCTIONS
-     *******************/
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String counter = getSystemTime();
+        if(Objects.equals(counter, "time00")){
+            getForecast();
+        }
+    }
 
-    public void startingGraph(){
+    public void startingTempGraph(){
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("pi1-temp");
         final ArrayList<Entry> yValues = new ArrayList<>();
         lineChart.setDragEnabled(false);
@@ -155,7 +189,7 @@ public class PondInfoActivity extends AppCompatActivity {
         lineChart.setPinchZoom(false);
         lineChart.setDoubleTapToZoomEnabled(false);
         lineChart.setHighlightPerTapEnabled(false);
-        lineChart.getDescription().setText("Within 6 Hours Time");
+        lineChart.getDescription().setText("Past 6 Hours Time");
         lineChart.getLegend().setEnabled(false);
 
         long today = Calendar.getInstance().getTimeInMillis();
@@ -181,7 +215,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineDataSet.setColor(Color.BLUE);
                 lineDataSet.setLineWidth(2f);
                 lineDataSet.setValueTextSize(0);
-                lineDataSet.setCircleHoleRadius(-1);
+                lineDataSet.setCircleHoleRadius(0);
                 lineDataSet.setCircleColor(Color.BLUE);
                 lineDataSet.setDrawCircles(false);
                 //lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
@@ -365,14 +399,14 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 if(val4 == 1){
                     sw.setChecked(true);
-                    tempSet.setEnabled(false);
+                    tempSetting.setEnabled(false);
                     channel1.setEnabled(false);
                     channel2.setEnabled(false);
                     channel3.setEnabled(false);
                 }
                 else{
                     sw.setChecked(false);
-                    tempSet.setEnabled(true);
+                    tempSetting.setEnabled(true);
                     channel1.setEnabled(true);
                     channel2.setEnabled(true);
                     channel3.setEnabled(true);
@@ -563,13 +597,8 @@ public class PondInfoActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item1:
-                        if(Objects.equals(sp.getString("role",""), "Partner")){
-                            Intent intent0 = new Intent(PondInfoActivity.this, PartnerLogActivity.class);
-                            startActivity(intent0);
-                        } else {
-                            Intent intent1 = new Intent(PondInfoActivity.this, HomeActivity.class);
-                            startActivity(intent1);
-                        }
+                        Intent intent1 = new Intent(PondInfoActivity.this, HomeActivity.class);
+                        startActivity(intent1);
                         break;
                     case R.id.item2:
                         Intent intent2 = new Intent(PondInfoActivity.this, TaskActivity.class);
@@ -686,4 +715,166 @@ public class PondInfoActivity extends AppCompatActivity {
         });
         ad1.show();
     }
+
+    private void getForecast(){
+        myRef = myDatabase.getReference("pi1-forecast-test");
+        Query query = myRef.orderByChild("time");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "12:00 AM")){
+                        forecast.addClock0(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "1:00 AM")){
+                        forecast.addClock1(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "2:00 AM")){
+                        forecast.addClock2(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "3:00 AM")){
+                        forecast.addClock3(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "4:00 AM")){
+                        forecast.addClock4(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "5:00 AM")){
+                        forecast.addClock5(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "6:00 AM")){
+                        forecast.addClock6(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "7:00 AM")){
+                        forecast.addClock7(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "8:00 AM")){
+                        forecast.addClock8(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "9:00 AM")){
+                        forecast.addClock9(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "10:00 AM")){
+                        forecast.addClock10(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "11:00 AM")){
+                        forecast.addClock11(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "12:00 PM")){
+                        forecast.addClock12(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "1:00 PM")){
+                        forecast.addClock13(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "2:00 PM")){
+                        forecast.addClock14(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "3:00 PM")){
+                        forecast.addClock15(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "4:00 PM")){
+                        forecast.addClock16(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "5:00 PM")){
+                        forecast.addClock17(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "6:00 PM")){
+                        forecast.addClock18(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "7:00 PM")){
+                        forecast.addClock19(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "8:00 PM")){
+                        forecast.addClock20(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "9:00 PM")){
+                        forecast.addClock21(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "10:00 PM")){
+                        forecast.addClock22(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "11:00 PM")){
+                        forecast.addClock23(snaps.child("val").getValue(Float.class)/10);
+                    }
+                }
+                forecast.collectClockLists();
+                init_forecastNode();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void init_forecastNode(){
+        DatabaseReference refForecastNode = myDatabase.getReference("pi1-forecast");
+        ForecastResult forecastResult = new ForecastResult();
+        ArrayList<Float> result = new ArrayList<>();
+        int size = forecast.getAllClock().size();
+        for(int i = 0 ; i < size ; i++){
+            sme.setValueList(forecast.getClockIndex(i));
+            result.add(sme.getBestSME());
+        }
+        forecastResult.update(result);
+        refForecastNode.setValue(forecastResult);
+    }
+
+    private String getSystemTime(){
+        String forecastTime;
+        Integer time;
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH");
+        time = Integer.valueOf(timeFormat.format(cal.getTime()));
+        time += 1;
+        if(time < 10){
+            forecastTime = "time0" + (time);
+        } else {
+            forecastTime = "time" + (time);
+        }
+
+        Log.d(TAG, "getSystemTime: " + time);
+        Log.d(TAG, "getSystemTime: " + forecastTime);
+
+        DatabaseReference forecastRef = myDatabase.getReference("pi1-forecast");
+        forecastRef.child(forecastTime).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
+                Integer initialValue = Integer.valueOf((int) Math.round(dataSnapshot.getValue(Double.class) * 100.0));
+                String tempValue = (double) initialValue/100.0D + " °C";
+                forecastTemp.setText(tempValue);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return forecastTime;
+    }
+
 }

@@ -9,63 +9,74 @@
     tools:layout_editor_absoluteY="81dp">
 
 
-
-
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#7CFFFFFF"
-        app:cardCornerRadius="7dp"
-        app:cardElevation="100dp"
+        app:cardBackgroundColor="#075E54"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="Pi ID: " />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="6"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/txtViewPiID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="50dp"
-            android:text="@string/pi_1" />
+            <TextView
+                android:id="@+id/txtViewPondName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/pond_1"
+                android:textColor="#78C298"
+                android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingRight="100dp"
-            android:text="@string/pond_id" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingRight="115dp"
+                android:text="@string/pond_id"
+                android:textColor="#ffff" />
 
-        <TextView
-            android:id="@+id/txtViewPondName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingLeft="30dp"
-            android:text="@string/pond_1" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingRight="100dp"
+                android:text="@string/location"
+                android:textColor="#ffff" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:paddingRight="90dp"
-            android:text="@string/location" />
+            <TextView
+                android:id="@+id/txtViewPiID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="60dp"
+                android:text="@string/pi_1"
+                android:textColor="#78C298" />
 
-        <TextView
-            android:id="@+id/txtViewPondLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/locat" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:text="Pi ID: "
+                android:textColor="#ffff" />
+
+            <TextView
+                android:id="@+id/txtViewPondLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:paddingLeft="319dp"
+                android:text="@string/locat"
+                android:textColor="#78C298" />
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
@@ -83,21 +94,59 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="409dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:cardBackgroundColor="#7CFFFFFF"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="20px">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TEMPERATURE"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="#075E54"
+                        android:textSize="35sp" />
+
+                    <TextView
+                        android:id="@+id/tempRead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/read"
+                        android:textColor="#075E54"
+                        android:textSize="90sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/cardView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    app:cardBackgroundColor="#34128C7E"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:cardBackgroundColor="#7CFFFFFF"
                     app:cardCornerRadius="10dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="true"
-                    app:contentPadding="20px">
+                    app:contentPadding="10px"
+                    android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -105,45 +154,14 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="TEMPERATURE"
-                            android:textSize="25sp" />
-
-                        <TextView
-                            android:id="@+id/tempRead"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="@string/read"
-                            android:textSize="45sp" />
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardBackgroundColor="#34128C7E"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp"
-                    app:cardUseCompatPadding="true"
-                    app:contentPadding="20px">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView10"
-                            android:layout_width="128dp"
+                            android:id="@+id/tempforecasttext"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:gravity="center_horizontal"
-                            android:text="FORECAST TEMPEATURE"
-                            android:textSize="17sp" />
+                            android:paddingTop="3dp"
+                            android:text="TEMPERATURE FORECAST"
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/pondforetemp"
@@ -151,31 +169,123 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:text="@string/read"
-                            android:textSize="42sp" />
+                            android:textColor="#075E54"
+                            android:textSize="30sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:cardBackgroundColor="#7CFFFFFF"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="5px"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/weatherforecasttext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:text="WEATHER FORECAST"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/weatherforecast"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/read"
+                            android:textColor="#075E54"
+                            android:textSize="30sp" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    app:cardBackgroundColor="#7CFFFFFF"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="10px"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/evapratetext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:text="EVAPORATION RATE"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/evaprate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/read"
+                            android:textColor="#075E54"
+                            android:textSize="30sp" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
             </LinearLayout>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cardView"
+                android:id="@+id/graphCardView"
                 android:layout_width="match_parent"
-                android:layout_height="139dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
+                android:animateLayoutChanges="true"
                 android:orientation="vertical"
-                app:cardBackgroundColor="#33128C7E"
+                app:cardBackgroundColor="#7CFFFFFF"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp">
 
-                <com.github.mikephil.charting.charts.LineChart
-
-                    android:id="@+id/lineChart"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="155dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                </com.github.mikephil.charting.charts.LineChart>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="WATER TEMPERATURE"
+                        android:textColor="#075E54"
+                        android:textSize="20sp" />
 
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="155dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
+
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -184,7 +294,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                app:cardBackgroundColor="#33128C7E"
+                app:cardBackgroundColor="#7CFFFFFF"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:contentPadding="10px">
@@ -195,14 +305,34 @@
                     android:layout_gravity="right|center_horizontal"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView15"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:text="SMART SETTINGS"
-                        android:textSize="20sp" />
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="9"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:text="SMART SETTINGS"
+                            android:textColor="#075E54"
+                            android:textSize="20sp" />
+
+                        <ImageView
+                            android:id="@+id/imageViewSmartSetting"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/setting" />
+
+                    </LinearLayout>
+
 
                     <Switch
                         android:id="@+id/autosw"
@@ -248,36 +378,13 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:text="Push" />
-                </LinearLayout>
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardViewTempSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                app:cardBackgroundColor="#33128C7E"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="5dp"
-                app:contentPadding="10px">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:textSize="20sp"
-                        android:text="SMART SETTINGS"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -285,7 +392,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Highest Temperature Level:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtViewHighTemp"
@@ -294,13 +401,15 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -309,7 +418,7 @@
                             android:layout_gravity="bottom|start"
                             android:layout_weight="1"
                             android:text="Lowest Temperature Level:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtViewLowTemp"
@@ -318,13 +427,15 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -333,7 +444,7 @@
                             android:layout_gravity="bottom|start"
                             android:layout_weight="1"
                             android:text="Channel 2 On Time:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtCh2OnTime"
@@ -342,13 +453,15 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:weightSum="2">
 
                         <TextView
@@ -357,7 +470,7 @@
                             android:layout_gravity="bottom|start"
                             android:layout_weight="1"
                             android:text="Channel 2 Off Time:"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/txtCh2OffTime"
@@ -366,9 +479,10 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="xxx"
-                            android:textSize="20sp" />
+                            android:textSize="15sp" />
                     </LinearLayout>
                 </LinearLayout>
+
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -376,7 +490,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                app:cardBackgroundColor="#33128C7E"
+                app:cardBackgroundColor="#7CFFFFFF"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="5dp"
                 app:contentPadding="10px"
@@ -391,55 +505,71 @@
                         android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="Log"
+                        android:textColor="#075E54"
                         android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/T1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
                         android:text="TextView" />
 
                     <TextView
                         android:id="@+id/L1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"
                         android:text="xxx" />
 
                     <TextView
                         android:id="@+id/T2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
                         android:text="TextView" />
 
                     <TextView
                         android:id="@+id/L2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"
                         android:text="TextView" />
 
                     <TextView
                         android:id="@+id/T3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
                         android:text="TextView" />
 
                     <TextView
                         android:id="@+id/L3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"
                         android:text="TextView" />
 
                     <TextView
                         android:id="@+id/T4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
                         android:text="TextView" />
 
                     <TextView
                         android:id="@+id/L4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingBottom="8dp"
                         android:text="TextView" />
                 </LinearLayout>
 

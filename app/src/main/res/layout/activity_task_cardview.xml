@@ -10,119 +10,218 @@
     android:orientation="vertical"
     app:cardBackgroundColor="#7CFFFFFF"
     app:cardCornerRadius="7dp"
-    tools:layout_editor_absoluteX="20dp">
+    tools:layout_editor_absoluteX="20dp"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="93dp"
-            android:layout_height="35dp"
-            android:layout_gravity="right|center"
-            android:layout_marginLeft="261dp"
-            android:layout_marginTop="68dp"
-            android:background="#075E54"
-            android:text="Done"
-            android:textColor="#F7FFFFFF"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="93dp"
-            android:layout_height="35dp"
-            android:layout_gravity="right|top"
-            android:layout_marginLeft="160dp"
-            android:layout_marginTop="150.5dp"
-            android:background="#075E54"
-            android:text="Edit"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="93dp"
-            android:layout_height="35dp"
-            android:layout_gravity="right|center"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="68dp"
-            android:background="#075E54"
-            android:text="Delete"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="3dp">
 
-        <TextView
-            android:id="@+id/taskId"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="8dp"
-            android:text="TextView"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="TextView"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TASK ID:"
+                android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="TextView"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/taskId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
 
-        <TextView
-            android:id="@+id/task"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="TextView"
-            android:textSize="16sp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/status"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="TextView"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-        <TextView
-            android:id="@+id/receiver"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="TextView"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="DATE:"/>
 
-        <TextView
-            android:id="@+id/uploader"
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="TextView"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TIME:"
+                android:layout_weight="1"/>
+
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TASK:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/task"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="STATUS:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="RECEIVER:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/txtReceiverName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/receiver"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="UPLOADER:"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/txtUploaderName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/uploader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:background="#075E54"
+                android:text="Edit"
+                android:textColor="#FFFFFF"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"/>
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:background="#075E54"
+                android:text="Delete"
+                android:textColor="#FFFFFF"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="185dp"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#075E54"
+            android:text="Done"
+            android:textColor="#F7FFFFFF"
+            android:layout_marginTop="-30dp"
+            />
 
     </LinearLayout>
 

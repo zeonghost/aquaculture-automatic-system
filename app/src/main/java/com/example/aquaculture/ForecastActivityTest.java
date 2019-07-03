@@ -215,7 +215,6 @@ public class ForecastActivityTest extends AppCompatActivity {
         }
         forecastResult.update(result);
         refForecastNode.setValue(forecastResult);
-
     }
 
     private String convertToCelsius(Integer val){

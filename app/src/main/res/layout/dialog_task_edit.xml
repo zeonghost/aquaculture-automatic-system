@@ -44,19 +44,20 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:layout_marginStart="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
         android:text="Receiver: " />
 
     <EditText
         android:id="@+id/editTextReceiver"
-        android:textCursorDrawable="@drawable/cursor"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:textCursorDrawable="@drawable/cursor"/>
+    <Spinner
+        android:id="@+id/spinnerReceiver"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp" />
 
     <TextView
         android:id="@+id/textView4"
@@ -101,19 +102,6 @@
         android:id="@+id/editTextTask"
         android:layout_marginStart="40dp"
         android:textCursorDrawable="@drawable/cursor"
-        android:layout_marginEnd="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_marginStart="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Receiver: " />
-
-    <Spinner
-        android:id="@+id/spinnerReceiver"
-        android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
