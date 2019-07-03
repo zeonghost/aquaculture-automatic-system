@@ -9,14 +9,12 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="413dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="91dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="302dp"
-        app:layout_constraintBottom_toTopOf="@+id/fgt_pass"
+        android:layout_width="371dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="92dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
@@ -26,8 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="38dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="8dp"
         android:background="#F1F1F1"
         android:backgroundTint="#90FFFFFF"
         android:ems="12"
@@ -38,10 +36,9 @@
         android:textColorHint="#3E000000"
         android:textColorLink="#0C3F6B"
         android:textCursorDrawable="@drawable/cursor"
-        app:layout_constraintBottom_toTopOf="@+id/passInput"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <EditText
@@ -49,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="38dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="19dp"
+        android:layout_marginTop="8dp"
         android:background="#F1F1F1"
         android:backgroundTint="#90FFFFFF"
         android:ems="12"
@@ -60,7 +57,7 @@
         android:textColorHint="#3E000000"
         android:textColorLink="#0C3F6B"
         android:textCursorDrawable="@drawable/cursor"
-        app:layout_constraintBottom_toTopOf="@+id/cd_al"
+        app:layout_constraintEnd_toEndOf="@+id/nameInput"
         app:layout_constraintStart_toStartOf="@+id/nameInput"
         app:layout_constraintTop_toBottomOf="@+id/nameInput" />
 
@@ -70,28 +67,27 @@
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="28dp"
+        android:layout_marginTop="24dp"
         android:text="Auto Login"
         android:textColor="#0F7D63"
-        app:layout_constraintBottom_toTopOf="@+id/loginBtn"
+        app:layout_constraintEnd_toEndOf="@+id/passInput"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="@+id/passInput"
         app:layout_constraintTop_toBottomOf="@+id/passInput" />
 
     <Button
         android:id="@+id/loginBtn"
-        android:layout_width="0dp"
+        android:layout_width="246dp"
         android:layout_height="38dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="3dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="45dp"
+        android:layout_marginTop="32dp"
         android:background="#075E54"
         android:text="login"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/fgt_pass"
         app:layout_constraintEnd_toEndOf="@+id/passInput"
-        app:layout_constraintStart_toStartOf="@+id/cd_al"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="@+id/passInput"
         app:layout_constraintTop_toBottomOf="@+id/cd_al" />
 
     <Button
@@ -99,9 +95,7 @@
         android:layout_width="199dp"
         android:layout_height="24dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="17dp"
+        android:layout_marginTop="28dp"
         android:background="#02FFFFFF"
         android:capitalize="none"
         android:text="Forgot Password?"
@@ -109,57 +103,47 @@
         android:textColor="#0F7D63"
         android:textColorLink="#0F7D63"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintEnd_toEndOf="@+id/loginBtn"
+        app:layout_constraintStart_toStartOf="@+id/loginBtn"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
     <Button
         android:id="@+id/sinbtr"
         android:layout_width="56dp"
         android:layout_height="20dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="118dp"
-        android:layout_marginBottom="72dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="4dp"
         android:background="#02FFFFFF"
         android:capitalize="none"
         android:text="Sign Up"
         android:textAllCaps="false"
         android:textColor="#0F7D63"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintEnd_toStartOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/fgt_pass" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="161dp"
         android:layout_height="20dp"
-        android:layout_marginStart="63dp"
-        android:layout_marginBottom="73dp"
-        android:text="Don't have any account? "
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="8dp"
+        android:text="Don't have an account? "
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sinbtr"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toStartOf="@+id/loginBtn"
         app:layout_constraintTop_toBottomOf="@+id/fgt_pass" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="110dp"
-        android:layout_marginBottom="127dp"
+        android:layout_marginTop="52dp"
         android:text="now!"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/sinbtr"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:layout_constraintVertical_bias="0.322" />
+        app:layout_constraintEnd_toEndOf="@+id/loginBtn"
+        app:layout_constraintTop_toBottomOf="@+id/fgt_pass" />
 
 </android.support.constraint.ConstraintLayout>
