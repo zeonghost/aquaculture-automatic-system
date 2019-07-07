@@ -16,6 +16,7 @@
         android:id="@+id/editTextNum1"
         android:layout_width="354dp"
         android:layout_height="wrap_content"
+        android:textCursorDrawable="@drawable/cursor"
         android:textColorLink="#0F7D63">
 
         <requestFocus />
@@ -25,11 +26,13 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textCursorDrawable="@drawable/cursor"
         android:text="Lowest Critical Water Temperature (Celsius):" />
 
     <EditText
         android:id="@+id/editTextNum2"
         android:layout_width="354dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -40,6 +43,7 @@
     <EditText
         android:id="@+id/editTextCh2TurnOnTime"
         android:layout_width="354dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -50,6 +54,7 @@
     <EditText
         android:id="@+id/editTextCh2TurnOffTime"
         android:layout_width="354dp"
+
         android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -147,7 +147,7 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
-     tempSetting.setOnClickListener(new View.OnClickListener() {
+        tempSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tempSetDialog();
@@ -472,7 +472,6 @@ public class PondInfoActivity extends AppCompatActivity {
                         else{
                             Toast.makeText(PondInfoActivity.this, "Operation Too Fast", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
 */
@@ -976,20 +975,22 @@ public class PondInfoActivity extends AppCompatActivity {
         time += 1;
         if(time < 10){
             forecastTime = "time0" + (time);
+        } else if(time == 24) {
+            forecastTime = "time00";
         } else {
             forecastTime = "time" + (time);
         }
-
-        Log.d(TAG, "getSystemTime: " + time);
-        Log.d(TAG, "getSystemTime: " + forecastTime);
+        Log.d(TAG, "getSystemTime: timeFormat " + timeFormat.format(cal.getTime()));
+        Log.d(TAG, "getSystemTime: time " + time);
+        Log.d(TAG, "getSystemTime:  forecastTime " + forecastTime);
 
         DatabaseReference forecastRef = myDatabase.getReference("pi1-forecast");
         forecastRef.child(forecastTime).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
-                Integer initialValue = Integer.valueOf((int) Math.round(dataSnapshot.getValue(Double.class) * 100.0));
-                String tempValue = (double) initialValue/100.0D + " °C";
+                Integer initialValue = Integer.valueOf((int) Math.round(dataSnapshot.getValue(Double.class) * 10));
+                String tempValue = (double) initialValue/10.0 + " °C";
                 forecastTemp.setText(tempValue);
             }
 

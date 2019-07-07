@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:layout_marginEnd="40dp"
         android:textColorHighlight="#3DB9AE"
         android:textColorLink="#3DB9AE">
@@ -37,6 +38,7 @@
     <EditText
         android:id="@+id/editTextTime"
         android:layout_width="match_parent"
+        android:textCursorDrawable="@drawable/cursor"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         android:layout_height="wrap_content" />
@@ -47,6 +49,10 @@
         android:layout_height="wrap_content"
         android:text="Receiver: " />
 
+    <EditText
+        android:id="@+id/editTextReceiver"
+        android:layout_height="wrap_content"
+        android:textCursorDrawable="@drawable/cursor" />
     <Spinner
         android:id="@+id/spinnerReceiver"
         android:layout_width="match_parent"
@@ -67,17 +73,20 @@
         android:layout_marginStart="40dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <RadioButton
             android:id="@+id/radioPending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pending"
-            android:onClick="radioCheck"/>
+            android:buttonTint="@color/colorPrimaryDark"
+            android:onClick="radioCheck"
+            android:text="@string/pending" />
 
         <RadioButton
             android:id="@+id/radioDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimaryDark"
             android:onClick="radioCheck"
             android:text="@string/done"
             android:textColorLink="#3DB9AE" />
@@ -93,6 +102,7 @@
     <EditText
         android:id="@+id/editTextTask"
         android:layout_marginStart="40dp"
+        android:textCursorDrawable="@drawable/cursor"
         android:layout_marginEnd="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

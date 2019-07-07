@@ -10,34 +10,32 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:text="You want to link"/>
+        android:paddingLeft="8dp"
+        android:text="Are you sure you want to link"
+        android:textSize="20sp" />
+
     <TextView
         android:id="@+id/txtViewUserInfo"
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="userInfo"
         android:textSize="20sp"
-        android:text="userInfo"/>
+        android:textStyle="bold" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:textSize="20sp"
         android:text="to"/>
+
     <TextView
         android:id="@+id/txtViewPondInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:text="pondInfo"
         android:textSize="20sp"
-        android:text="pondInfo"/>
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Proceed?"/>
+        android:textStyle="bold" />
 
 </LinearLayout>
