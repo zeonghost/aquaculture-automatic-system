@@ -189,8 +189,12 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+        String role = sp.getString("role", null);
         if(TIME_IN_STATUS == 0){
-            reminderToClockIn();
+            if(Objects.equals(role, "Partner")){
+                reminderToClockIn();
+            }
         }
     }
 
