@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
@@ -53,6 +54,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
+        String role = sp.getString("role", null);
+
+        if(Objects.equals(role, "Partner")){
+            partnerCard.setVisibility(View.GONE);
+            pondCard.setVisibility(View.GONE);
+        }else{
+            timeCard.setVisibility(View.INVISIBLE);
+        }
+
         fullname.setText(sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
         username.setText(sp.getString("username", null));
 
@@ -65,6 +75,14 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        timeCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
+                startActivity(intent);
+            }
+        });
 
         pondCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,15 +109,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
-        timeCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         Button btr1 = (Button)findViewById(R.id.btr1);
         btr1.setOnClickListener(new View.OnClickListener() {
