@@ -19,6 +19,7 @@ public class Weather extends AsyncTask<String, Void, String> {
     private String cloud;
     private String cloudDescription;
     private double evaporationRate;
+    private long dateTime;
 
     public Weather() {}
 
@@ -46,6 +47,8 @@ public class Weather extends AsyncTask<String, Void, String> {
 
     public void setEvaporationRate(double evaporationRate) {this.evaporationRate = evaporationRate;}
 
+    public long getDateTime(){return dateTime;}
+
     public void search(String cityName){
         try {
             String content = this.execute("https://openweathermap.org/data/2.5/weather?q=" + cityName +"&appid=b6907d289e10d714a6e88b30761fae22").get();
@@ -58,12 +61,14 @@ public class Weather extends AsyncTask<String, Void, String> {
             String weatherInfo = jsonObject.getString("weather");
             JSONArray jsonWeather = new JSONArray(weatherInfo);
 
+
             for(int i = 0 ; i < jsonWeather.length() ; i++){
                 JSONObject weatherData = jsonWeather.getJSONObject(i);
                 this.cloud = weatherData.getString("main");
                 this.cloudDescription = weatherData.getString("description");
             }
 
+            this.dateTime = jsonObject.getLong("dt");
             this.temp = Double.valueOf(jsonMain.getString("temp"));
             this.temp_min = Double.valueOf(jsonMain.getString("temp_min"));
             this.temp_max = Double.valueOf(jsonMain.getString("temp_max"));

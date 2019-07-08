@@ -26,9 +26,7 @@ import android.widget.Toast;
 import com.example.aquaculture.Model.Forecast;
 import com.example.aquaculture.Model.ForecastResult;
 import com.example.aquaculture.Model.SimpleExponentialSmoothing;
-import com.example.aquaculture.ViewHolder.ForecastViewHolder;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.example.aquaculture.Model.Weather;
 import com.githang.statusbar.StatusBarCompat;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -76,6 +74,8 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView time4;
     private TextView log4;
     private TextView forecastTemp;
+    private TextView forecastWeather;
+    private TextView evaporateRate;
     private ImageView tempSetting;
     private ImageButton channel1;
     private ImageButton channel2;
@@ -88,6 +88,7 @@ public class PondInfoActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private Forecast forecast;
     private SimpleExponentialSmoothing sme;
+    private Weather weather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,21 +120,25 @@ public class PondInfoActivity extends AppCompatActivity {
         channel3 = findViewById(R.id.ch3btr);
         tempSetting = findViewById(R.id.imageViewSmartSetting);
         forecastTemp = findViewById(R.id.pondforetemp);
+        forecastWeather = findViewById(R.id.weatherforecast);
+        evaporateRate = findViewById(R.id.evaporateRate);
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         isGraphVisible = false;
-        startingTempGraph();
         lineChart.setVisibility(View.GONE);
+        forecast = new Forecast();
+        sme = new SimpleExponentialSmoothing();
+        weather = new Weather();
+
+        startingTempGraph();
         basicReadWrite();
         buttomNavigation();
         logRead();
-        forecast = new Forecast();
-        sme = new SimpleExponentialSmoothing();
+        getWeatherAndEvaporationRate();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         graphCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -868,6 +873,19 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
         return forecastTime;
+    }
+
+    private void getWeatherAndEvaporationRate(){
+        weather.search("Manila");
+        weather.calculateEvaporationRate();
+        Integer initialWeatherValue = Integer.valueOf((int) (Math.round(weather.getTemp() * 10)));
+        String weatherValue = (double) initialWeatherValue/10.0 + " °C";
+        forecastWeather.setText(weatherValue);
+        weather.calculateEvaporationRate();
+        Log.d(TAG, "getWeatherAndEvaporationRate: EVAP " + weather.getEvaporationRate());
+        Integer initialEvapRate = Integer.valueOf((int) (Math.round(weather.getEvaporationRate() * 1000)));
+        String evapRate = String.valueOf((double) initialEvapRate/1000.0);
+        evaporateRate.setText(evapRate);
     }
 
 }
