@@ -123,38 +123,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
         });//bottom navigation
     }
 
-    public class myXValueFormatter implements IAxisValueFormatter {
-        private ArrayList<String> values;
-
-        public myXValueFormatter(ArrayList<String> values) {
-            this.values = values;
-        }
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-            Log.d(TAG, "getFormattedValue: value index: " + value);
-            if(values.size() > (int) value){
-                return values.get((int) value);
-            } else {
-                return null;
-            }
-        }
-    }
-
-    public class myValueFormatter implements IValueFormatter {
-
-        private DecimalFormat valFormat;
-
-        public myValueFormatter(){
-            valFormat = new DecimalFormat("##.0");
-        }
-
-        @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            return valFormat.format(value) + " C";
-        }
-    }
-
     /***********************************************
      * REQUIRED TO RETURN A DATE FOR DATE LISTENER *
      ***********************************************/
@@ -461,5 +429,37 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
             }
         });
+    }
+
+    public class myXValueFormatter implements IAxisValueFormatter {
+        private ArrayList<String> values;
+
+        public myXValueFormatter(ArrayList<String> values) {
+            this.values = values;
+        }
+
+        @Override
+        public String getFormattedValue(float value, AxisBase axis) {
+            Log.d(TAG, "getFormattedValue: value index: " + value);
+            if(values.size() > (int) value){
+                return values.get((int) value);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public class myValueFormatter implements IValueFormatter {
+
+        private DecimalFormat valFormat;
+
+        public myValueFormatter(){
+            valFormat = new DecimalFormat("##.0");
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            return valFormat.format(value) + " C";
+        }
     }
 }

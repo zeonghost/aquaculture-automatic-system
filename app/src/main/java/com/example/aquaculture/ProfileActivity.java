@@ -131,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        Button btrEdit = (Button)findViewById(R.id.btrEdit);
+        Button btrEdit = findViewById(R.id.btrEdit);
         btrEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +166,7 @@ public class ProfileActivity extends AppCompatActivity {
         btr3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, ForecastActivityTest.class);
+                Intent intent = new Intent(ProfileActivity.this, GraphTesting.class);
                 startActivity(intent);
             }
         });

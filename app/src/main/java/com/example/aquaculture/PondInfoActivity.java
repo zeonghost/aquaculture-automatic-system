@@ -133,7 +133,6 @@ public class PondInfoActivity extends AppCompatActivity {
         basicReadWrite();
         buttomNavigation();
         logRead();
-        getWeatherAndEvaporationRate();
     }
 
     @Override
@@ -184,6 +183,8 @@ public class PondInfoActivity extends AppCompatActivity {
         if(Objects.equals(counter, "time00")){
             getForecast();
         }
+        getWeatherAndEvaporationRate();
+        Log.d(TAG, "onResume: CALL EVAP FUNCTIUON");
     }
 
     public void startingTempGraph(){
@@ -877,7 +878,6 @@ public class PondInfoActivity extends AppCompatActivity {
 
     private void getWeatherAndEvaporationRate(){
         weather.search("Manila");
-        weather.calculateEvaporationRate();
         Integer initialWeatherValue = Integer.valueOf((int) (Math.round(weather.getTemp() * 10)));
         String weatherValue = (double) initialWeatherValue/10.0 + " °C";
         forecastWeather.setText(weatherValue);
