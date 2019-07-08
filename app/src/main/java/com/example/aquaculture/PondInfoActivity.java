@@ -442,39 +442,7 @@ public class PondInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
-/*
-                sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!isFastDoubleClick()){
-                            if (isChecked) {
-                                myRef1.child("auto").setValue(1);
-                                Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
-                                String log = un + " turned on Automatic Model";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            } else {
-                                myRef1.child("auto").setValue(0);
-                                Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
-                                String log = un + " turned off Automatic Model";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            }
-                        }
-                        else{
-                            Toast.makeText(PondInfoActivity.this, "Operation Too Fast", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-*/
+
                 final Integer val1 = dataSnapshot.child("ch1").getValue(Integer.class);
                 //final Button btr1 = (Button) findViewById(R.id.ch1);
                 if(val1 ==1)//1 means on
@@ -515,40 +483,7 @@ public class PondInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
-/*
-                channel1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!isFastDoubleClick()) {
-                            if (isChecked) {
-                                myRef1.child("ch1").setValue(1);
-                                Toast.makeText(PondInfoActivity.this, "Turned on ch 1", Toast.LENGTH_SHORT).show();
-                                String log = un + " turned on ch 1";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            }
-                            else{
-                                myRef1.child("ch1").setValue(0);//if click then change status
-                                Toast.makeText(PondInfoActivity.this, "Turned off ch 1", Toast.LENGTH_SHORT).show();
-                                String log = un + " turned off ch 1";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            }
-                        }
-                        else{
-                            Toast.makeText(PondInfoActivity.this, "Operation Too Fast", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-*/
+
                 final Integer val2 = dataSnapshot.child("ch2").getValue(Integer.class);
                 if(val2 ==1)
                 {
@@ -588,40 +523,7 @@ public class PondInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
-                /*
-                channel2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!isFastDoubleClick()) {
-                            if (isChecked) {
-                                myRef1.child("ch2").setValue(0);
-                                Toast.makeText(PondInfoActivity.this, "Turned off ch 2", Toast.LENGTH_SHORT).show();
-                                String log = un + " turned off ch 2";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            }
-                            else{
-                                myRef1.child("ch2").setValue(1);
-                                Toast.makeText(PondInfoActivity.this, "Turned on ch 2", Toast.LENGTH_SHORT).show();
-                                String log = un + " turned on ch 2";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            }
-                        }
-                        else{
-                            Toast.makeText(PondInfoActivity.this, "Operation Too Fast", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-*/
+
                 final Integer val3 = dataSnapshot.child("ch3").getValue(Integer.class);
                 if(val3 == 1)
                 {
@@ -661,40 +563,6 @@ public class PondInfoActivity extends AppCompatActivity {
                         }
                     }
                 });
-                /*
-                channel3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!isFastDoubleClick()) {
-                            if (isChecked) {
-                                myRef1.child("ch3").setValue(0);
-                                Toast.makeText(PondInfoActivity.this, "Turned off ch 3", Toast.LENGTH_SHORT).show();
-                                String log = un + " turned off ch 3";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            }
-                            else{
-                                myRef1.child("ch3").setValue(1);
-                                Toast.makeText(PondInfoActivity.this, "Turned on ch 3", Toast.LENGTH_SHORT).show();
-                                String log = un + " turned on ch3";
-                                Long time = System.currentTimeMillis();
-                                Map<String, Object> logPut = new HashMap<>();
-                                logPut.put("logDetail", log);
-                                logPut.put("logTime", time);
-                                String key = logWrite.push().getKey();
-                                logWrite.child(key).updateChildren(logPut);
-                            }
-                        }
-                        else{
-                            Toast.makeText(PondInfoActivity.this, "Operation Too Fast", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                */
             }
             @Override
             public void onCancelled(DatabaseError error) {

@@ -47,6 +47,16 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/btrEdit"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#33FFFFFF"
+        android:text="Edit Profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
     <android.support.v7.widget.CardView
         android:id="@+id/cardViewPond"
         android:layout_width="0dp"

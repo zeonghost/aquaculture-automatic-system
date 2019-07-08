@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                             .putString("role", dataSnapshot.child("role").getValue(String.class))
                             .putString("firstname", dataSnapshot.child("fname").getValue(String.class))
                             .putString("lastname", dataSnapshot.child("lname").getValue(String.class))
+                            .putString("uid", dataSnapshot.getKey())
                             .apply();
                     Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
                     //save password and auto login status

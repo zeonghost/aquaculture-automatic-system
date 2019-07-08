@@ -6,17 +6,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.aquaculture.Model.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,6 +131,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        Button btrEdit = (Button)findViewById(R.id.btrEdit);
+        btrEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editDialog();
+            }
+        });
+
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +179,85 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void editDialog(){
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View textEntryView = factory.inflate(R.layout.dialog_edit_profile, null);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("user");
+
+        final EditText fname = (EditText) textEntryView.findViewById(R.id.et_fname);
+        final EditText lname = (EditText)textEntryView.findViewById(R.id.et_lname);
+        final Button del = (Button) textEntryView.findViewById(R.id.btr_del);
+
+        sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
+        //String un = sp.getString("username", null);
+        final String id = sp.getString("uid", null);
+
+        del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder normalDialog = new AlertDialog.Builder(ProfileActivity.this);
+                normalDialog.setTitle("Warning");
+                normalDialog.setMessage("Are you sure you want to delete this account?");
+                normalDialog.setPositiveButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                myRef.child(id).removeValue();
+                                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                normalDialog.show();
+            }
+        });
+
+        myRef.orderByKey().equalTo(id).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                fname.setText(dataSnapshot.child("fname").getValue().toString());
+                lname.setText(dataSnapshot.child("lname").getValue().toString());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        AlertDialog.Builder ad1 = new AlertDialog.Builder(ProfileActivity.this);
+
+        ad1.setTitle("Edit Profile:");
+        ad1.setView(textEntryView);
+        ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int i) {
+                String fn = fname.getText().toString();
+                String ln = lname.getText().toString();
+                Map<String, Object> profileupdate = new HashMap<>();
+                profileupdate.put("fname", fn);
+                profileupdate.put("lname", ln);
+                myRef.child(id).updateChildren(profileupdate);
+                Toast.makeText(ProfileActivity.this, "Add Success", Toast.LENGTH_SHORT).show();
+            }
+        });
+        ad1.show();
     }
 
     private void buttonNavigationSettings() {
