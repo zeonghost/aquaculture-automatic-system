@@ -145,18 +145,20 @@ public class TaskActivity extends AppCompatActivity {
                     }
                 });
 
-                if(Objects.equals(status, "Pending") && Objects.equals(role, "Partner")){
-                    holder.done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            transId = taskId;
-                            showDoneDialog();
-                        }
-                    });
-                } else {
-                    holder.done.setVisibility(View.GONE);
-                    holder.edit.setVisibility(View.GONE);
-                    holder.delete.setVisibility(View.GONE);
+                if(Objects.equals(role, "Partner")){
+                    if(Objects.equals(status, "Pending")){
+                        holder.done.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                transId = taskId;
+                                showDoneDialog();
+                            }
+                        });
+                    } else {
+                        holder.done.setVisibility(View.GONE);
+                        holder.edit.setVisibility(View.GONE);
+                        holder.delete.setVisibility(View.GONE);
+                    }
                 }
             }
 

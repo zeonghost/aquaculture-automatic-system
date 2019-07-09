@@ -71,8 +71,8 @@ public class ProfileActivity extends AppCompatActivity {
         if(Objects.equals(role, "Partner")){
             partnerCard.setVisibility(View.GONE);
             pondCard.setVisibility(View.GONE);
-        }else{
-            timeCard.setVisibility(View.INVISIBLE);
+        } else {
+            timeCard.setVisibility(View.GONE);
         }
 
         fullname.setText(sp.getString("firstname", "") + " " + sp.getString("lastname", ""));

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +10,11 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineEvaporation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="25dp"/>
+        android:layout_height="300dp"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineForecast"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
 
 </LinearLayout>
