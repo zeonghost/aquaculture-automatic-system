@@ -232,18 +232,21 @@ public class SearchUserActivity extends AppCompatActivity {
         LayoutInflater floatingDialog = LayoutInflater.from(this);
         View view = floatingDialog.inflate(R.layout.dialog_link_user_pond, null);
         TextView userInfoDetail = view.findViewById(R.id.txtViewUserInfo);
-        TextView pondInfoDetail = view.findViewById(R.id.txtViewPondInfo);
+        //TextView pondInfoDetail = view.findViewById(R.id.txtViewPondInfo);
 
-        String userInfo = getUser.getString("userID", "") + ":\n"
+        String userInfo = getUser.getString("userID", "") + " - "
                 + getUser.getString("firstName", "") + " "
-                + getUser.getString("lastName", "");
+                + getUser.getString("lastName", "") + " to " +
+                getPond.getString("piID", "") + " - "
+                + getPond.getString("pondName", "") + " at "
+                + getPond.getString("location","");;
 
-        String pondInfo = getPond.getString("piID", "") + ":\n"
+        String pondInfo = getPond.getString("piID", "") + " - "
                 + getPond.getString("pondName", "") + " at "
                 + getPond.getString("location","");
 
         userInfoDetail.setText(userInfo);
-        pondInfoDetail.setText(pondInfo);
+        //pondInfoDetail.setText(pondInfo);
 
         AlertDialog.Builder link = new AlertDialog.Builder(SearchUserActivity.this);
         //link.setTitle("Link User to Pond:");

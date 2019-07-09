@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/blurrshort"
     android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Link User to Pond:"
+        android:background="@drawable/bg_text"
+        android:paddingTop="15dp"
+        android:textSize="30sp"
+        android:textColor="#075E54"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -27,14 +38,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:textSize="20sp"
-        android:text="to"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/txtViewPondInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:text="pondInfo"
+        android:text=""
         android:textSize="20sp"
         android:textStyle="bold" />
 
