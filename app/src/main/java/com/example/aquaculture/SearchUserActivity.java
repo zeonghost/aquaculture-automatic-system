@@ -239,7 +239,7 @@ public class SearchUserActivity extends AppCompatActivity {
                 + getUser.getString("lastName", "") + " to " +
                 getPond.getString("piID", "") + " - "
                 + getPond.getString("pondName", "") + " at "
-                + getPond.getString("location","");;
+                + getPond.getString("location","");
 
         String pondInfo = getPond.getString("piID", "") + " - "
                 + getPond.getString("pondName", "") + " at "

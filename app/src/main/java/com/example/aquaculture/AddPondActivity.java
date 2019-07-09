@@ -118,9 +118,9 @@ public class AddPondActivity extends AppCompatActivity {
                 String d = depth.getText().toString();
                 String pi = piId;
 
-                int wid = Integer.parseInt(w);
-                int len = Integer.parseInt(le);
-                int dep = Integer.parseInt(d);
+                Float wid = Float.parseFloat(w);
+                Float len = Float.parseFloat(le);
+                Float dep = Float.parseFloat(d);
 
                 if(p.isEmpty() || l.isEmpty() || c1.isEmpty() || c2.isEmpty()|| c3.isEmpty()|| s.isEmpty()|| w.isEmpty()|| le.isEmpty()|| d.isEmpty()){
                     Toast.makeText(AddPondActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();

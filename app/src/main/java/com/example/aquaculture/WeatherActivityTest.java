@@ -16,11 +16,12 @@ import java.util.Calendar;
 public class WeatherActivityTest extends AppCompatActivity {
     private static final String TAG = "LOG";
     private EditText inputCityName;
+    private String cityName;
     private Button getWeatherInfo;
+
     private TextView tempData;
     private TextView tempMinData;
     private TextView tempMaxData;
-    private String cityName;
     private TextView wDesc;
     private TextView wDateTime;
 

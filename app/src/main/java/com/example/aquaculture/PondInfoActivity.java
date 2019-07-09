@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.content.Intent;
@@ -57,7 +59,13 @@ public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private CardView graphCheck;
     private CardView logview;
+    private CardView tempRead;
+    private CardView forecastRead;
+    private CardView weatherRead;
+    private CardView evaporateRead;
+    private LinearLayout weatherForecastLayout;
     private LineChart lineChart;
+    private LineChart lineChartForecastGraph;
     private TextView piID;
     private TextView location;
     private TextView pondName;
@@ -93,18 +101,36 @@ public class PondInfoActivity extends AppCompatActivity {
     private SimpleExponentialSmoothing sme;
     private Weather weather;
 
+    private TextView tempData;
+    private TextView tempMinData;
+    private TextView tempMaxData;
+    private TextView wDesc;
+    private TextView wDateTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_pond_info);
         StatusBarCompat.setStatusBarColor(this, Color.parseColor("#148D7F"));
+
         myDatabase = FirebaseDatabase.getInstance();
         piID = findViewById(R.id.txtViewPiID);
         pondName = findViewById(R.id.txtViewPondName);
         location = findViewById(R.id.txtViewPondLocation);
         graphCheck = findViewById(R.id.graphCardView);
-        lineChart = findViewById(R.id.lineChart);
+        lineChart = findViewById(R.id.lineChart); //line graph for water temp
+        lineChartForecastGraph = findViewById(R.id.lineChartForecast); //line graph for temp forecast
+        weatherForecastLayout = findViewById(R.id.weatherForecastLayout); //layout containing weather forecast
+        tempData = findViewById(R.id.txtViewTemp);
+        tempMinData = findViewById(R.id.txtViewTempMin);
+        tempMaxData = findViewById(R.id.txtViewTempMax);
+        wDesc = findViewById(R.id.txtViewWeatherDesc);
+        wDateTime = findViewById(R.id.txtViewWeatherDate);
+        tempRead = findViewById(R.id.cardViewTemperatureRead); //cardview for temperature reading
+        forecastRead = findViewById(R.id.cardViewForecastRead); //cardview for forecast reading
+        weatherRead = findViewById(R.id.cardViewWeatherRead); //cardview for weather reading
+        evaporateRead = findViewById(R.id.cardViewEvaporationRead); //cardview for evap rate
         logview = findViewById(R.id.logView);
         highTemp = findViewById(R.id.txtViewHighTemp);
         lowTemp = findViewById(R.id.txtViewLowTemp);
@@ -131,15 +157,19 @@ public class PondInfoActivity extends AppCompatActivity {
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         isGraphVisible = false;
         lineChart.setVisibility(View.GONE);
+        lineChartForecastGraph.setVisibility(View.GONE);
+        weatherForecastLayout.setVisibility(View.GONE);
         forecast = new Forecast();
         sme = new SimpleExponentialSmoothing();
         weather = new Weather();
 
-        startingTempGraph();
+
         basicReadWrite();
         buttomNavigation();
         logRead();
         setChannelNames();
+        startingTempGraph();
+        getForecastGraph();
     }
 
     @Override
@@ -150,9 +180,13 @@ public class PondInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(isGraphVisible){
                     lineChart.setVisibility(View.GONE);
+                    lineChartForecastGraph.setVisibility(View.GONE);
+                    weatherForecastLayout.setVisibility(View.GONE);
                     isGraphVisible = false;
                 } else {
                     lineChart.setVisibility(View.VISIBLE);
+                    lineChartForecastGraph.setVisibility(View.VISIBLE);
+                    weatherForecastLayout.setVisibility(View.VISIBLE);
                     isGraphVisible = true;
                 }
             }
@@ -173,6 +207,14 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
+        lineChartForecastGraph.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toForecastActivity = new Intent (PondInfoActivity.this, ForecastActivity.class);
+                startActivity(toForecastActivity);
+            }
+        });
+
         logview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,6 +223,32 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
+        tempRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lineChart.setVisibility(View.VISIBLE);
+                lineChartForecastGraph.setVisibility(View.GONE);
+                weatherForecastLayout.setVisibility(View.GONE);
+            }
+        });
+
+        forecastRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lineChart.setVisibility(View.GONE);
+                lineChartForecastGraph.setVisibility(View.VISIBLE);
+                weatherForecastLayout.setVisibility(View.GONE);
+            }
+        });
+
+        weatherRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lineChart.setVisibility(View.GONE);
+                lineChartForecastGraph.setVisibility(View.GONE);
+                weatherForecastLayout.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -194,6 +262,56 @@ public class PondInfoActivity extends AppCompatActivity {
         Log.d(TAG, "onResume: CALL EVAP FUNCTIUON");
     }
 
+    private void getForecastGraph(){
+        DatabaseReference myForecastRef = FirebaseDatabase.getInstance().getReference("pi1-forecast");
+        final ArrayList<Entry> yValues = new ArrayList<>();
+        lineChartForecastGraph.setDragEnabled(false);
+        lineChartForecastGraph.setEnabled(true);
+        lineChartForecastGraph.setPinchZoom(false);
+        lineChartForecastGraph.setDoubleTapToZoomEnabled(false);
+        lineChartForecastGraph.setHighlightPerTapEnabled(false);
+        lineChartForecastGraph.getDescription().setText("Water Temperature Forecast - Today");
+        lineChartForecastGraph.getLegend().setEnabled(false);
+
+        myForecastRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                float i = 0, newVal;
+                double val;
+                Integer initialValue;
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    Log.d(TAG, "FORECAST: " + snaps.getValue());
+                    val = snaps.getValue(Double.class);
+                    initialValue = Integer.valueOf((int) (Math.round(val * 10)));
+                    newVal = initialValue/10.0f;
+                    yValues.add(new Entry(i, newVal));
+                    i++;
+                }
+
+                LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature Forecast");
+                lineDataSet.setFillAlpha(0);
+                lineDataSet.setColor(Color.RED);
+                lineDataSet.setLineWidth(2f);
+                lineDataSet.setValueTextSize(0);
+                lineDataSet.setCircleHoleRadius(0.5f);
+                lineDataSet.setCircleColor(Color.BLUE);
+                lineDataSet.setDrawCircles(false);
+
+                LineData lineData = new LineData(lineDataSet);
+                lineChartForecastGraph.getXAxis().setEnabled(false);
+                lineChartForecastGraph.getAxisRight().setEnabled(false);
+                lineChartForecastGraph.setData(lineData);
+                lineChartForecastGraph.notifyDataSetChanged();
+                lineChartForecastGraph.invalidate();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void startingTempGraph(){
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("pi1-temp");
         final ArrayList<Entry> yValues = new ArrayList<>();
@@ -202,7 +320,7 @@ public class PondInfoActivity extends AppCompatActivity {
         lineChart.setPinchZoom(false);
         lineChart.setDoubleTapToZoomEnabled(false);
         lineChart.setHighlightPerTapEnabled(false);
-        lineChart.getDescription().setText("Past 6 Hours Time");
+        lineChart.getDescription().setText("Water Temperature - Past 6 Hours");
         lineChart.getLegend().setEnabled(false);
 
         long today = Calendar.getInstance().getTimeInMillis();
@@ -892,6 +1010,13 @@ public class PondInfoActivity extends AppCompatActivity {
         Integer initialEvapRate = Integer.valueOf((int) (Math.round(weather.getEvaporationRate() * 1000)));
         String evapRate = String.valueOf((double) initialEvapRate/1000.0);
         evaporateRate.setText(evapRate);
+
+        tempData.setText(weather.getTemp() + " °C");
+        tempMinData.setText(weather.getTemp_min() + " °C");
+        tempMaxData.setText(weather.getTemp_max() + " °C");
+        wDesc.setText(weather.getCloud() + " - " + weather.getCloudDescription());
+        String dateStr = convertToDate(weather.getDateTime());
+        wDateTime.setText(dateStr);
     }
 
     private void setChannelNames(){
@@ -918,5 +1043,12 @@ public class PondInfoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private String convertToDate(long ts){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(ts * 1000);
+        String dateString = DateFormat.format("MMMM dd, yyyy - h:mm a", calendar).toString();
+        return dateString;
     }
 }

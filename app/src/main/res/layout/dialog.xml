@@ -44,7 +44,7 @@
         android:layout_width="287dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Channel 2 Turn On Time (minutes):"/>
+        android:text="Channel 2 Turn On Time (seconds):"/>
 
     <EditText
         android:id="@+id/editTextCh2TurnOnTime"
@@ -57,7 +57,7 @@
         android:layout_width="287dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Channel 2 Turn Off Time (minutes):"/>
+        android:text="Channel 2 Turn Off Time (seconds):"/>
 
     <EditText
         android:id="@+id/editTextCh2TurnOffTime"

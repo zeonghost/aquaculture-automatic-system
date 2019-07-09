@@ -9,11 +9,11 @@ public class pondAdd {
     public String ch3n;
     public String location;
     public String species;
-    public Integer depth;
-    public Integer length;
-    public Integer width;
+    public Float depth;
+    public Float length;
+    public Float width;
 
-    public pondAdd(String piId, String pondName, String location, String channel1, String channel2, String channel3, String species, Integer width, Integer length, Integer depth){
+    public pondAdd(String piId, String pondName, String location, String channel1, String channel2, String channel3, String species, Float width, Float length, Float depth){
         this.piID = piId;
         this.pondName = pondName;
         this.location = location;

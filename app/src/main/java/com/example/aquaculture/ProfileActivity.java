@@ -166,7 +166,7 @@ public class ProfileActivity extends AppCompatActivity {
         btr3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, GraphTesting.class);
+                Intent intent = new Intent(ProfileActivity.this, ForecastActivity.class);
                 startActivity(intent);
             }
         });
