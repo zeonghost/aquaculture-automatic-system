@@ -28,15 +28,18 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="TASK ID:"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="TASK ID:" />
 
             <TextView
                 android:id="@+id/taskId"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:paddingTop="5dp"
+                android:text="TextView" />
 
         </LinearLayout>
 
@@ -50,6 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingLeft="10dp"
                 android:text="DATE:"/>
 
             <TextView
@@ -71,6 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TIME:"
+                android:paddingLeft="10dp"
                 android:layout_weight="1"/>
 
 
@@ -93,6 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TASK:"
+                android:paddingLeft="10dp"
                 android:layout_weight="1"/>
 
             <TextView
@@ -114,6 +120,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="STATUS:"
+                android:paddingLeft="10dp"
                 android:layout_weight="1"/>
 
             <TextView
@@ -135,6 +142,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="RECEIVER:"
+                android:paddingLeft="10dp"
                 android:layout_weight="1"/>
 
             <TextView
@@ -163,6 +171,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="UPLOADER:"
+                android:paddingLeft="10dp"
                 android:layout_weight="1"/>
 
             <TextView
@@ -191,23 +200,25 @@
                 android:id="@+id/button"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
                 android:background="#075E54"
                 android:text="Edit"
-                android:textColor="#FFFFFF"
-                android:layout_weight="1"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"/>
+                android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
                 android:background="#075E54"
                 android:text="Delete"
-                android:textColor="#FFFFFF"
-                android:layout_weight="1"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"/>
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <Button
@@ -215,13 +226,11 @@
             android:layout_width="185dp"
             android:layout_height="32dp"
             android:layout_gravity="bottom|right"
-            android:layout_marginLeft="5dp"
+            android:layout_marginTop="-32.5dp"
             android:layout_marginRight="5dp"
             android:background="#075E54"
             android:text="Done"
-            android:textColor="#F7FFFFFF"
-            android:layout_marginTop="-30dp"
-            />
+            android:textColor="#F7FFFFFF" />
 
     </LinearLayout>
 

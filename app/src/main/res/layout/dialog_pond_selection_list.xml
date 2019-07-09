@@ -18,12 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
-            android:paddingTop="8dp"
+            android:paddingTop="10dp"
             android:paddingBottom="3dp"
-            android:textSize="23sp"
-            android:background="@drawable/bg_text"
             android:text="@string/pi_id"
-            android:textColor="#075E54" />
+            android:textColor="#075E54"
+            android:textSize="23sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtViewPondName"

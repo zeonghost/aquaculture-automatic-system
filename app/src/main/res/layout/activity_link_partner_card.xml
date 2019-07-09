@@ -26,6 +26,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="8dp"
             android:text="Username"
+            android:textColor="#0F7D63"
             android:textSize="20sp" />
 
         <TextView
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="First name"
+            android:textColor="#0F7D63"
             android:textSize="20sp" />
 
         <TextView
@@ -42,6 +44,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="Last name"
+            android:textColor="#0F7D63"
             android:textSize="20sp" />
 
         <TextView
@@ -51,6 +54,7 @@
             android:paddingLeft="10dp"
             android:paddingBottom="8dp"
             android:text="Role"
+            android:textColor="#0F7D63"
             android:textSize="20sp" />
 
     </LinearLayout>

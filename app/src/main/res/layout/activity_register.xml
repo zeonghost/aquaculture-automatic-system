@@ -1,125 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/plain"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/plain"
+        android:orientation="vertical"
+        tools:context=".RegisterActivity">
 
     <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="33dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
         android:text="Sign Up"
-        android:textSize="30sp"
+        android:textColor="#0F7D63"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/un"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        android:textSize="40sp" />
 
     <EditText
         android:id="@+id/un"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="127dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="233dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="Username"
         android:textCursorDrawable="@drawable/cursor"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/pass"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="Username"
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/pass"
-        android:layout_width="wrap_content"
+        android:layout_width="233dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="8dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="Password"
         android:textCursorDrawable="@drawable/cursor"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/Fname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/un" />
+        android:hint="Password"
+        android:inputType="textPassword"/>
 
     <EditText
         android:id="@+id/Fname"
-        android:layout_width="wrap_content"
+        android:layout_width="233dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="8dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="First Name"
         android:textCursorDrawable="@drawable/cursor"
+        android:hint="First Name"
         android:inputType="textPersonName"
-        android:textColorLink="#0F7D63"
-        app:layout_constraintBottom_toTopOf="@+id/Lname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pass" />
+        android:textColorLink="#0F7D63"/>
 
     <EditText
         android:id="@+id/Lname"
-        android:layout_width="wrap_content"
+        android:layout_width="233dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="8dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:ems="10"
-        android:hint="Last Name"
         android:textCursorDrawable="@drawable/cursor"
+        android:hint="Last Name"
         android:inputType="textPersonName"
-        android:textColorLink="#0F7D63"
-        app:layout_constraintBottom_toTopOf="@+id/roleSele"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Fname" />
+        android:textColorLink="#0F7D63"/>
 
     <Spinner
         android:id="@+id/roleSele"
-        android:layout_width="212dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="233dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:entries="@array/Role"
-        android:hint="Role"
-        app:layout_constraintBottom_toTopOf="@+id/btr"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Lname" />
+        android:hint="Role"/>
 
     <Button
         android:id="@+id/btr"
-        android:layout_width="212dp"
+        android:layout_width="233dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="97dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
         android:background="#0F7D63"
         android:text="SIGN UP"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roleSele" />
+        android:textColor="#FFFFFF"/>
 
     <!--
     <android.support.design.widget.BottomNavigationView
@@ -141,4 +105,4 @@
         app:menu="@menu/menu_bottom_navigation_items" />
      -->
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
