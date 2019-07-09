@@ -77,6 +77,9 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView forecastWeather;
     private TextView evaporateRate;
     private ImageView tempSetting;
+    private TextView channel1Text;
+    private TextView channel2Text;
+    private TextView channel3Text;
     private ImageButton channel1;
     private ImageButton channel2;
     private ImageButton channel3;
@@ -122,6 +125,9 @@ public class PondInfoActivity extends AppCompatActivity {
         forecastTemp = findViewById(R.id.pondforetemp);
         forecastWeather = findViewById(R.id.weatherforecast);
         evaporateRate = findViewById(R.id.evapRate);
+        channel1Text = findViewById(R.id.textViewChannel1);
+        channel2Text = findViewById(R.id.textViewChannel2);
+        channel3Text = findViewById(R.id.textViewChannel3);
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         isGraphVisible = false;
         lineChart.setVisibility(View.GONE);
@@ -133,6 +139,7 @@ public class PondInfoActivity extends AppCompatActivity {
         basicReadWrite();
         buttomNavigation();
         logRead();
+        setChannelNames();
     }
 
     @Override
@@ -221,7 +228,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineDataSet.setColor(Color.BLUE);
                 lineDataSet.setLineWidth(2f);
                 lineDataSet.setValueTextSize(0);
-                lineDataSet.setCircleHoleRadius(0);
+                lineDataSet.setCircleHoleRadius(0.5f);
                 lineDataSet.setCircleColor(Color.BLUE);
                 lineDataSet.setDrawCircles(false);
                 //lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
@@ -292,9 +299,6 @@ public class PondInfoActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
     public void basicReadWrite() {
@@ -890,4 +894,29 @@ public class PondInfoActivity extends AppCompatActivity {
         evaporateRate.setText(evapRate);
     }
 
+    private void setChannelNames(){
+        String piID = HomeActivity.transferData;
+        Log.d(TAG, "setChannelNames: device " + piID);
+        String path = piID + "-detail";
+        Log.d(TAG, "setChannelNames: path " + path);
+        final DatabaseReference detailRef = myDatabase.getReference(path);
+        detailRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: channelName " + dataSnapshot.getValue());
+                String ch1Name = dataSnapshot.child("ch1n").getValue(String.class);
+                String ch2Name = dataSnapshot.child("ch2n").getValue(String.class);
+                String ch3Name = dataSnapshot.child("ch3n").getValue(String.class);
+
+                channel1Text.setText(ch1Name);
+                channel2Text.setText(ch2Name);
+                channel3Text.setText(ch3Name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
