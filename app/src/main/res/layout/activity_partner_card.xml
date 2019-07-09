@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp"
+    android:paddingTop="3dp"
+    android:layout_margin="10dp"
     android:background="@drawable/plain"
     android:layout_marginStart="50dp"
     app:cardElevation="100dp"
@@ -20,28 +21,69 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtViewDevice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:text="Device"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/txtViewUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:text="Username"
-            android:textSize="25sp" />
-
-        <TextView
             android:id="@+id/txtViewFullname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
             android:text="User"
-            android:textSize="35sp" />
+            android:textStyle="bold"
+            android:textColor="#0F7D63"
+            android:textAllCaps="true"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="38dp"
+                android:text="Pi ID:"
+                android:textSize="20sp"
+                android:layout_weight="2"/>
+            <TextView
+                android:id="@+id/txtViewDevice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="Device"
+                android:textColor="#0F7D63"
+                android:textSize="20sp"
+                android:layout_weight="2"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="41dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingLeft="38dp"
+                android:text="Username:"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txtViewUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="6dp"
+                android:text="Username"
+                android:textSize="20sp"
+                android:textColor="#0F7D63"
+                android:layout_weight="2"/>
+
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/plain"
+    android:background="@drawable/blurrshort"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="287dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
         android:layout_marginTop="30dp"
         android:text="Highest Critical Water Temperature (Celsius):" />
 
     <EditText
         android:id="@+id/editTextNum1"
-        android:layout_width="354dp"
+        android:layout_width="287dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:textCursorDrawable="@drawable/cursor"
         android:textColorLink="#0F7D63">
@@ -24,37 +27,42 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="287dp"
         android:layout_height="wrap_content"
-        android:textCursorDrawable="@drawable/cursor"
-        android:text="Lowest Critical Water Temperature (Celsius):" />
+        android:layout_gravity="center"
+        android:text="Lowest Critical Water Temperature (Celsius):"
+        android:textCursorDrawable="@drawable/cursor" />
 
     <EditText
         android:id="@+id/editTextNum2"
-        android:layout_width="354dp"
-        android:textCursorDrawable="@drawable/cursor"
-        android:layout_height="wrap_content" />
+        android:layout_width="287dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textCursorDrawable="@drawable/cursor" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="287dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Channel 2 Turn On Time (minutes):"/>
 
     <EditText
         android:id="@+id/editTextCh2TurnOnTime"
-        android:layout_width="354dp"
+        android:layout_width="287dp"
+        android:layout_gravity="center"
         android:textCursorDrawable="@drawable/cursor"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="287dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Channel 2 Turn Off Time (minutes):"/>
 
     <EditText
         android:id="@+id/editTextCh2TurnOffTime"
-        android:layout_width="354dp"
-
+        android:layout_gravity="center"
+        android:layout_width="287dp"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -302,7 +302,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 app:cardBackgroundColor="#7CFFFFFF"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp"
@@ -336,7 +336,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="5dp"
-                            android:layout_marginRight="15dp"
+                            android:layout_marginRight="6dp"
                             android:layout_weight="1"
                             android:src="@drawable/setting" />
 
@@ -553,7 +553,7 @@
                 android:id="@+id/logView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="6dp"
                 app:cardBackgroundColor="#7CFFFFFF"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp"

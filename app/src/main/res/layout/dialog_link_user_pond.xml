@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/blurrshort"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
-        android:paddingLeft="8dp"
         android:text="Are you sure you want to link"
         android:textSize="20sp" />
 
@@ -18,14 +18,14 @@
         android:id="@+id/txtViewUserInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:text="userInfo"
         android:textSize="20sp"
         android:textStyle="bold" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:textSize="20sp"
         android:text="to"/>
 
@@ -33,7 +33,7 @@
         android:id="@+id/txtViewPondInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:text="pondInfo"
         android:textSize="20sp"
         android:textStyle="bold" />
