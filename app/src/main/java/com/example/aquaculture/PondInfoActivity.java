@@ -121,7 +121,7 @@ public class PondInfoActivity extends AppCompatActivity {
         tempSetting = findViewById(R.id.imageViewSmartSetting);
         forecastTemp = findViewById(R.id.pondforetemp);
         forecastWeather = findViewById(R.id.weatherforecast);
-        evaporateRate = findViewById(R.id.evaporateRate);
+        evaporateRate = findViewById(R.id.evapRate);
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         isGraphVisible = false;
         lineChart.setVisibility(View.GONE);
@@ -700,7 +700,9 @@ public class PondInfoActivity extends AppCompatActivity {
                 passUpdate.put("gap2", offTime);
                 myRef.updateChildren(passUpdate);
                 SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
-                String un = sp.getString("username", "");
+                String u1 = sp.getString("lastname", "");
+                String u2 = sp.getString("firstname", "");
+                final String un = u2 + " "+ u1;
                 String log = un + " edit the highest Critical temp to "+ topnum+" lowest Critical temp to "+botnum+" ch2 on time to "+onTime+" off time to "+ offTime;
                 Long time = System.currentTimeMillis();
                 Map<String, Object> logPut = new HashMap<>();
