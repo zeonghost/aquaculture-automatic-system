@@ -246,7 +246,7 @@ public class SearchUserActivity extends AppCompatActivity {
         pondInfoDetail.setText(pondInfo);
 
         AlertDialog.Builder link = new AlertDialog.Builder(SearchUserActivity.this);
-        link.setTitle("Link User to Pond:");
+        //link.setTitle("Link User to Pond:");
         link.setView(view);
 
         link.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
