@@ -21,7 +21,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.aquaculture.ViewHolder.PondViewHolder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -125,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         adapter.startListening();
-
+        connectionState();
     }
 
     @Override
@@ -218,5 +221,26 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         checkInOut.show();
+    }
+
+    //TESTING PURPOSES
+    private void connectionState(){
+        String userID = sp.getString("uid", "");
+        Log.d(TAG, "connectionState: " + userID);
+        final DatabaseReference testRef = database.getReference().child("user").child(userID);
+        testRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    testRef.child("online").onDisconnect().setValue(false);
+                    testRef.child("online").setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
