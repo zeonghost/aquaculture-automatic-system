@@ -25,6 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AddPondActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private EditText pond;
@@ -127,9 +130,16 @@ public class AddPondActivity extends AppCompatActivity {
                     return;
                 } else{
                     pondAdd newPond = new pondAdd(pi, p, l, c1, c2, c3, s, wid, len, dep);
-                    //String key = ref.push().getKey();
                     String key = piId + "-detail";
                     addPondRef.child(key).setValue(newPond);
+
+                    String username = sp.getString("username", "");
+                    String role = sp.getString("role", "");
+                    linkPondRef.child(piId).child(username).setValue(role);
+                    linkPondRef.child(piId).child("location").setValue(l);
+                    linkPondRef.child(piId).child("pondName").setValue(p);
+                    linkPondRef.child(piId).child("piId").setValue(piId);
+
                     Toast.makeText(AddPondActivity.this, "Registered Account Successfully.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(AddPondActivity.this, HomeActivity.class);
                     startActivity(intent);
@@ -154,7 +164,7 @@ public class AddPondActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final FirebaseDatabase database =  FirebaseDatabase.getInstance();
+                        //final FirebaseDatabase database =  FirebaseDatabase.getInstance();
                         String username = sp.getString("username", "");
                         String role = sp.getString("role", "");
                         linkPondRef.child(piId).child(username).setValue(role);

@@ -68,6 +68,7 @@ public class TaskActivity extends AppCompatActivity {
     private FirebaseRecyclerOptions<Task> options;
     private FirebaseRecyclerAdapter<Task, TaskViewHolder> adapter;
     private String status;
+    private FloatingActionButton add;
     private SharedPreferences sp;
     public SharedPreferences sp1;
     public static String transId;
@@ -87,6 +88,7 @@ public class TaskActivity extends AppCompatActivity {
         taskInfo = findViewById(R.id.recyclerview);
         taskInfo.setHasFixedSize(true);
         taskInfo.setLayoutManager(new LinearLayoutManager(TaskActivity.this));
+        add = (FloatingActionButton) findViewById(R.id.addBtn);
         Query query;
 
         myRef = database.getReference("/task");
@@ -100,6 +102,7 @@ public class TaskActivity extends AppCompatActivity {
         else
         {
             query = myRef.orderByChild("receiver").equalTo(un);
+            add.hide();
         }
 
         options = new FirebaseRecyclerOptions.Builder<Task>()
@@ -172,7 +175,6 @@ public class TaskActivity extends AppCompatActivity {
         };
         taskInfo.setAdapter(adapter);
 
-        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.addBtn);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

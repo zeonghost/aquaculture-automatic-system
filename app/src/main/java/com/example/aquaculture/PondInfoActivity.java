@@ -163,12 +163,11 @@ public class PondInfoActivity extends AppCompatActivity {
         sme = new SimpleExponentialSmoothing();
         weather = new Weather();
 
-
+        startingTempGraph();
         basicReadWrite();
         buttomNavigation();
         logRead();
         setChannelNames();
-        startingTempGraph();
         getForecastGraph();
     }
 

@@ -76,6 +76,7 @@
             android:layout_height="wrap_content"
             android:buttonTint="@color/colorPrimaryDark"
             android:onClick="radioCheck"
+            android:checked="true"
             android:text="@string/pending" />
 
         <RadioButton
