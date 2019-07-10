@@ -62,10 +62,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 Ref.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        path1 = dataSnapshot.child("device").getValue().toString();
                         uid = dataSnapshot.getKey();
-                        //Log.d(TAG, "Result-0: "+ path1);
-                        path1 =path1 + "-detail";
+
                         //Log.d(TAG, "Result-1: "+ path1);
                         //search location and get the path and species
                         DatabaseReference Ref2 = db.getReference();
@@ -78,7 +76,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                 //Log.d(TAG, "Result-2: "+ locatget);
                                 //Log.d(TAG, "Result-3: "+ speciesget);
 
-                                if((Objects.equals(locatget, path1))&&(Objects.equals(speciesget, species.getText().toString()))){
+                                if(Objects.equals(speciesget, species.getText().toString())){
                                     DatabaseReference Ref3 = Ref.child(uid);
                                     Map<String, Object> passUpdate = new HashMap<>();
                                     passUpdate.put("password", npass.getText().toString());
