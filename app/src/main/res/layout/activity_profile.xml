@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:background="#85FFFFFF"
+            android:background="#5929C084"
             android:text="Edit Profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
