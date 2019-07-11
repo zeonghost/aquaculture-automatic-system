@@ -45,10 +45,13 @@ public class ProfileActivity extends AppCompatActivity {
     private CardView partnerCard;
     private CardView pondCard;
     private CardView timeCard;
+    private CardView signOutCard;
     private LinearLayout pondOptions;
     private LinearLayout partnerOptions;
     private boolean isPondVisible;
     private boolean isPartnerVisible;
+    private TextView addAssignPartner;
+    private TextView unlinkPartner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,9 @@ public class ProfileActivity extends AppCompatActivity {
         pondCard = findViewById(R.id.cardViewPond);
         pondOptions = findViewById(R.id.layoutPondOptions);
         timeCard = findViewById(R.id.cardViewTimeClock);
+        signOutCard = findViewById(R.id.cardViewSignOut);
+        addAssignPartner = findViewById(R.id.textViewAddAssignPartner);
+        unlinkPartner = findViewById(R.id.textViewUnlinkPartner);
 
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
@@ -119,6 +125,45 @@ public class ProfileActivity extends AppCompatActivity {
                     partnerOptions.setVisibility(View.VISIBLE);
                     isPartnerVisible = true;
                 }
+            }
+        });
+
+        signOutCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TIME_IN_STATUS == 1){
+                    AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
+                    timeOutDialog.setTitle("Reminder:");
+                    timeOutDialog.setMessage("Please clock out prior signing out.");
+                    timeOutDialog.setPositiveButton("Clock Out", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    timeOutDialog.show();
+                } else {
+                    sp.edit().clear().apply();
+                    TIME_IN_STATUS = 0;
+                    Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
+                    startActivity(intent4);
+                }
+            }
+        });
+
+        addAssignPartner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, PartnerAdminActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        unlinkPartner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UnlinkPartnerActivity.class);
+                startActivity(intent);
             }
         });
 

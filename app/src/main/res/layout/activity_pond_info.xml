@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 app:cardBackgroundColor="#7CFFFFFF"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -268,7 +268,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical"
                 app:cardBackgroundColor="#7CFFFFFF"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -407,7 +407,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="6dp"
                 app:cardBackgroundColor="#7CFFFFFF"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:contentPadding="10px">
 
@@ -658,7 +658,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 app:cardBackgroundColor="#7CFFFFFF"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:contentPadding="10px"
                 tools:cardBackgroundColor="#03A9F4">
@@ -675,7 +675,7 @@
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
-                        android:text="Log"
+                        android:text="LOG"
                         android:textColor="#075E54"
                         android:textSize="20sp" />
 
