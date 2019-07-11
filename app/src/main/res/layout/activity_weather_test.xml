@@ -77,9 +77,11 @@
                android:id="@+id/txtViewTemp"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
+               android:gravity="center"
+               android:textColor="#075E54"
                android:text="39.9 C"
-               android:textSize="30sp"
-               android:gravity="center"/>
+               android:textStyle="bold"
+               android:textSize="50sp" />
 
            <LinearLayout
                android:layout_width="match_parent"
@@ -99,6 +101,9 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:text="val here"
+                   android:textColor="#075E54"
+                   android:layout_marginStart="3dp"
+                   android:textStyle="bold"
                    android:layout_weight="1"/>
 
            </LinearLayout>
@@ -112,6 +117,7 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:text="Maximum Temperature: "
+
                    android:layout_weight="1"
                    android:gravity="right"/>
 
@@ -120,6 +126,9 @@
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
                    android:text="val here"
+                   android:textColor="#075E54"
+                   android:layout_marginStart="3dp"
+                   android:textStyle="bold"
                    android:layout_weight="1"/>
 
            </LinearLayout>
@@ -140,8 +149,11 @@
                    android:id="@+id/txtViewWeatherDesc"
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
+                   android:layout_weight="1"
                    android:text="desc here"
-                   android:layout_weight="1"/>
+                   android:layout_marginStart="3dp"
+                   android:textColor="#075E54"
+                   android:textStyle="bold" />
 
            </LinearLayout>
 

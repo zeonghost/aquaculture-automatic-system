@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Assign to Pond:"
-        android:background="@drawable/bg_text"
+        android:background="#5929C084"
         android:paddingTop="15dp"
         android:textSize="30sp"
         android:textColor="#075E54"

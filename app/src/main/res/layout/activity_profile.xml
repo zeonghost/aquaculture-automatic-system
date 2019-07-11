@@ -11,8 +11,8 @@
         android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:layout_marginTop="34dp"
-        android:background="@drawable/box"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -33,7 +33,8 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Fullname"
-            android:textSize="50sp" />
+            android:textSize="50sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/username"
@@ -43,15 +44,16 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="Username"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btrEdit"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:background="#33FFFFFF"
+            android:background="#5929C084"
             android:text="Edit Profile"
+            android:textColor="#075E54"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -81,9 +83,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:text="Pond Management"
-                android:textSize="30sp"
-                android:layout_marginLeft="15dp"/>
+                android:textColor="#075E54"
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:id="@+id/layoutPondOptions"
@@ -95,17 +98,19 @@
                     android:id="@+id/textViewEditPond"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
                     android:text="Update Existing Pond Information"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="30dp"/>
+                    android:textColor="#D32B2525"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/textViewDeletePond"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
                     android:text="Delete Pond Information"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="30dp"/>
+                    android:textColor="#D32B2525"
+                    android:textSize="20sp" />
 
 
             </LinearLayout>
@@ -136,9 +141,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:text="Partner Management"
-                android:textSize="30sp"
-                android:layout_marginLeft="15dp"/>
+                android:textColor="#075E54"
+                android:textSize="30sp" />
 
             <LinearLayout
                 android:id="@+id/layoutPartnerOptions"
@@ -150,17 +156,19 @@
                     android:id="@+id/textViewAddAssignPartner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
                     android:text="Add and assign partner to a device"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="30dp"/>
+                    android:textColor="#D32B2525"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/textViewUnlinkPartner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
                     android:text="Unlink partner from a device"
-                    android:textSize="20sp"
-                    android:layout_marginLeft="30dp"/>
+                    android:textColor="#D32B2525"
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -189,9 +197,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:text="Time Clock"
-                android:textSize="30sp"
-                android:layout_marginLeft="15dp"/>
+                android:textColor="#075E54"
+                android:textSize="30sp" />
 
         </LinearLayout>
 
@@ -221,9 +230,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:text="Sign Out"
-                android:textSize="30sp"
-                android:layout_marginLeft="15dp"/>
+                android:textColor="#075E54"
+                android:textSize="30sp" />
 
         </LinearLayout>
 

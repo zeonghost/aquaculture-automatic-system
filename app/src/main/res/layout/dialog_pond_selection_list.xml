@@ -17,6 +17,7 @@
             android:id="@+id/txtViewPiID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#5929C084"
             android:paddingLeft="15dp"
             android:paddingTop="10dp"
             android:paddingBottom="3dp"
