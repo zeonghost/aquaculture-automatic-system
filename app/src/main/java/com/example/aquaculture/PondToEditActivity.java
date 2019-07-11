@@ -81,7 +81,6 @@ public class PondToEditActivity extends AppCompatActivity {
                 return new PondViewHolder(view);
             }
         };
-
         pondInfoRecycler.setAdapter(adapter);
     }
 
