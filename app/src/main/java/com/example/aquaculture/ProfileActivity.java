@@ -147,7 +147,6 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                     timeOutDialog.show();
                 } else {
-                    //connectionStatus();
                     sp.edit().clear().apply();
                     TIME_IN_STATUS = 0;
                     Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
@@ -255,9 +254,11 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    testRef.child("online").onDisconnect().cancel();
                     testRef.child("online").setValue(false);
                     //testRef.child("online").setValue(true);
                 }
+
             }
 
             @Override

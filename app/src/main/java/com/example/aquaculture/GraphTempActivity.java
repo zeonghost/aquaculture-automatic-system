@@ -344,7 +344,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
         Log.d(TAG, "Y Value: " + e.getY());
         Log.d(TAG, "Date: " + xValues.get((int) e.getX()));
 
-        String temp = e.getY() + " C";
+        String temp = e.getY() + " °C";
         String date = xValues.get((int) e.getX());
         showTemp.setText(temp);
         showDateTime.setText(date);
@@ -422,7 +422,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 xAxis.setDrawLabels(false);
 
                 Entry entry = yValues.get(yValues.size() - 1);
-                showTemp.setText(entry.getY() + " C");
+                showTemp.setText(entry.getY() + " °C");
                 showDateTime.setText(xValues.get(yValues.size() - 1));
             }
 

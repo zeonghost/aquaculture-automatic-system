@@ -128,7 +128,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         adapter.startListening();
-        connectionState();
     }
 
     @Override

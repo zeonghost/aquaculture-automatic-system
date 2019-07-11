@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -52,6 +54,7 @@ public class UnlinkPartnerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unlink_partner);
+        buttomNavigation();
         linkUser = findViewById(R.id.btnLinkUser);
         recyclerPartner = findViewById(R.id.partnerRecyclerView);
         recyclerPartner.setHasFixedSize(true);
@@ -78,15 +81,13 @@ public class UnlinkPartnerActivity extends AppCompatActivity {
                 holder.fullNamePartner.setText(fullname);
                 holder.deviceId.setText(deviceId);
 
-
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onLongClick(View v) {
+                    public void onClick(View v) {
                         partnerTemp.edit().putString("deviceId", deviceId).apply();
                         partnerTemp.edit().putString("username", username).apply();
                         partnerTemp.edit().putString("key", key).apply();
                         unLinkPartnerDialog();
-                        return true;
                     }
                 });
             }
@@ -142,5 +143,29 @@ public class UnlinkPartnerActivity extends AppCompatActivity {
             }
         });
         unLinkPartner.show();
+    }
+
+    public void buttomNavigation(){
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1:
+                        Intent intent1 = new Intent(UnlinkPartnerActivity.this, HomeActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.item2:
+                        Intent intent2 = new Intent(UnlinkPartnerActivity.this, TaskActivity.class);
+                        startActivity(intent2);
+                        break;
+                    case R.id.item3:
+                        Intent intent3 = new Intent(UnlinkPartnerActivity.this, ProfileActivity.class);
+                        startActivity(intent3);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 }

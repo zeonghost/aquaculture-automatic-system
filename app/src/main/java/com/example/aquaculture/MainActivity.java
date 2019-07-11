@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-        firebaseConnectionState();
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -132,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                firebaseConnectionState();
                 checkUserNameThenLogin();
                 //login();
             }
@@ -240,13 +240,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
-                if (connected) {
+                /*if (connected) {
                     Log.d(TAG, "connected");
                     Toast.makeText(MainActivity.this, "CONNECTED TO DATABASE", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "not connected");
                     Toast.makeText(MainActivity.this, "DISCONNECTED FROM DATABASE", Toast.LENGTH_SHORT).show();
-                }
+                }*/
+                if(!connected)
+                    Toast.makeText(MainActivity.this, "Cannot connect to database. Please check your Internet connection.", Toast.LENGTH_LONG).show();
             }
 
             @Override

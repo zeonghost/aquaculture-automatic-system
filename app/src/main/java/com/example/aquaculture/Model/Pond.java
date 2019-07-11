@@ -14,7 +14,7 @@ public class Pond {
     //private Integer length;
     //private Integer width;
 
-    public Pond(){} //DO NOT DELETE EMPTY CONSTRUCTOR
+    public Pond(){}
 /*
     public Pond(String piId, String pondName, String location, String channel1, String channel2, String channel3, String species, Integer width, Integer length, Integer depth){
         this.piId = piId;
