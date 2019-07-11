@@ -52,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
     private boolean isPartnerVisible;
     private TextView addAssignPartner;
     private TextView unlinkPartner;
+    private TextView updatePond;
+    private TextView deletePond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,8 @@ public class ProfileActivity extends AppCompatActivity {
         signOutCard = findViewById(R.id.cardViewSignOut);
         addAssignPartner = findViewById(R.id.textViewAddAssignPartner);
         unlinkPartner = findViewById(R.id.textViewUnlinkPartner);
+        updatePond = findViewById(R.id.textViewEditPond);
+        deletePond = findViewById(R.id.textViewDeletePond);
 
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
@@ -164,6 +168,21 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, UnlinkPartnerActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        updatePond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toPondToEditActivity = new Intent(ProfileActivity.this, PondToEditActivity.class);
+                startActivity(toPondToEditActivity);
+            }
+        });
+
+        deletePond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

@@ -92,6 +92,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textViewEditPond"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Update Existing Pond Information"
@@ -99,6 +100,7 @@
                     android:layout_marginLeft="30dp"/>
 
                 <TextView
+                    android:id="@+id/textViewDeletePond"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Delete Pond Information"
