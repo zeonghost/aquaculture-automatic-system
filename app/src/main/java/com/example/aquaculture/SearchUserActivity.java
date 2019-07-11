@@ -109,10 +109,17 @@ public class SearchUserActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(pondSelectView != null){
             ViewGroup parentView = (ViewGroup) pondSelectView.getParent();
-            parentView.removeView(pondSelectView);
-            adapter.stopListening();
-            adapterPond.stopListening();
+            if(parentView != null){
+                parentView.removeView(pondSelectView);
+                adapter.stopListening();
+                adapterPond.stopListening();
+            }
         }
+
+        if(adapter != null){
+            adapter.stopListening();
+        }
+
         getUser.edit().clear().apply();
         super.onBackPressed();
     }

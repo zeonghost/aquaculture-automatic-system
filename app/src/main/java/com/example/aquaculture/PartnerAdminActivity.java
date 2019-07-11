@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -55,7 +57,7 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partner_admin);
-        //getSupportActionBar().hide();
+        buttonNavigationSettings();
         linkUser = findViewById(R.id.btnLinkUser);
         recyclerPartner = findViewById(R.id.partnerRecyclerView);
         recyclerPartner.setHasFixedSize(true);
@@ -215,5 +217,30 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
         lastLogInfo.show().setCanceledOnTouchOutside(false);
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.myMap);
         mapFragment.getMapAsync(PartnerAdminActivity.this);
+    }
+
+    private void buttonNavigationSettings(){
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1://btn 1 -> HomeActivity
+                        Intent intent1 = new Intent(PartnerAdminActivity.this, HomeActivity.class);
+                        startActivity(intent1);
+
+                        break;
+                    case R.id.item2://btn 2 -> task
+                        Intent intent2 = new Intent(PartnerAdminActivity.this, TaskActivity.class);
+                        startActivity(intent2);
+                        break;
+                    case R.id.item3://btn 3 -> profile
+                        Intent intent3 = new Intent(PartnerAdminActivity.this, ProfileActivity.class);
+                        startActivity(intent3);
+                        break;
+                }
+                return false;
+            }
+        });//bottom navigation
     }
 }
