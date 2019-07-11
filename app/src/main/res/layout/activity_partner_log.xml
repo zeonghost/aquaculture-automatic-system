@@ -55,7 +55,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingTop="10dp"
                     android:text="--- --, ---- --:-- AM/PM"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -78,6 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingTop="10dp"
                     android:text="--- --, ---- --:-- AM/PM"
                     android:textAlignment="center"
                     android:textSize="25sp" />
@@ -92,10 +94,10 @@
 
                 <Button
                     android:id="@+id/btnTimeIn"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="37dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="#0F7D63"
                     android:text="Time In"
@@ -105,9 +107,9 @@
                 <Button
                     android:id="@+id/btnTimeOut"
                     android:layout_width="wrap_content"
+                    android:layout_height="37dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_height="37dp"
                     android:layout_weight="1"
                     android:background="#0F7D63"
                     android:text="Time Out"
@@ -121,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
+                android:paddingTop="10dp"
                 android:text="Name"
                 android:textSize="20sp" />
 
@@ -137,6 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
+                android:paddingBottom="13dp"
                 android:text="Location"
                 android:textSize="20sp" />
 
