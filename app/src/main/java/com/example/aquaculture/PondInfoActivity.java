@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -169,6 +171,7 @@ public class PondInfoActivity extends AppCompatActivity {
         logRead();
         setChannelNames();
         getForecastGraph();
+        statusCheck();
     }
 
     @Override
@@ -708,6 +711,51 @@ public class PondInfoActivity extends AppCompatActivity {
         }
         lastClickTime = time;
         return false;
+    }
+
+    public void statusCheck(){
+        String getData = HomeActivity.transferData;
+        String path5 = getData + "-temp";
+
+        final TextView warnMess = findViewById(R.id.tv_warning);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference recRead = database.getReference(path5);
+
+        recRead.orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                long recTime = dataSnapshot.child("time").getValue(Long.class);
+
+                long millis = System.currentTimeMillis();
+                millis = millis/1000;
+                long twt = 20*60;
+                millis = millis - twt;
+
+                if(recTime < millis){
+                    warnMess.setVisibility(View.VISIBLE);
+                }
+                else{
+                    warnMess.setVisibility(View.GONE);
+                }
+            }
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void buttomNavigation(){

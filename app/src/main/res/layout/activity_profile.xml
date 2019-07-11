@@ -17,15 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imgViewSignOut"
-            android:layout_width="35dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:paddingRight="7dp"
-            android:src="@drawable/out" />
-
         <TextView
             android:id="@+id/txtUserFullName"
             android:layout_width="wrap_content"

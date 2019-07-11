@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class GraphTempActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener, DatePickerDialog.OnDateSetListener{
 
@@ -381,6 +382,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
                     Long snapTimestamp = snaps.child("time").getValue(Long.class);
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                     timestamp = new Timestamp(snapTimestamp);
                     date = new Date(timestamp.getTime() * 1000);
                     formattedDateTime = dateFormat.format(date);

@@ -63,7 +63,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         uid = dataSnapshot.getKey();
-
                         //Log.d(TAG, "Result-1: "+ path1);
                         //search location and get the path and species
                         DatabaseReference Ref2 = db.getReference();
@@ -75,7 +74,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                 locatget = dataSnapshot.getKey();
                                 //Log.d(TAG, "Result-2: "+ locatget);
                                 //Log.d(TAG, "Result-3: "+ speciesget);
-
                                 if(Objects.equals(speciesget, species.getText().toString())){
                                     DatabaseReference Ref3 = Ref.child(uid);
                                     Map<String, Object> passUpdate = new HashMap<>();

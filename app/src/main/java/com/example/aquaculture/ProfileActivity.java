@@ -38,10 +38,11 @@ import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private SharedPreferences sp;
     private TextView fullname;
     private TextView username;
-    private ImageView signOut;
+    //private ImageView signOut;
     private CardView partnerCard;
     private CardView pondCard;
     private CardView timeCard;
@@ -62,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         buttonNavigationSettings();
         fullname = findViewById(R.id.txtUserFullName);
         username = findViewById(R.id.username);
-        signOut = findViewById(R.id.imgViewSignOut);
+        //signOut = findViewById(R.id.imgViewSignOut);
         partnerCard = findViewById(R.id.cardViewPartner);
         partnerOptions = findViewById(R.id.layoutPartnerOptions);
         pondCard = findViewById(R.id.cardViewPond);
@@ -146,6 +147,7 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                     timeOutDialog.show();
                 } else {
+                    //connectionStatus();
                     sp.edit().clear().apply();
                     TIME_IN_STATUS = 0;
                     Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
@@ -201,7 +203,7 @@ public class ProfileActivity extends AppCompatActivity {
                 editDialog();
             }
         });
-
+/*
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,7 +226,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
+*/
         Button btr3 = findViewById(R.id.btr3);
         btr3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,10 +248,29 @@ public class ProfileActivity extends AppCompatActivity {
         hideTestingButtons(btr1, btr3, btr4);
     }
 
+    private void connectionStatus(){
+        String userID = sp.getString("uid", "");
+        final DatabaseReference testRef = database.getReference().child("user").child(userID);
+        testRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    testRef.child("online").setValue(false);
+                    //testRef.child("online").setValue(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void editDialog(){
         LayoutInflater factory = LayoutInflater.from(this);
         final View textEntryView = factory.inflate(R.layout.dialog_edit_profile, null);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("user");
 
         final EditText fname = (EditText) textEntryView.findViewById(R.id.et_fname);
