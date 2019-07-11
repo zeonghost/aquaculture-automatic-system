@@ -97,7 +97,6 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         timeCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,6 +242,8 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        hideTestingButtons(btr1, btr3, btr4);
     }
 
     public void editDialog(){
@@ -344,5 +345,11 @@ public class ProfileActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void hideTestingButtons(Button a, Button b, Button c){
+        a.setVisibility(View.INVISIBLE);
+        b.setVisibility(View.INVISIBLE);
+        c.setVisibility(View.INVISIBLE);
     }
 }

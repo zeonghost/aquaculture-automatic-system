@@ -528,6 +528,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 if(val4 == 1){
                     sw.setImageResource(R.drawable.icons_switch_on_s);
                     tempSetting.setEnabled(false);
+                    tempSetting.setImageResource(R.drawable.setting_off);
                     channel1.setEnabled(false);
                     channel2.setEnabled(false);
                     channel3.setEnabled(false);
@@ -535,6 +536,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 else{
                     sw.setImageResource(R.drawable.icons_switch_off_s);
                     tempSetting.setEnabled(true);
+                    tempSetting.setImageResource(R.drawable.setting);
                     channel1.setEnabled(true);
                     channel2.setEnabled(true);
                     channel3.setEnabled(true);
