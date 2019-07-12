@@ -88,10 +88,6 @@ public class HomeActivity extends AppCompatActivity {
                 Map<String, Object> tokenUpt = new HashMap<>();
                 tokenUpt.put("pushToken", token);
                 tokRef.child(uid).updateChildren(tokenUpt);
-                // Log and toast
-                //String msg = getString(R.string.msg_token_fmt, token);
-                //Log.d(TAG, msg);
-                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
 

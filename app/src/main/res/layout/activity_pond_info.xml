@@ -558,7 +558,7 @@
                         android:layout_gravity="right|center_horizontal"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:text="Push" />
+                        android:text="Notification" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -735,17 +735,17 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 if(recTime < millis){
                     warnMess.setVisibility(View.VISIBLE);
-                    sw.setEnabled(false);
-                    channel1.setEnabled(false);
-                    channel2.setEnabled(false);
-                    channel3.setEnabled(false);
+                    sw.setVisibility(View.GONE);
+                    channel1.setVisibility(View.GONE);;
+                    channel2.setVisibility(View.GONE);;
+                    channel3.setVisibility(View.GONE);;
                 }
                 else{
                     warnMess.setVisibility(View.GONE);
-                    sw.setEnabled(true);
-                    channel1.setEnabled(true);
-                    channel2.setEnabled(true);
-                    channel3.setEnabled(true);
+                    sw.setVisibility(View.VISIBLE);
+                    channel1.setVisibility(View.VISIBLE);
+                    channel2.setVisibility(View.VISIBLE);
+                    channel3.setVisibility(View.VISIBLE);
                 }
             }
             @Override

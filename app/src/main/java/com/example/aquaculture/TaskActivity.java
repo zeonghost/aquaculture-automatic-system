@@ -328,7 +328,6 @@ public class TaskActivity extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         receiver.setAdapter(arrayAdapter);
 
-
         date.setFocusable(false);
         date.setClickable(true);
         time.setFocusable(false);
@@ -395,7 +394,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private void showDeleteDialog(){
         AlertDialog.Builder normalDialog = new AlertDialog.Builder(TaskActivity.this);
-        normalDialog.setTitle("Warning").setMessage("You sure you want to delete this task?");
+        normalDialog.setMessage("You sure you want to delete this task?");
         normalDialog.setPositiveButton("Delete",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -411,7 +410,7 @@ public class TaskActivity extends AppCompatActivity {
     private void showDoneDialog(){
         AlertDialog.Builder normalDialog =
                 new AlertDialog.Builder(TaskActivity.this);
-        normalDialog.setTitle("Warning").setMessage("You sure you want to set this task to Done?");
+        normalDialog.setMessage("You sure you want to set this task to Done?");
         normalDialog.setPositiveButton("Done",
                 new DialogInterface.OnClickListener() {
                     @Override
