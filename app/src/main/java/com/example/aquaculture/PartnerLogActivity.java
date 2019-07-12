@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.aquaculture.Model.PartnerLocationLog;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -173,8 +172,8 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                 myRef.child(username).child("timeOut").setValue(currentTimestamp);
                 //sp.edit().putBoolean("timeInStatus", false).apply();
                 TIME_IN_STATUS = 0;
-                Intent toHomeActivity = new Intent (PartnerLogActivity.this, HomeActivity.class);
-                startActivity(toHomeActivity);
+                Intent toProfileActivity = new Intent (PartnerLogActivity.this, ProfileActivity.class);
+                startActivity(toProfileActivity);
             }
         });
     }
