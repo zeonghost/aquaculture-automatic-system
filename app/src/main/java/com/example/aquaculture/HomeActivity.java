@@ -21,10 +21,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.aquaculture.ViewHolder.PondViewHolder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -68,6 +72,28 @@ public class HomeActivity extends AppCompatActivity {
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         String username = sp.getString("username", "");
         String role = sp.getString("role", "");
+        final String uid = sp.getString("uid", "");
+
+        FirebaseApp.initializeApp(this);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "getInstanceId failed", task.getException());
+                    return;
+                }
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+                DatabaseReference tokRef = database.getReference("/user");
+                Map<String, Object> tokenUpt = new HashMap<>();
+                tokenUpt.put("pushToken", token);
+                tokRef.child(uid).updateChildren(tokenUpt);
+                // Log and toast
+                //String msg = getString(R.string.msg_token_fmt, token);
+                //Log.d(TAG, msg);
+                //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Log.d(TAG, "SP: " + sp.getAll().toString());
         myRef = database.getReference("/PondDetail");

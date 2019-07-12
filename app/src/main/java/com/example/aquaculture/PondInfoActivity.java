@@ -721,6 +721,7 @@ public class PondInfoActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference recRead = database.getReference(path5);
+        final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
 
         recRead.orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
@@ -734,9 +735,17 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 if(recTime < millis){
                     warnMess.setVisibility(View.VISIBLE);
+                    sw.setEnabled(false);
+                    channel1.setEnabled(false);
+                    channel2.setEnabled(false);
+                    channel3.setEnabled(false);
                 }
                 else{
                     warnMess.setVisibility(View.GONE);
+                    sw.setEnabled(true);
+                    channel1.setEnabled(true);
+                    channel2.setEnabled(true);
+                    channel3.setEnabled(true);
                 }
             }
             @Override
