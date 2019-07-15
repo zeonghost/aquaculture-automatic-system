@@ -225,6 +225,7 @@ public class TaskActivity extends AppCompatActivity {
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
         final Spinner receiver = textEntryView.findViewById(R.id.spinnerReceiver);
+        status = "Pending";
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(TaskActivity.this, android.R.layout.simple_spinner_dropdown_item, partnerList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -297,19 +298,24 @@ public class TaskActivity extends AppCompatActivity {
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 myRef1 = database.getReference("/task");
-                String un = sp.getString("username", null);
-                String token = sp1.getString("pushToken", null);
                 String rt = receiver.getSelectedItem().toString().split(" ")[0];
-                String receiverName = receiver.getSelectedItem().toString().split(" ")[2] + " " + receiver.getSelectedItem().toString().split(" ")[3];
-                String uploaderName = sp.getString("firstname",  "") + " " + sp.getString("lastname","");
-                String key = myRef1.push().getKey();
-                Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un, receiverName, uploaderName);
-                myRef1.child(key).setValue(newUser);
-                Map<String, Object> pushT = new HashMap<>();
-                pushT.put("receiveToken", token);
-                Log.d(TAG, "Push Token: "+ token);
-                myRef1.child(key).updateChildren(pushT);
-                Toast.makeText(TaskActivity.this, "Add Success", Toast.LENGTH_SHORT).show();
+
+                if(date.getText().toString().isEmpty() || rt.isEmpty() || task.getText().toString().isEmpty() || time.getText().toString().isEmpty()){
+                    Toast.makeText(TaskActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();
+                } else {
+                    String un = sp.getString("username", null);
+                    String token = sp1.getString("pushToken", null);
+                    String receiverName = receiver.getSelectedItem().toString().split(" ")[2] + " " + receiver.getSelectedItem().toString().split(" ")[3];
+                    String uploaderName = sp.getString("firstname",  "") + " " + sp.getString("lastname","");
+                    String key = myRef1.push().getKey();
+                    Task newUser = new Task(date.getText().toString(), rt, status, task.getText().toString(), time.getText().toString(), un, receiverName, uploaderName);
+                    myRef1.child(key).setValue(newUser);
+                    Map<String, Object> pushT = new HashMap<>();
+                    pushT.put("receiveToken", token);
+                    Log.d(TAG, "Push Token: "+ token);
+                    myRef1.child(key).updateChildren(pushT);
+                    Toast.makeText(TaskActivity.this, "Add Success", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         ad1.show();

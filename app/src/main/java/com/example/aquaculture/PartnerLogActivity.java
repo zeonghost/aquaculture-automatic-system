@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -37,6 +38,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.collection.LLRBNode;
 
 import java.util.Calendar;
 
@@ -116,10 +118,14 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         super.onStart();
         if(TIME_IN_STATUS == 1){
             timeOut.setEnabled(true);
+            timeOut.setBackgroundColor(Color.parseColor("#0F7D63"));
             timeIn.setEnabled(false);
+            timeIn.setBackgroundColor(Color.GRAY);
         } else {
             timeOut.setEnabled(false);
+            timeOut.setBackgroundColor(Color.GRAY);
             timeIn.setEnabled(true);
+            timeIn.setBackgroundColor(Color.parseColor("#0F7D63"));
         }
 
         txtName.setText("Name: " + sp.getString("firstname", "") + " " + sp.getString("lastname", ""));

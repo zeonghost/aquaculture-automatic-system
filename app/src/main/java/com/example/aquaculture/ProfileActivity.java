@@ -230,7 +230,7 @@ public class ProfileActivity extends AppCompatActivity {
         btr3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this, ForecastActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, ForecastActivityTest.class);
                 startActivity(intent);
             }
         });
@@ -371,7 +371,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void hideTestingButtons(Button a, Button b, Button c){
         a.setVisibility(View.INVISIBLE);
-        b.setVisibility(View.INVISIBLE);
+        b.setVisibility(View.VISIBLE);
         c.setVisibility(View.INVISIBLE);
     }
 }

@@ -31,7 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ForecastActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener {
     private static final String TAG = "ForecastActivity";
@@ -60,7 +62,6 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
         forecastGraph = findViewById(R.id.lineChartWaterForecast);
         yValuesForecast = new ArrayList<>();
         xValuesForecast = new ArrayList<>();
-        forecastLayout.setVisibility(View.INVISIBLE);
         getForecastGraph();
         buttonNavigationSettings();
     }
@@ -113,6 +114,22 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
                 setXValuesForecast();
                 xAxis.setValueFormatter(new ForecastActivity.myXValueFormatter(xValuesForecast));
                 xAxis.setDrawLabels(true);
+
+
+                Integer position;
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH");
+                position = Integer.valueOf(timeFormat.format(cal.getTime()));
+
+                if(position == 24){
+                    position = 0;
+                } else {
+                    position += 1;
+                }
+
+                Entry entry = yValuesForecast.get(position);
+                tempForecast.setText(entry.getY() + " °C");
+                forecastTime.setText(xValuesForecast.get(position));
             }
 
             @Override
@@ -124,12 +141,12 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
 
     @Override
     public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        forecastLayout.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        forecastLayout.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
