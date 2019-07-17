@@ -271,6 +271,36 @@ public class TaskActivity extends AppCompatActivity {
 
             }
         });
+        DatabaseReference uptokRef = database.getReference("/user");
+        uptokRef.orderByChild("username").equalTo(sp.getString("username", null)).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                pushToken = dataSnapshot.child("pushToken").getValue().toString();
+                sp1.edit()
+                        .putString("uppushToken", pushToken)
+                        .apply();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         date.setFocusable(false);
         date.setClickable(true);
@@ -305,6 +335,7 @@ public class TaskActivity extends AppCompatActivity {
                 } else {
                     String un = sp.getString("username", null);
                     String token = sp1.getString("pushToken", null);
+                    String uptoken = sp1.getString("uppushToken", null);
                     String receiverName = receiver.getSelectedItem().toString().split(" ")[2] + " " + receiver.getSelectedItem().toString().split(" ")[3];
                     String uploaderName = sp.getString("firstname",  "") + " " + sp.getString("lastname","");
                     String key = myRef1.push().getKey();
@@ -312,7 +343,8 @@ public class TaskActivity extends AppCompatActivity {
                     myRef1.child(key).setValue(newUser);
                     Map<String, Object> pushT = new HashMap<>();
                     pushT.put("receiveToken", token);
-                    Log.d(TAG, "Push Token: "+ token);
+                    pushT.put("uploaderToken", uptoken);
+                    //Log.d(TAG, "Push Token: "+ token);
                     myRef1.child(key).updateChildren(pushT);
                     Toast.makeText(TaskActivity.this, "Add Success", Toast.LENGTH_SHORT).show();
                 }
