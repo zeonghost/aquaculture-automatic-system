@@ -56,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView updatePond;
     private TextView deletePond;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,7 +183,8 @@ public class ProfileActivity extends AppCompatActivity {
         deletePond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent toPondDeleteActivity = new Intent(ProfileActivity.this, PondToDeleteActivity.class);
+                startActivity(toPondDeleteActivity);
             }
         });
 
