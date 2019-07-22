@@ -260,9 +260,7 @@ public class ProfileActivity extends AppCompatActivity {
                     testRef.child("online").setValue(false);
                     //testRef.child("online").setValue(true);
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -347,6 +345,8 @@ public class ProfileActivity extends AppCompatActivity {
                         .putString("firstname", fn)
                         .putString("lastname", ln)
                         .apply();
+                fullname.setText(sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
+                username.setText(sp.getString("username", null));
                 Toast.makeText(ProfileActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
             }
         });

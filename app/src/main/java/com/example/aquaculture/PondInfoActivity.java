@@ -809,6 +809,20 @@ public class PondInfoActivity extends AppCompatActivity {
         ad1.setIcon(android.R.drawable.ic_dialog_info);
         ad1.setView(textEntryView);
 
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                top.setText(dataSnapshot.child("high").getValue().toString());
+                bottom.setText(dataSnapshot.child("low").getValue().toString());
+                ch2OnTime.setText(dataSnapshot.child("gap1").getValue().toString());
+                ch2OffTime.setText(dataSnapshot.child("gap2").getValue().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+/*
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -823,7 +837,7 @@ public class PondInfoActivity extends AppCompatActivity {
 
             }
         });
-
+*/
 
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
