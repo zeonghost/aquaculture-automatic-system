@@ -341,7 +341,11 @@ public class ProfileActivity extends AppCompatActivity {
                 profileupdate.put("fname", fn);
                 profileupdate.put("lname", ln);
                 myRef.child(id).updateChildren(profileupdate);
-                Toast.makeText(ProfileActivity.this, "Add Success", Toast.LENGTH_SHORT).show();
+                sp.edit()
+                        .putString("firstname", fn)
+                        .putString("lastname", ln)
+                        .apply();
+                Toast.makeText(ProfileActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
             }
         });
         ad1.show();
