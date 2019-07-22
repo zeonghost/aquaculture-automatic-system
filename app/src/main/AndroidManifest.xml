@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PondToEditActivity"></activity>
+        <activity android:name=".PondToDeleteActivity"></activity>
+        <activity android:name=".PondToEditActivity" />
         <activity android:name=".UnlinkPartnerActivity" />
         <activity android:name=".ForecastActivity" />
         <activity android:name=".GraphTesting" />
