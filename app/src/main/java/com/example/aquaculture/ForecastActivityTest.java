@@ -58,7 +58,6 @@ public class ForecastActivityTest extends AppCompatActivity {
         myDatabase = FirebaseDatabase.getInstance();
         myRef = myDatabase.getReference("pi1-forecast-test");
 
-        //Query query = myRef.orderByChild("date").startAt("Jun 01, 2019").endAt("Jun 03, 2019");
         Query query = myRef.orderByChild("time");
         query.addValueEventListener(new ValueEventListener() {
             @Override

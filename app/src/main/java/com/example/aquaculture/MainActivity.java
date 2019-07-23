@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox al;//auto login
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    //public  boolean unCheck = false;
 
     //private String rem_pass;
     private String auto_log;
@@ -70,9 +69,8 @@ public class MainActivity extends AppCompatActivity {
         fgt = (Button)findViewById(R.id.fgt_pass);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("/user");
-        //rp=(CheckBox)findViewById(R.id.cb_rp);
         al=(CheckBox)findViewById(R.id.cd_al);
-        //basicReadWrite();
+
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
 
         al=(CheckBox)findViewById(R.id.cd_al);
@@ -85,14 +83,12 @@ public class MainActivity extends AppCompatActivity {
                     sp.edit()
                             .putString("auto_log1", auto_log)
                             .apply();
-                    //Log.d(TAG, "Result sp-al1-changed: "+ sp.getString("auto_log1", null));
                 }
                 else{
                     auto_log="N";
                     sp.edit()
                             .putString("auto_log1", auto_log)
                             .apply();
-                    //Log.d(TAG, "Result sp-al1-changed: "+ sp.getString("auto_log1", null));
                 }
             }
         });//detech auto login and saved in SharedPreference
@@ -117,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 firebaseConnectionState();
                 checkUserNameThenLogin();
-                //login();
             }
         });
 
@@ -139,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void login(){
-        //showWaitingDialog();
         final ProgressDialog waitingDialog= new ProgressDialog(MainActivity.this);
         waitingDialog.setMessage("Connecting...");
         waitingDialog.setIndeterminate(true);

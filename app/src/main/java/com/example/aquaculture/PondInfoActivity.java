@@ -386,11 +386,9 @@ public class PondInfoActivity extends AppCompatActivity {
                 int i = 0;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
                     String logDetail = snaps.child("logDetail").getValue().toString();
-                    //Log.d(TAG, "Result111: "+ logDetail);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                     Long logTime = snaps.child("logTime").getValue(Long.class);
-                    //Log.d(TAG, "Result112: "+ logTime);
                     Timestamp timestamp = new Timestamp(logTime);
                     Date date = new Date(timestamp.getTime());
                     String formattedDateTime = dateFormat.format(date);
@@ -463,7 +461,6 @@ public class PondInfoActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    //String msg = getString(R.string.msg_subscribed);
                                     if (!task.isSuccessful()) {
                                         Toast.makeText(PondInfoActivity.this, "Subscribe ERROR", Toast.LENGTH_SHORT).show();
                                     }
@@ -478,7 +475,6 @@ public class PondInfoActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    //String msg = getString(R.string.msg_subscribed);
                                     if (!task.isSuccessful()) {
                                         Toast.makeText(PondInfoActivity.this, "Unsubscribe ERROR", Toast.LENGTH_SHORT).show();
                                     }
@@ -525,7 +521,6 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 //get current temperature data from database and display
                 final Integer val4 = dataSnapshot.child("auto").getValue(Integer.class);
-                //final Switch sw = (Switch) findViewById(R.id.autosw);
                 final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
 
                 if(val4 == 1){
@@ -704,24 +699,34 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
-    public static boolean isFastDoubleClick() {
-        long time = System.currentTimeMillis();
-        if (time - lastClickTime < 1000) {
-            return true;
-        }
-        lastClickTime = time;
-        return false;
-    }
-
     public void statusCheck(){
         String getData = HomeActivity.transferData;
         String path5 = getData + "-temp";
+        String path6 = getData + "-pond1";
 
         final TextView warnMess = findViewById(R.id.tv_warning);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference recRead = database.getReference(path5);
+        final DatabaseReference tempRead = database.getReference(path6);
         final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
+
+        tempRead.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                warnMess.setVisibility(View.GONE);
+                sw.setVisibility(View.VISIBLE);
+                channel1.setVisibility(View.VISIBLE);
+                channel2.setVisibility(View.VISIBLE);
+                channel3.setVisibility(View.VISIBLE);
+                Log.d(TAG,"data changed");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         recRead.orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
@@ -765,7 +770,9 @@ public class PondInfoActivity extends AppCompatActivity {
 
             }
         });
+
     }
+
 
     public void buttomNavigation(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -822,22 +829,6 @@ public class PondInfoActivity extends AppCompatActivity {
 
             }
         });
-/*
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                top.setText(dataSnapshot.child("high").getValue().toString());
-                bottom.setText(dataSnapshot.child("low").getValue().toString());
-                ch2OnTime.setText(dataSnapshot.child("gap1").getValue().toString());
-                ch2OffTime.setText(dataSnapshot.child("gap2").getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-*/
 
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {

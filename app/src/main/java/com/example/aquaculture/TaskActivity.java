@@ -285,17 +285,14 @@ public class TaskActivity extends AppCompatActivity {
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
-
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
             }
-
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -344,7 +341,6 @@ public class TaskActivity extends AppCompatActivity {
                     Map<String, Object> pushT = new HashMap<>();
                     pushT.put("receiveToken", token);
                     pushT.put("uploaderToken", uptoken);
-                    //Log.d(TAG, "Push Token: "+ token);
                     myRef1.child(key).updateChildren(pushT);
                     Toast.makeText(TaskActivity.this, "Add Success", Toast.LENGTH_SHORT).show();
                 }
@@ -420,7 +416,6 @@ public class TaskActivity extends AppCompatActivity {
                 Map<String, Object> hopperUpdates = new HashMap<>();
                 hopperUpdates.put("date", date.getText().toString());
                 hopperUpdates.put("time", time.getText().toString());
-                //hopperUpdates.put("receiver", receiver.getSelectedItem().toString().split(" ")[0]);
                 hopperUpdates.put("status", status);
                 hopperUpdates.put("task", task.getText().toString());
                 hopperRef.updateChildren(hopperUpdates);

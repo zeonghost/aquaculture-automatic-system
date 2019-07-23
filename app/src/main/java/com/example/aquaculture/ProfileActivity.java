@@ -42,7 +42,6 @@ public class ProfileActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private TextView fullname;
     private TextView username;
-    //private ImageView signOut;
     private CardView partnerCard;
     private CardView pondCard;
     private CardView timeCard;
@@ -64,7 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
         buttonNavigationSettings();
         fullname = findViewById(R.id.txtUserFullName);
         username = findViewById(R.id.username);
-        //signOut = findViewById(R.id.imgViewSignOut);
         partnerCard = findViewById(R.id.cardViewPartner);
         partnerOptions = findViewById(R.id.layoutPartnerOptions);
         pondCard = findViewById(R.id.cardViewPond);
@@ -204,30 +202,7 @@ public class ProfileActivity extends AppCompatActivity {
                 editDialog();
             }
         });
-/*
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(TIME_IN_STATUS == 1){
-                    AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
-                    timeOutDialog.setTitle("Reminder:");
-                    timeOutDialog.setMessage("Please clock out prior signing out.");
-                    timeOutDialog.setPositiveButton("Clock Out", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int i) {
-                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                    timeOutDialog.show();
-                } else {
-                    sp.edit().clear().apply();
-                    TIME_IN_STATUS = 0;
-                    Intent intent4 = new Intent(ProfileActivity.this, MainActivity.class);
-                    startActivity(intent4);
-                }
-            }
-        });
-*/
+
         Button btr3 = findViewById(R.id.btr3);
         btr3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,7 +246,6 @@ public class ProfileActivity extends AppCompatActivity {
     public void editDialog(){
         LayoutInflater factory = LayoutInflater.from(this);
         final View textEntryView = factory.inflate(R.layout.dialog_edit_profile, null);
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("user");
 
         final EditText fname = (EditText) textEntryView.findViewById(R.id.et_fname);
@@ -279,7 +253,7 @@ public class ProfileActivity extends AppCompatActivity {
         final Button del = (Button) textEntryView.findViewById(R.id.btr_del);
 
         sp = this.getSharedPreferences("login", Context.MODE_PRIVATE);
-        //String un = sp.getString("username", null);
+
         final String id = sp.getString("uid", null);
 
         del.setOnClickListener(new View.OnClickListener() {

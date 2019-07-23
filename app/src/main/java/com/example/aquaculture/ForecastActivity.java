@@ -115,7 +115,6 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
                 xAxis.setValueFormatter(new ForecastActivity.myXValueFormatter(xValuesForecast));
                 xAxis.setDrawLabels(true);
 
-
                 Integer position;
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH");

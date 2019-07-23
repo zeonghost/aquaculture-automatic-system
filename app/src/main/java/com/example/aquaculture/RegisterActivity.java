@@ -38,8 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        //setTitle("Register");
-        //getSupportActionBar().hide();
+
         name = (EditText)findViewById(R.id.un);
         pass = (EditText)findViewById(R.id.pass);
         fname = (EditText)findViewById(R.id.Fname);
@@ -110,47 +109,4 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 }
-
-// old codes
-/*
-    public static class Post{
-
-        public String username;
-        public String password;
-        public String fname;
-        public String lname;
-        public String role;
-
-        public Post(String username, String password, String fname, String lname, String role){
-            this.username = username;
-            this.password = password;
-            this.fname = fname;
-            this.lname = lname;
-            this.role = role;
-        }
-    }
-    */
-
-    /*
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item1:
-                        Intent intent1 = new Intent(registerActivity.this, homeActivity.class);
-                        startActivity(intent1);
-                        break;
-                    case R.id.item2:
-                        break;
-                    case R.id.item3:
-                        Intent intent2 = new Intent(registerActivity.this, MainActivity.class);
-                        startActivity(intent2);
-                        break;
-                }
-                return false;
-            }
-        });
-        */
-
 

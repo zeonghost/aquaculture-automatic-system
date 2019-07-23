@@ -109,8 +109,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
             }
             startDate.setText(dateTemp);
             fromDate = calendar.getTimeInMillis(); // Timestamp format
-            //android.util.Log.d(TAG, "dateTemp: " + dateTemp);
-            //android.util.Log.d(TAG, "fromDate: " + fromDate);
         } else {
             if(fromDate > calendar.getTimeInMillis()){
                 Toast.makeText(LogViewActivity.this, "Invalid Date: Please choose after your start date.", Toast.LENGTH_SHORT).show();
@@ -118,8 +116,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
             }
             endDate.setText(dateTemp);
             toDate = calendar.getTimeInMillis() + 86399000; // Timestamp format
-            //android.util.Log.d(TAG, "dateTemp: " + dateTemp);
-            //android.util.Log.d(TAG, "toDate: " + toDate);
         }
     }
     /***********************************************
@@ -172,8 +168,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                     Toast.makeText(LogViewActivity.this, "Please set the dates of data you want.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //fromDate/=1000;
-                //toDate/=1000;
+
                 android.util.Log.d(TAG, "toDate: " + toDate);
                 android.util.Log.d(TAG, "fromDate: " + fromDate);
                 tr1 = toDate;

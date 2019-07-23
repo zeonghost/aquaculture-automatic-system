@@ -118,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         transferData = piID;
                         Log.d(TAG, "Result-2: "+ transferData);
-                        //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
                             sp.edit().putString("device", piID).apply();
                             sp.edit().putString("location", location).apply();
@@ -178,8 +177,6 @@ public class HomeActivity extends AppCompatActivity {
         addPond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent toQRScanner = new Intent(HomeActivity.this, AddPondActivity.class);
-                //startActivity(toQRScanner);//this jump is only for testing
                 IntentIntegrator intentIntegrator = new IntentIntegrator(HomeActivity.this);
                 intentIntegrator.setPrompt("QR Scanner");//set display context
                 intentIntegrator.setTimeout(60000);//set time out

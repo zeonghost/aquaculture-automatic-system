@@ -62,7 +62,6 @@ public class SearchUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_user);
-        //getSupportActionBar().hide();
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child("user");

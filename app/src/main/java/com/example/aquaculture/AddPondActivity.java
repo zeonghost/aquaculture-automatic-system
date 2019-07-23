@@ -54,7 +54,6 @@ public class AddPondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pond);
         piId = HomeActivity.qrResult; // the result get from qr scanner, use this in real
-        //piId = "pi2";
         dev = (TextView)findViewById(R.id.piId);
         dev.setText(piId);
 
@@ -164,7 +163,6 @@ public class AddPondActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //final FirebaseDatabase database =  FirebaseDatabase.getInstance();
                         String username = sp.getString("username", "");
                         String role = sp.getString("role", "");
                         linkPondRef.child(piId).child(username).setValue(role);
