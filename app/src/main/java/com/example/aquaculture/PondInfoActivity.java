@@ -462,9 +462,9 @@ public class PondInfoActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (!task.isSuccessful()) {
-                                        Toast.makeText(PondInfoActivity.this, "Subscribe ERROR", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PondInfoActivity.this, "Subscribe Notification Error", Toast.LENGTH_SHORT).show();
                                     }
-                                    Toast.makeText(PondInfoActivity.this, "Subscribe Success!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PondInfoActivity.this, "Notification On", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 } else {
@@ -476,9 +476,9 @@ public class PondInfoActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (!task.isSuccessful()) {
-                                        Toast.makeText(PondInfoActivity.this, "Unsubscribe ERROR", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PondInfoActivity.this, "Unsubscribe Notification Error", Toast.LENGTH_SHORT).show();
                                     }
-                                    Toast.makeText(PondInfoActivity.this, "Unsubscribe Success!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PondInfoActivity.this, "Notification Off", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -770,7 +770,6 @@ public class PondInfoActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 
@@ -888,7 +887,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
                 final String un = u2 + " "+ u1;
-                String log = un + " edit the highest Critical temp to "+ topnum+" lowest Critical temp to "+botnum+" ch2 on time to "+onTime+" off time to "+ offTime;
+                String log = un + " changed the highest critical temperature to "+ topnum +", lowest critical temperature to " + botnum + ", channel 2 on-time to "+onTime+", and off-time to "+ offTime;
                 Long time = System.currentTimeMillis();
                 Map<String, Object> logPut = new HashMap<>();
                 logPut.put("logDetail", log);

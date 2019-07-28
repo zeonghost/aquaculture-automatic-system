@@ -7,126 +7,293 @@
     android:orientation="vertical"
     android:background="@drawable/plain"
     tools:context=".AddPondActivity">
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="90dp"
-                android:layout_marginTop="40dp"
-                android:text="Device ID: "
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="18sp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/piId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="180dp"
-                android:layout_marginTop="-23.5dp"
-                android:text="TextView"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
 
-            <EditText
-                android:id="@+id/pond"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Pond ID"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Device ID: "
+            android:textCursorDrawable="@drawable/cursor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/locat"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Location"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor" />
+        <TextView
+            android:id="@+id/piId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textCursorDrawable="@drawable/cursor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/ch1n"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Channel 1"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor" />
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/ch2n"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Channel 2"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Pond name:"
+            android:textSize="15sp" />
+        <EditText
+            android:id="@+id/pond"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Pond ID"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:textStyle="bold"
+            android:layout_weight="2"/>
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/ch3n"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Channel 3"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Location:"
+            android:textSize="15sp"
+            />
+        <EditText
+            android:id="@+id/locat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Location"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:layout_weight="2"/>
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/spec"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Species"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Channel 1:"
+            android:textSize="15sp" />
+        <EditText
+            android:id="@+id/ch1n"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Channel 1"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:layout_weight="2"/>
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/width"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Width"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
 
-            <EditText
-                android:id="@+id/length"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Length"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Channel 2:"
+            android:textSize="15sp" />
+        <EditText
+            android:id="@+id/ch2n"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Channel 2"
+            android:inputType="textPersonName"
+            android:layout_weight="2"
+            android:textCursorDrawable="@drawable/cursor"/>
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/depth"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:ems="10"
-                android:hint="Depth"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Channel 3:"
+            android:textSize="15sp"
+            />
 
-            <Button
-                android:id="@+id/btr"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:background="#0F7D63"
-                android:text="Add"
-                android:textColor="#FFFFFF" />
+        <EditText
+            android:id="@+id/ch3n"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Channel 3"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Species:"
+            android:textSize="15sp"
+            />
+
+        <EditText
+            android:id="@+id/spec"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Species"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Pond Width:"
+            android:textSize="15sp"
+            />
+        <EditText
+            android:id="@+id/width"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Width"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Pond Length:"
+            android:textSize="15sp" />
+        <EditText
+            android:id="@+id/length"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Length"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:layout_weight="2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:gravity="left|center"
+            android:text="Pond Depth:"
+            android:textSize="15sp"
+            />
+        <EditText
+            android:id="@+id/depth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            android:hint="Depth"
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@drawable/cursor"
+            android:layout_weight="2"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btr"
+        android:layout_width="233dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:background="#0F7D63"
+        android:text="Add"
+        android:textColor="#FFFFFF" />
 </LinearLayout>

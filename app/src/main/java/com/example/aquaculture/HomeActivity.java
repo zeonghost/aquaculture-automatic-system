@@ -191,7 +191,7 @@ public class HomeActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, "Scan Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Abort Scanning", Toast.LENGTH_LONG).show();
             } else {
                 qrResult = result.getContents();
                 Toast.makeText(this, "Scan Result: "+ qrResult, Toast.LENGTH_LONG).show();

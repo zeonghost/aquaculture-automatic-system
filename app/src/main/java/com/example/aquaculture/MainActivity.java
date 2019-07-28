@@ -4,10 +4,15 @@ package com.example.aquaculture;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -80,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     auto_log="Y";
-                    sp.edit()
-                            .putString("auto_log1", auto_log)
-                            .apply();
+                    sp.edit().putString("auto_log1", auto_log).apply();
                 }
                 else{
                     auto_log="N";
@@ -132,7 +135,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        checkGPSServices();
+        checkLocationService();
     }
+
+
     public void login(){
         final ProgressDialog waitingDialog= new ProgressDialog(MainActivity.this);
         waitingDialog.setMessage("Connecting...");
@@ -211,6 +218,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //FOR CHECKING LOCATION AND GPS SERVICES
+
+    private void checkGPSServices() {
+        LocationManager location = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (location.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
+            AlertDialog.Builder gpsAlert = new AlertDialog.Builder(this);
+            gpsAlert.setMessage("GPS must be on in order for this feature to work.");
+            gpsAlert.setPositiveButton("Turn On GPS", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent locationServiceIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(locationServiceIntent, 1);
+                }
+            });
+            gpsAlert.show();
+        }
+    }
+
+    private void checkLocationService() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            }, 1);
+        }
+    }
+
+
+
 
     //TESTING PURPOSES
     private void firebaseConnectionState(){

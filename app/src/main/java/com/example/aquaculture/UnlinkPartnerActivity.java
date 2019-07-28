@@ -114,12 +114,12 @@ public class UnlinkPartnerActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(UnlinkPartnerActivity.this, HomeActivity.class);
-        startActivity(intent);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        Intent intent = new Intent(UnlinkPartnerActivity.this, HomeActivity.class);
+//        startActivity(intent);
+//    }
 
 
     private void unLinkPartnerDialog(){
