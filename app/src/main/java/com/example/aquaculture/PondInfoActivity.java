@@ -818,8 +818,14 @@ public class PondInfoActivity extends AppCompatActivity {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                top.setText(dataSnapshot.child("high").getValue().toString());
-                bottom.setText(dataSnapshot.child("low").getValue().toString());
+                String topget = dataSnapshot.child("high").getValue().toString();
+                String botget = dataSnapshot.child("low").getValue().toString();
+                StringBuilder  sb1 = new StringBuilder (topget);
+                sb1.insert(2, ".");
+                StringBuilder  sb2 = new StringBuilder (botget);
+                sb2.insert(2, ".");
+                top.setText(sb1.toString());
+                bottom.setText(sb2.toString());
                 ch2OnTime.setText(dataSnapshot.child("gap1").getValue().toString());
                 ch2OffTime.setText(dataSnapshot.child("gap2").getValue().toString());
             }
@@ -836,8 +842,31 @@ public class PondInfoActivity extends AppCompatActivity {
                     return;
                 }
 
-                int topnum = Integer.parseInt(top.getText().toString());
-                int botnum = Integer.parseInt(bottom.getText().toString());
+                String topget = top.getText().toString();
+                String botget = bottom.getText().toString();
+                StringBuilder  sb1 = new StringBuilder (topget);
+                StringBuilder  sb2 = new StringBuilder (botget);
+
+                if(topget.indexOf(".") > 0){
+                    sb1.delete(topget.indexOf("."), topget.indexOf(".")+1);
+                    topget =sb1.toString();
+                }
+
+                if(botget.indexOf(".") > 0){
+                    sb2.delete(botget.indexOf("."), botget.indexOf(".")+1);
+                    botget = sb2.toString();
+                }
+
+                if(topget.length() < 3){
+                    topget = topget + "0";
+                }
+
+                if(botget.length() < 3){
+                    botget = botget + "0";
+                }
+
+                int topnum = Integer.parseInt(topget);
+                int botnum = Integer.parseInt(botget);
                 int onTime = Integer.parseInt(ch2OnTime.getText().toString());
                 int offTime = Integer.parseInt(ch2OffTime.getText().toString());
 
@@ -887,7 +916,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
                 final String un = u2 + " "+ u1;
-                String log = un + " changed the highest critical temperature to "+ topnum +", lowest critical temperature to " + botnum + ", channel 2 on-time to "+onTime+", and off-time to "+ offTime;
+                String log = un + " changed the highest critical temperature to "+ top.getText().toString() +" ℃, lowest critical temperature to " + bottom.getText().toString() + " ℃, channel 2 on-time to "+onTime+" seconds, and off-time to "+ offTime+" seconds.";
                 Long time = System.currentTimeMillis();
                 Map<String, Object> logPut = new HashMap<>();
                 logPut.put("logDetail", log);
