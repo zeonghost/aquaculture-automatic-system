@@ -587,8 +587,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         if(val1 == 1){
                             channel1.setImageResource(R.drawable.icons_switch_off_s);
                             myRef1.child("ch1").setValue(0);//if click then change status
-                            Toast.makeText(PondInfoActivity.this, "Turned off ch 1", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned off ch 1";
+                            Toast.makeText(PondInfoActivity.this, "Turned off channel 1", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off channel 1";
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
@@ -599,8 +599,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         else{
                             channel1.setImageResource(R.drawable.icons_switch_on_s);
                             myRef1.child("ch1").setValue(1);
-                            Toast.makeText(PondInfoActivity.this, "Turned on ch 1", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned on ch 1";
+                            Toast.makeText(PondInfoActivity.this, "Turned on channel 1", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned on channel 1";
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
@@ -627,8 +627,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         if(val2 == 1){
                             channel2.setImageResource(R.drawable.icons_switch_off_s);
                             myRef1.child("ch2").setValue(0);
-                            Toast.makeText(PondInfoActivity.this, "Turned off ch 2", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned off ch 2";
+                            Toast.makeText(PondInfoActivity.this, "Turned off channel 2", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off channel 2";
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
@@ -639,8 +639,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         else{
                             channel2.setImageResource(R.drawable.icons_switch_on_s);
                             myRef1.child("ch2").setValue(1);
-                            Toast.makeText(PondInfoActivity.this, "Turned on ch 2", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned on ch 2";
+                            Toast.makeText(PondInfoActivity.this, "Turned on channel 2", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned on channel 2";
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
@@ -667,8 +667,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         if(val3 == 1){
                             channel3.setImageResource(R.drawable.icons_switch_off_s);
                             myRef1.child("ch3").setValue(0);
-                            Toast.makeText(PondInfoActivity.this, "Turned off ch 3", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned off ch 3";
+                            Toast.makeText(PondInfoActivity.this, "Turned off channel 3", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off channel 3";
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
@@ -679,8 +679,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         else{
                             channel3.setImageResource(R.drawable.icons_switch_on_s);
                             myRef1.child("ch3").setValue(1);
-                            Toast.makeText(PondInfoActivity.this, "Turned on ch 3", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned on ch3";
+                            Toast.makeText(PondInfoActivity.this, "Turned on channel 3", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned on channel 3";
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
