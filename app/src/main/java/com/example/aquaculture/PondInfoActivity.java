@@ -844,8 +844,12 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 String topget = top.getText().toString();
                 String botget = bottom.getText().toString();
+                String topup = top.getText().toString();
+                String botup = bottom.getText().toString();
                 StringBuilder  sb1 = new StringBuilder (topget);
                 StringBuilder  sb2 = new StringBuilder (botget);
+                StringBuilder  sb3 = new StringBuilder (topup);
+                StringBuilder  sb4 = new StringBuilder (botup);
 
                 if(topget.indexOf(".") > 0){
                     sb1.delete(topget.indexOf("."), topget.indexOf(".")+1);
@@ -855,6 +859,20 @@ public class PondInfoActivity extends AppCompatActivity {
                 if(botget.indexOf(".") > 0){
                     sb2.delete(botget.indexOf("."), botget.indexOf(".")+1);
                     botget = sb2.toString();
+                }
+
+                if(topup.indexOf(".") < 0){
+                    if(topup.length()>2){
+                        sb3.insert(topup.length()-1, ".");
+                        topup = sb3.toString();
+                    }
+                }
+
+                if(botup.indexOf(".") > 0){
+                    if(botup.length()>2){
+                        sb4.insert(botup.length()-1, ".");
+                        botup = sb4.toString();
+                    }
                 }
 
                 if(topget.length() < 3){
@@ -916,7 +934,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
                 final String un = u2 + " "+ u1;
-                String log = un + " changed the highest critical temperature to "+ top.getText().toString() +" ℃, lowest critical temperature to " + bottom.getText().toString() + " ℃, channel 2 on-time to "+onTime+" seconds, and off-time to "+ offTime+" seconds.";
+                String log = un + " changed the highest critical temperature to "+ topup +" ℃, lowest critical temperature to " + botup + " ℃, channel 2 on-time to "+onTime+" seconds, and off-time to "+ offTime+" seconds.";
                 Long time = System.currentTimeMillis();
                 Map<String, Object> logPut = new HashMap<>();
                 logPut.put("logDetail", log);
