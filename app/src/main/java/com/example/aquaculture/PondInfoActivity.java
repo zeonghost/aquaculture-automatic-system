@@ -868,7 +868,7 @@ public class PondInfoActivity extends AppCompatActivity {
                     }
                 }
 
-                if(botup.indexOf(".") > 0){
+                if(botup.indexOf(".") < 0){
                     if(botup.length()>2){
                         sb4.insert(botup.length()-1, ".");
                         botup = sb4.toString();
