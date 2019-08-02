@@ -195,5 +195,7 @@ public class PondToDeleteActivity extends AppCompatActivity {
                 return false;
             }
         });
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 }

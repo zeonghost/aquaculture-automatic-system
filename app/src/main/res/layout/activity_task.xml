@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         app:itemBackground="@color/colorPrimary"
         app:itemHorizontalTranslationEnabled="true"
-        app:itemIconTint="@color/colorPrimaryDark"
+        app:itemIconTint="@drawable/color_select"
         app:itemTextColor="@color/common_google_signin_btn_text_dark_pressed"
         app:labelVisibilityMode="auto"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -212,7 +212,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.item1://btn 1 -> HomeActivity
                         Intent intent1 = new Intent(HomeActivity.this, HomeActivity.class);
                         startActivity(intent1);
-
                         break;
                     case R.id.item2://btn 2 -> task
                         Intent intent2 = new Intent(HomeActivity.this, TaskActivity.class);
@@ -226,6 +225,8 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
     private void checkInOutDialog(){

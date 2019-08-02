@@ -133,13 +133,6 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
         adapter.stopListening();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Intent intent = new Intent(PartnerAdminActivity.this, HomeActivity.class);
-//        startActivity(intent);
-//    }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(location).title(logInfo)).showInfoWindow();
@@ -242,5 +235,7 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 }

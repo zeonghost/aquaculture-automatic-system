@@ -120,6 +120,8 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
     /***********************************************
