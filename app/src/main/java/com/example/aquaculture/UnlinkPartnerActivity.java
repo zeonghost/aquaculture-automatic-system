@@ -114,14 +114,6 @@ public class UnlinkPartnerActivity extends AppCompatActivity {
         adapter.stopListening();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        Intent intent = new Intent(UnlinkPartnerActivity.this, HomeActivity.class);
-//        startActivity(intent);
-//    }
-
-
     private void unLinkPartnerDialog(){
         final String username = partnerTemp.getString("username", "");
         final String key = partnerTemp.getString("key", "");
@@ -167,5 +159,7 @@ public class UnlinkPartnerActivity extends AppCompatActivity {
                 return false;
             }
         });
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 }

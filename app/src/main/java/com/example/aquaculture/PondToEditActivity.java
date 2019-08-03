@@ -195,5 +195,7 @@ public class PondToEditActivity extends AppCompatActivity {
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 }

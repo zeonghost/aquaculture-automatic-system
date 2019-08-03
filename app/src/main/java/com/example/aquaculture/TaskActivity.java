@@ -478,6 +478,8 @@ public class TaskActivity extends AppCompatActivity {
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
     private void showDatePickerDialog(final EditText date){

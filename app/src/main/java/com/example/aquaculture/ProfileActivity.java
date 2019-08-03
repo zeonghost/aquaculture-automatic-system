@@ -347,6 +347,8 @@ public class ProfileActivity extends AppCompatActivity {
                 return false;
             }
         });
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
     private void hideTestingButtons(Button a, Button b, Button c){

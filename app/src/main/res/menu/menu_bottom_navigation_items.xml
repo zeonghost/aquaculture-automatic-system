@@ -3,20 +3,20 @@
 
     <item
         android:id="@+id/item1"
-        android:icon="@drawable/icons_home_page"
+        android:icon="@drawable/home_bottom_navi"
         android:title="Home" />
         <!--android:icon="@drawable/ic_content_copy_24dp"
         android:checked="true"-->
 
     <item
         android:id="@+id/item2"
-        android:icon="@drawable/icons_tasks"
+        android:icon="@drawable/task_bottom_navi"
         android:title="Task" />
         <!--android:icon="@drawable/ic_add_24dp"-->
 
     <item
         android:id="@+id/item3"
-        android:icon="@drawable/icons_user_menu"
+        android:icon="@drawable/profile_bottom_navi"
         android:title="Profile" />
         <!--android:icon="@drawable/ic_link_24dp"-->
 
