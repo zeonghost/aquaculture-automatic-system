@@ -73,7 +73,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                     Map<String, Object> passUpdate = new HashMap<>();
                                     passUpdate.put("password", npass.getText().toString());
                                     Ref3.updateChildren(passUpdate);// update password by achieve uid
-                                    Toast.makeText(ForgetPasswordActivity.this, "Reset Success", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ForgetPasswordActivity.this, "Password Reset Success", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
                                     startActivity(intent);
                                 }

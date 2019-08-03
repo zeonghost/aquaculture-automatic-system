@@ -322,7 +322,7 @@ public class TaskActivity extends AppCompatActivity {
 
         ad1.setTitle("Add New Task:");
         ad1.setView(textEntryView);
-        ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        ad1.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
                 myRef1 = database.getReference("/task");
                 String rt = receiver.getSelectedItem().toString().split(" ")[0];
