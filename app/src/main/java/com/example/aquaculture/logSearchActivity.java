@@ -62,7 +62,6 @@ public class logSearchActivity extends AppCompatActivity {
         myRef = database.getReference(path);
 
         Query q2 = myRef.orderByChild("logTime").startAt(fromDate).endAt(toDate);
-        //Query q2 = myRef.orderByChild("logTime").limitToFirst(2);
 
         options = new FirebaseRecyclerOptions.Builder<Log>()
                 .setQuery(q2, Log.class)
@@ -73,7 +72,6 @@ public class logSearchActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull LogViewHolder holder, int position, @NonNull Log model) {
                 long logTime = model.getTime();
                 String logDetail = model.getdetail();
-                //android.util.Log.d(TAG, "Result::: ");
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                 Timestamp timestamp = new Timestamp(logTime);
@@ -130,6 +128,8 @@ public class logSearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
 }

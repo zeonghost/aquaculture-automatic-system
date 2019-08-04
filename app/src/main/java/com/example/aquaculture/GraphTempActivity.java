@@ -72,8 +72,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
         setContentView(R.layout.activity_graph_temp);
         buttonNavigationSettings();
 
-        //getSupportActionBar().hide();
-
         startDate = findViewById(R.id.editTxtStartDate);
         endDate = findViewById(R.id.editTxtEndDate);
         plotGraph = findViewById(R.id.btnPlotGraph);
@@ -122,6 +120,8 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
     /***********************************************
@@ -207,7 +207,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 Log.d(TAG, "onStart fromDate: " + fromDate);
                 Log.d(TAG, "onStart toDate: " + toDate);
 
-
                 Query q2 = myRef.orderByChild("time").startAt(fromDate).endAt(toDate);
 
                 q2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -215,12 +214,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         xValues.clear();
                         yValues.clear();
-                        /*
-                        for(DataSnapshot ds : dataSnapshot.getChildren()){
-                            Log.d(TAG, "Check data: " + ds.getValue().toString());
-                        }
-                         */
-                        // Log.d(TAG, "fromDate: " + fromDate + " " + "toDate: " + toDate);
+
                         Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
                         Timestamp timestamp;
                         Date date;
@@ -232,9 +226,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
                             Float temp = Float.parseFloat(snapTemp) / 10;
                             yValues.add(new Entry(i, temp));
-                            //Log.d(TAG, "Adding y Values");
-                            //Log.d(TAG, "Value: " + snapTemp);
-
 
                             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
                             Long snapTimestamp = snaps.child("time").getValue(Long.class);

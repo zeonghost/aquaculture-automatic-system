@@ -42,8 +42,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
-        //setTitle("Forget Password");
-        //getSupportActionBar().hide();
         name = (EditText)findViewById(R.id.un);
         npass = (EditText)findViewById(R.id.pass);
         locat = (EditText)findViewById(R.id.location);
@@ -63,17 +61,13 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         uid = dataSnapshot.getKey();
-                        //Log.d(TAG, "Result-1: "+ path1);
                         //search location and get the path and species
                         DatabaseReference Ref2 = db.getReference();
                         Ref2.orderByChild("location").equalTo(locat.getText().toString()).addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                                //locatget = dataSnapshot.child("location").getValue().toString();
                                 speciesget = dataSnapshot.child("species").getValue().toString();
                                 locatget = dataSnapshot.getKey();
-                                //Log.d(TAG, "Result-2: "+ locatget);
-                                //Log.d(TAG, "Result-3: "+ speciesget);
                                 if(Objects.equals(speciesget, species.getText().toString())){
                                     DatabaseReference Ref3 = Ref.child(uid);
                                     Map<String, Object> passUpdate = new HashMap<>();

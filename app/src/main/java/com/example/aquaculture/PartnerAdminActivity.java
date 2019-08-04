@@ -91,16 +91,16 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
                     }
                 });
 
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        partnerTemp.edit().putString("deviceId", deviceId).apply();
-                        partnerTemp.edit().putString("username", username).apply();
-                        partnerTemp.edit().putString("key", key).apply();
-                        unLinkPartnerDialog();
-                        return true;
-                    }
-                });
+//                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                    @Override
+//                    public boolean onLongClick(View v) {
+//                        partnerTemp.edit().putString("deviceId", deviceId).apply();
+//                        partnerTemp.edit().putString("username", username).apply();
+//                        partnerTemp.edit().putString("key", key).apply();
+//                        unLinkPartnerDialog();
+//                        return true;
+//                    }
+//                });
             }
 
             @NonNull
@@ -131,13 +131,6 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(PartnerAdminActivity.this, HomeActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -179,28 +172,28 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
         });
     }
 
-    private void unLinkPartnerDialog(){
-        final String username = partnerTemp.getString("username", "");
-        final String key = partnerTemp.getString("key", "");
-        final String device = partnerTemp.getString("deviceId","");
-        Log.d(TAG, "unLinkPartnerDialog: " + partnerTemp.getAll().toString());
-        final String pathToPondDetailNode = "PondDetail/" + device + "/" + username;
-        final DatabaseReference removeLinkFromPondDetail = database.getReference(pathToPondDetailNode);
-        final DatabaseReference removeLinkFromPartner = database.getReference(path);
-        AlertDialog.Builder unLinkPartner= new AlertDialog.Builder(this);
-        unLinkPartner.setTitle("Unlink Partner: ");
-        unLinkPartner.setMessage("This will remove your partner from the pond where he/she is assigned into.\n\n" +
-                "Do you want to un-link this user?");
-        unLinkPartner.setPositiveButton("Unlink", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                removeLinkFromPartner.child(key).removeValue();
-                removeLinkFromPondDetail.removeValue();
-                Toast.makeText(PartnerAdminActivity.this, "User has been removed access to the pond.", Toast.LENGTH_SHORT).show();
-            }
-        });
-        unLinkPartner.show();
-    }
+//    private void unLinkPartnerDialog(){
+//        final String username = partnerTemp.getString("username", "");
+//        final String key = partnerTemp.getString("key", "");
+//        final String device = partnerTemp.getString("deviceId","");
+//        Log.d(TAG, "unLinkPartnerDialog: " + partnerTemp.getAll().toString());
+//        final String pathToPondDetailNode = "PondDetail/" + device + "/" + username;
+//        final DatabaseReference removeLinkFromPondDetail = database.getReference(pathToPondDetailNode);
+//        final DatabaseReference removeLinkFromPartner = database.getReference(path);
+//        AlertDialog.Builder unLinkPartner= new AlertDialog.Builder(this);
+//        unLinkPartner.setTitle("Unlink Partner: ");
+//        unLinkPartner.setMessage("This will remove your partner from the pond where he/she is assigned into.\n\n" +
+//                "Do you want to un-link this user?");
+//        unLinkPartner.setPositiveButton("Unlink", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                removeLinkFromPartner.child(key).removeValue();
+//                removeLinkFromPondDetail.removeValue();
+//                Toast.makeText(PartnerAdminActivity.this, "User has been removed access to the pond.", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        unLinkPartner.show();
+//    }
 
     private void partnerInfoDialog(){
         final LayoutInflater floatingDialog = LayoutInflater.from(this);
@@ -242,5 +235,7 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 }

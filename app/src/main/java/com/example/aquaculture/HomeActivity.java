@@ -118,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         transferData = piID;
                         Log.d(TAG, "Result-2: "+ transferData);
-                        //FOR NOW THIS ONLY GOES TO PI1. Have not figured out how to filter other Pi's
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
                             sp.edit().putString("device", piID).apply();
                             sp.edit().putString("location", location).apply();
@@ -178,8 +177,6 @@ public class HomeActivity extends AppCompatActivity {
         addPond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent toQRScanner = new Intent(HomeActivity.this, AddPondActivity.class);
-                //startActivity(toQRScanner);//this jump is only for testing
                 IntentIntegrator intentIntegrator = new IntentIntegrator(HomeActivity.this);
                 intentIntegrator.setPrompt("QR Scanner");//set display context
                 intentIntegrator.setTimeout(60000);//set time out
@@ -194,7 +191,7 @@ public class HomeActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, "Scan Error", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Abort Scanning", Toast.LENGTH_LONG).show();
             } else {
                 qrResult = result.getContents();
                 Toast.makeText(this, "Scan Result: "+ qrResult, Toast.LENGTH_LONG).show();
@@ -215,7 +212,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.item1://btn 1 -> HomeActivity
                         Intent intent1 = new Intent(HomeActivity.this, HomeActivity.class);
                         startActivity(intent1);
-
                         break;
                     case R.id.item2://btn 2 -> task
                         Intent intent2 = new Intent(HomeActivity.this, TaskActivity.class);
@@ -229,6 +225,8 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
     private void checkInOutDialog(){

@@ -386,11 +386,9 @@ public class PondInfoActivity extends AppCompatActivity {
                 int i = 0;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
                     String logDetail = snaps.child("logDetail").getValue().toString();
-                    //Log.d(TAG, "Result111: "+ logDetail);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                     Long logTime = snaps.child("logTime").getValue(Long.class);
-                    //Log.d(TAG, "Result112: "+ logTime);
                     Timestamp timestamp = new Timestamp(logTime);
                     Date date = new Date(timestamp.getTime());
                     String formattedDateTime = dateFormat.format(date);
@@ -463,11 +461,10 @@ public class PondInfoActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    //String msg = getString(R.string.msg_subscribed);
                                     if (!task.isSuccessful()) {
-                                        Toast.makeText(PondInfoActivity.this, "Subscribe ERROR", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PondInfoActivity.this, "Subscribe Notification Error", Toast.LENGTH_SHORT).show();
                                     }
-                                    Toast.makeText(PondInfoActivity.this, "Subscribe Success!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PondInfoActivity.this, "Notification On", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 } else {
@@ -478,11 +475,10 @@ public class PondInfoActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    //String msg = getString(R.string.msg_subscribed);
                                     if (!task.isSuccessful()) {
-                                        Toast.makeText(PondInfoActivity.this, "Unsubscribe ERROR", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(PondInfoActivity.this, "Unsubscribe Notification Error", Toast.LENGTH_SHORT).show();
                                     }
-                                    Toast.makeText(PondInfoActivity.this, "Unsubscribe Success!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PondInfoActivity.this, "Notification Off", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -525,7 +521,6 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 //get current temperature data from database and display
                 final Integer val4 = dataSnapshot.child("auto").getValue(Integer.class);
-                //final Switch sw = (Switch) findViewById(R.id.autosw);
                 final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
 
                 if(val4 == 1){
@@ -704,24 +699,34 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
-    public static boolean isFastDoubleClick() {
-        long time = System.currentTimeMillis();
-        if (time - lastClickTime < 1000) {
-            return true;
-        }
-        lastClickTime = time;
-        return false;
-    }
-
     public void statusCheck(){
         String getData = HomeActivity.transferData;
         String path5 = getData + "-temp";
+        String path6 = getData + "-pond1";
 
         final TextView warnMess = findViewById(R.id.tv_warning);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference recRead = database.getReference(path5);
+        final DatabaseReference tempRead = database.getReference(path6);
         final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
+
+        tempRead.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                warnMess.setVisibility(View.GONE);
+                sw.setVisibility(View.VISIBLE);
+                channel1.setVisibility(View.VISIBLE);
+                channel2.setVisibility(View.VISIBLE);
+                channel3.setVisibility(View.VISIBLE);
+                Log.d(TAG,"data changed");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         recRead.orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
@@ -767,6 +772,7 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
+
     public void buttomNavigation(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -789,6 +795,8 @@ public class PondInfoActivity extends AppCompatActivity {
                 return false;
             }
         });
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 
     protected void tempSetDialog() {
@@ -809,21 +817,25 @@ public class PondInfoActivity extends AppCompatActivity {
         ad1.setIcon(android.R.drawable.ic_dialog_info);
         ad1.setView(textEntryView);
 
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                top.setText(dataSnapshot.child("high").getValue().toString());
-                bottom.setText(dataSnapshot.child("low").getValue().toString());
+                String topget = dataSnapshot.child("high").getValue().toString();
+                String botget = dataSnapshot.child("low").getValue().toString();
+                StringBuilder  sb1 = new StringBuilder (topget);
+                sb1.insert(2, ".");
+                StringBuilder  sb2 = new StringBuilder (botget);
+                sb2.insert(2, ".");
+                top.setText(sb1.toString());
+                bottom.setText(sb2.toString());
                 ch2OnTime.setText(dataSnapshot.child("gap1").getValue().toString());
                 ch2OffTime.setText(dataSnapshot.child("gap2").getValue().toString());
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
 
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
@@ -832,8 +844,49 @@ public class PondInfoActivity extends AppCompatActivity {
                     return;
                 }
 
-                int topnum = Integer.parseInt(top.getText().toString());
-                int botnum = Integer.parseInt(bottom.getText().toString());
+                String topget = top.getText().toString();
+                String botget = bottom.getText().toString();
+                String topup = top.getText().toString();
+                String botup = bottom.getText().toString();
+                StringBuilder  sb1 = new StringBuilder (topget);
+                StringBuilder  sb2 = new StringBuilder (botget);
+                StringBuilder  sb3 = new StringBuilder (topup);
+                StringBuilder  sb4 = new StringBuilder (botup);
+
+                if(topget.indexOf(".") > 0){
+                    sb1.delete(topget.indexOf("."), topget.indexOf(".")+1);
+                    topget =sb1.toString();
+                }
+
+                if(botget.indexOf(".") > 0){
+                    sb2.delete(botget.indexOf("."), botget.indexOf(".")+1);
+                    botget = sb2.toString();
+                }
+
+                if(topup.indexOf(".") < 0){
+                    if(topup.length()>2){
+                        sb3.insert(topup.length()-1, ".");
+                        topup = sb3.toString();
+                    }
+                }
+
+                if(botup.indexOf(".") < 0){
+                    if(botup.length()>2){
+                        sb4.insert(botup.length()-1, ".");
+                        botup = sb4.toString();
+                    }
+                }
+
+                if(topget.length() < 3){
+                    topget = topget + "0";
+                }
+
+                if(botget.length() < 3){
+                    botget = botget + "0";
+                }
+
+                int topnum = Integer.parseInt(topget);
+                int botnum = Integer.parseInt(botget);
                 int onTime = Integer.parseInt(ch2OnTime.getText().toString());
                 int offTime = Integer.parseInt(ch2OffTime.getText().toString());
 
@@ -883,7 +936,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
                 final String un = u2 + " "+ u1;
-                String log = un + " edit the highest Critical temp to "+ topnum+" lowest Critical temp to "+botnum+" ch2 on time to "+onTime+" off time to "+ offTime;
+                String log = un + " changed the highest critical temperature to "+ topup +" ℃, lowest critical temperature to " + botup + " ℃, channel 2 on-time to "+onTime+" seconds, and off-time to "+ offTime+" seconds.";
                 Long time = System.currentTimeMillis();
                 Map<String, Object> logPut = new HashMap<>();
                 logPut.put("logDetail", log);
