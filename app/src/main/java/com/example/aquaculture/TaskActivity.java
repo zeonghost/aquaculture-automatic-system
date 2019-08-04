@@ -320,7 +320,7 @@ public class TaskActivity extends AppCompatActivity {
 
         AlertDialog.Builder ad1 = new AlertDialog.Builder(TaskActivity.this);
 
-        ad1.setTitle("Add New Task:");
+//        ad1.setTitle("Add New Task:");
         ad1.setView(textEntryView);
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
