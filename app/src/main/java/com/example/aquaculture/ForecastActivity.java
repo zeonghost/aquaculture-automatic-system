@@ -238,6 +238,30 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
         xValuesForecast.add("11:00 PM");
     }
 
+//    private void buttonNavigationSettings(){
+//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.item1://btn 1 -> HomeActivity
+//                        Intent intent1 = new Intent(ForecastActivity.this, HomeActivity.class);
+//                        startActivity(intent1);
+//                        break;
+//                    case R.id.item2://btn 2 -> task
+//                        Intent intent2 = new Intent(ForecastActivity.this, TaskActivity.class);
+//                        startActivity(intent2);
+//                        break;
+//                    case R.id.item3://btn 3 -> profile
+//                        Intent intent3 = new Intent(ForecastActivity.this, ProfileActivity.class);
+//                        startActivity(intent3);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });//bottom navigation
+//    }
+
     private void buttonNavigationSettings(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -245,8 +269,6 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item1://btn 1 -> HomeActivity
-                        Intent intent1 = new Intent(ForecastActivity.this, HomeActivity.class);
-                        startActivity(intent1);
                         break;
                     case R.id.item2://btn 2 -> task
                         Intent intent2 = new Intent(ForecastActivity.this, TaskActivity.class);
@@ -260,5 +282,7 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
                 return false;
             }
         });//bottom navigation
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
+        bottomNavigationView.setItemIconTintList(null);
     }
 }

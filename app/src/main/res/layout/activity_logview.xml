@@ -37,7 +37,7 @@
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Start Time"
+            android:hint="Start Date"
             android:inputType="textPersonName"
             android:textColorHint="#4D000000" />
 
@@ -49,7 +49,7 @@
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="End Time"
+            android:hint="End Date"
             android:inputType="textPersonName"
             android:textColor="#534343"
             android:textColorHint="#4D000000" />
