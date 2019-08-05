@@ -149,12 +149,14 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+        getTimeOutStatus();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+
     }
 
     private long firstPressedTime;//first time press back button
@@ -240,6 +242,27 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         checkInOut.show();
+    }
+
+    private void getTimeOutStatus(){
+        String username = sp.getString("username", "");
+        String path = "/PartnerLog/" + username;
+        DatabaseReference ref = database.getReference(path);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "Check Time Out: " + dataSnapshot.child("timeOut").getValue());
+                long timeOutStatus = dataSnapshot.child("timeOut").getValue(Long.class);
+                if(timeOutStatus == 0){
+                    TIME_IN_STATUS = 1;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     //TESTING PURPOSES

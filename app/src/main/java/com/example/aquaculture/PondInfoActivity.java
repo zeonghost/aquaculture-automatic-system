@@ -164,14 +164,12 @@ public class PondInfoActivity extends AppCompatActivity {
         forecast = new Forecast();
         sme = new SimpleExponentialSmoothing();
         weather = new Weather();
-
         startingTempGraph();
         basicReadWrite();
         buttomNavigation();
         logRead();
         setChannelNames();
         getForecastGraph();
-        statusCheck();
     }
 
     @Override
@@ -251,6 +249,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 weatherForecastLayout.setVisibility(View.VISIBLE);
             }
         });
+        statusCheck();
     }
 
     @Override
@@ -262,6 +261,7 @@ public class PondInfoActivity extends AppCompatActivity {
         }
         getWeatherAndEvaporationRate();
         Log.d(TAG, "onResume: CALL EVAP FUNCTIUON");
+        statusCheck();
     }
 
     private void getForecastGraph(){
@@ -706,7 +706,7 @@ public class PondInfoActivity extends AppCompatActivity {
 
         final TextView warnMess = findViewById(R.id.tv_warning);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference recRead = database.getReference(path5);
         final DatabaseReference tempRead = database.getReference(path6);
         final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
@@ -728,48 +728,88 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
-        recRead.orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
+        recRead.orderByChild("time").limitToLast(1).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                long recTime = dataSnapshot.child("time").getValue(Long.class);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "time check: " + dataSnapshot.getValue());
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    Log.d(TAG, "time check data: " + snaps.child("time").getValue());
+                    long recTime = snaps.child("time").getValue(Long.class);
+                    Log.d(TAG, "recTime: " + recTime);
 
-                long millis = System.currentTimeMillis();
-                millis = millis/1000;
-                long twt = 20*60;
-                millis = millis - twt;
+                    long millis = System.currentTimeMillis();
+                    long newTime;
+                    newTime = millis/1000;
+                    long twt = 20*60;
+                    newTime = newTime - twt;
+                    Log.d(TAG, "millis: " + newTime);
 
-                if(recTime < millis){
-                    warnMess.setVisibility(View.VISIBLE);
-                    sw.setVisibility(View.GONE);
-                    channel1.setVisibility(View.GONE);;
-                    channel2.setVisibility(View.GONE);;
-                    channel3.setVisibility(View.GONE);;
+                    if(recTime < newTime){
+                        Log.d(TAG, "The hardware should be offline.");
+                        warnMess.setVisibility(View.VISIBLE);
+                        sw.setVisibility(View.GONE);
+                        channel1.setVisibility(View.GONE);
+                        channel2.setVisibility(View.GONE);
+                        channel3.setVisibility(View.GONE);
+                    }
+                    else{
+                        warnMess.setVisibility(View.GONE);
+                        sw.setVisibility(View.VISIBLE);
+                        channel1.setVisibility(View.VISIBLE);
+                        channel2.setVisibility(View.VISIBLE);
+                        channel3.setVisibility(View.VISIBLE);
+                    }
                 }
-                else{
-                    warnMess.setVisibility(View.GONE);
-                    sw.setVisibility(View.VISIBLE);
-                    channel1.setVisibility(View.VISIBLE);
-                    channel2.setVisibility(View.VISIBLE);
-                    channel3.setVisibility(View.VISIBLE);
-                }
             }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
+
+//        recRead.orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                long recTime = dataSnapshot.child("time").getValue(Long.class);
+//
+//                long millis = System.currentTimeMillis();
+//                millis = millis/1000;
+//                long twt = 20*60;
+//                millis = millis - twt;
+//
+//                if(recTime < millis){
+//                    warnMess.setVisibility(View.VISIBLE);
+//                    sw.setVisibility(View.GONE);
+//                    channel1.setVisibility(View.GONE);;
+//                    channel2.setVisibility(View.GONE);;
+//                    channel3.setVisibility(View.GONE);;
+//                }
+//                else{
+//                    warnMess.setVisibility(View.GONE);
+//                    sw.setVisibility(View.VISIBLE);
+//                    channel1.setVisibility(View.VISIBLE);
+//                    channel2.setVisibility(View.VISIBLE);
+//                    channel3.setVisibility(View.VISIBLE);
+//                }
+//            }
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//            }
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//            }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
 

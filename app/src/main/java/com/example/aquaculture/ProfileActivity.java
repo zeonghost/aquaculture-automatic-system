@@ -267,6 +267,8 @@ public class ProfileActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 myRef.child(id).removeValue();
+                                sp.edit().clear().apply();
+                                TIME_IN_STATUS = 0;
                                 Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
