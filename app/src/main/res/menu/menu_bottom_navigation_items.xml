@@ -3,6 +3,7 @@
 
     <item
         android:id="@+id/item1"
+        android:orderInCategory="0"
         android:icon="@drawable/home_bottom_navi"
         android:title="Home" />
         <!--android:icon="@drawable/ic_content_copy_24dp"
@@ -10,12 +11,14 @@
 
     <item
         android:id="@+id/item2"
+        android:orderInCategory="1"
         android:icon="@drawable/task_bottom_navi"
         android:title="Task" />
         <!--android:icon="@drawable/ic_add_24dp"-->
 
     <item
         android:id="@+id/item3"
+        android:orderInCategory="2"
         android:icon="@drawable/profile_bottom_navi"
         android:title="Profile" />
         <!--android:icon="@drawable/ic_link_24dp"-->

@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.FirebaseApp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -57,12 +60,29 @@ public class HomeActivity extends AppCompatActivity {
     private SharedPreferences sp;
     public static String transferData;
     public static String qrResult;
+
+    private ViewPager viewPager;
+    private MenuItem menuItem;
+
+    ArrayList<View> viewContainter = new ArrayList<View>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_home);
         addPondButton();
+
+        //View view1 = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
+        //View view2 = LayoutInflater.from(this).inflate(R.layout.activity_task, null);
+        //View view3 = LayoutInflater.from(this).inflate(R.layout.activity_profile, null);
+        //viewContainter.add(view1);
+        //viewContainter.add(view2);
+        //viewContainter.add(view3);
+
+        ViewPager viewPager = findViewById(R.id.vp_home);
+        viewPager.setAdapter(new MyPagerAdapter());
+
         buttonNavigationSettings();
 
         pondInfo = findViewById(R.id.recyclerview);
@@ -159,6 +179,26 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public class MyPagerAdapter extends PagerAdapter {
+        @Override
+        public int getCount() {
+            return viewContainter.size();
+        }
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView(viewContainter.get(position));
+        }
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            container.addView(viewContainter.get(position));
+            return viewContainter.get(position);
+        }
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+    }
+
     private long firstPressedTime;//first time press back button
 
     @Override
@@ -206,6 +246,51 @@ public class HomeActivity extends AppCompatActivity {
     }//get result of qr scanner
 
     private void buttonNavigationSettings(){
+        //viewPager = (ViewPager) findViewById(R.id.vp_home);
+/*
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1://btn 1 -> HomeActivity
+                        viewPager.setCurrentItem(0);
+                        break;
+                    case R.id.item2://btn 2 -> task
+                        viewPager.setCurrentItem(1);
+                        break;
+                    case R.id.item3://btn 3 -> profile
+                        viewPager.setCurrentItem(2);
+                        break;
+                }
+                return false;
+            }
+        });//bottom navigation
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if(menuItem !=null){
+                    menuItem.setChecked(false);
+                }else{
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+            }
+                menuItem = bottomNavigationView.getMenu().getItem(0);
+                menuItem.setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+*/
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -227,6 +312,7 @@ public class HomeActivity extends AppCompatActivity {
                 return false;
             }
         });//bottom navigation
+
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
         bottomNavigationView.setItemIconTintList(null);
     }
@@ -246,23 +332,25 @@ public class HomeActivity extends AppCompatActivity {
 
     private void getTimeOutStatus(){
         String username = sp.getString("username", "");
-        String path = "/PartnerLog/" + username;
-        DatabaseReference ref = database.getReference(path);
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "Check Time Out: " + dataSnapshot.child("timeOut").getValue());
-                long timeOutStatus = dataSnapshot.child("timeOut").getValue(Long.class);
-                if(timeOutStatus == 0){
-                    TIME_IN_STATUS = 1;
+        String role = sp.getString("role", "");
+        if(role == "Partner"){
+            String path = "/PartnerLog/" + username;
+            DatabaseReference ref = database.getReference(path);
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "Check Time Out: " + dataSnapshot.child("timeOut").getValue());
+                    long timeOutStatus = dataSnapshot.child("timeOut").getValue(Long.class);
+                    if(timeOutStatus == 0){
+                        TIME_IN_STATUS = 1;
+                    }
                 }
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                }
+            });
+        }
     }
 
     //TESTING PURPOSES
