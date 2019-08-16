@@ -95,7 +95,7 @@
         android:layout_width="199dp"
         android:layout_height="24dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="32dp"
         android:background="#02FFFFFF"
         android:capitalize="none"
         android:text="Forgot Password?"
@@ -103,6 +103,7 @@
         android:textColor="#0F7D63"
         android:textColorLink="#0F7D63"
         android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/loginBtn"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="@+id/loginBtn"
@@ -113,37 +114,28 @@
         android:layout_width="56dp"
         android:layout_height="20dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:background="#02FFFFFF"
         android:capitalize="none"
         android:text="Sign Up"
         android:textAllCaps="false"
         android:textColor="#0F7D63"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/fgt_pass" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView11"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="161dp"
         android:layout_height="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:text="Don't have an account? "
+        android:layout_marginTop="16dp"
+        android:text="Don't have an account?"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@+id/sinbtr"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="@+id/loginBtn"
-        app:layout_constraintTop_toBottomOf="@+id/fgt_pass" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="now!"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/loginBtn"
+        app:layout_constraintEnd_toEndOf="@+id/fgt_pass"
+        app:layout_constraintStart_toStartOf="@+id/fgt_pass"
         app:layout_constraintTop_toBottomOf="@+id/fgt_pass" />
 
 </android.support.constraint.ConstraintLayout>

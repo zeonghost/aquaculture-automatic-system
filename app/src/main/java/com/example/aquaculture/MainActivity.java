@@ -107,7 +107,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //firebaseConnectionState();
-                checkUserNameThenLogin();
+                if(name.getText().toString().isEmpty() && pass.getText().toString().isEmpty()){
+                    Toast.makeText(MainActivity.this, "Please enter a username or password.", Toast.LENGTH_SHORT).show();
+                } else if(name.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter a username.", Toast.LENGTH_SHORT).show();
+                } else if(pass.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter a password.", Toast.LENGTH_SHORT).show();
+                } else {
+                    checkUserNameThenLogin();
+                }
+
             }
         });
 

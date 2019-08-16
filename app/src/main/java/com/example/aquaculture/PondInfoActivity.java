@@ -257,7 +257,8 @@ public class PondInfoActivity extends AppCompatActivity {
         super.onResume();
         String counter = getSystemTime();
         if(Objects.equals(counter, "time00")){
-            getForecast();
+//            getForecast();
+            Log.d(TAG, "onResume:  SHOULD HAVE BEEN CALLING THE FORECAST FUNCTION");
         }
         getWeatherAndEvaporationRate();
         Log.d(TAG, "onResume: CALL EVAP FUNCTIUON");
@@ -1082,7 +1083,7 @@ public class PondInfoActivity extends AppCompatActivity {
         time += 1;
         if(time < 10){
             forecastTime = "time0" + (time);
-        } else if(time == 24) {
+        } else if(time >= 23) {
             forecastTime = "time00";
         } else {
             forecastTime = "time" + (time);

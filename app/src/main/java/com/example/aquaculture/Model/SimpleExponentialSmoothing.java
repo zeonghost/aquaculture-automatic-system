@@ -1,5 +1,7 @@
 package com.example.aquaculture.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,14 +60,14 @@ public class SimpleExponentialSmoothing extends Forecast{
         this.mseMap.clear();
         calculateInitialForecast(valList);
         calculateForecast(valList, 0.1f);
-        calculateForecast(valList, 0.2f);
-        calculateForecast(valList, 0.3f);
-        calculateForecast(valList, 0.4f);
-        calculateForecast(valList, 0.5f);
-        calculateForecast(valList, 0.6f);
-        calculateForecast(valList, 0.7f);
-        calculateForecast(valList, 0.8f);
-        calculateForecast(valList, 0.9f);
+//        calculateForecast(valList, 0.2f);
+//        calculateForecast(valList, 0.3f);
+//        calculateForecast(valList, 0.4f);
+//        calculateForecast(valList, 0.5f);
+//        calculateForecast(valList, 0.6f);
+//        calculateForecast(valList, 0.7f);
+//        calculateForecast(valList, 0.8f);
+//        calculateForecast(valList, 0.9f);
 
         float smallestMSE = Float.MAX_VALUE;
         for(Map.Entry<Float, Float> e : mseMap.entrySet()){
@@ -73,6 +75,7 @@ public class SimpleExponentialSmoothing extends Forecast{
                 smallestMSE = e.getKey();
             }
         }
+
         this.valList.clear();
         this.errorSq = 0;
         this.forecastingPeriod = 0;
