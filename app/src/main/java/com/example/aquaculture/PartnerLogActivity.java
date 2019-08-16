@@ -78,8 +78,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         timeOut = findViewById(R.id.btnTimeOut);
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         txtName = findViewById(R.id.txtViewName);
-        txtDevice = findViewById(R.id.txtViewDeviceName);
-        txtLocation = findViewById(R.id.txtViewLocationName);
         txtTimeIn = findViewById(R.id.txtViewTimeIn);
         txtTimeOut = findViewById(R.id.txtViewTimeOut);
 
@@ -129,8 +127,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         }
 
         txtName.setText("Name: " + sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
-        txtDevice.setText("Device: " + sp.getString("device", ""));
-        txtLocation.setText("Location: " + sp.getString("location", ""));
 
         Query query = myRef.child(sp.getString("username",""));
         query.addListenerForSingleValueEvent(new ValueEventListener() {

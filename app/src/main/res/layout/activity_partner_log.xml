@@ -124,24 +124,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="Name"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/txtViewDeviceName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:text="Device"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/txtViewLocationName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingBottom="13dp"
-                android:text="Location"
                 android:textSize="20sp" />
 
         </LinearLayout>
