@@ -80,8 +80,8 @@ public class HomeActivity extends AppCompatActivity {
         //viewContainter.add(view2);
         //viewContainter.add(view3);
 
-        ViewPager viewPager = findViewById(R.id.vp_home);
-        viewPager.setAdapter(new MyPagerAdapter());
+        //ViewPager viewPager = findViewById(R.id.vp_home);
+        //viewPager.setAdapter(new MyPagerAdapter());
 
         buttonNavigationSettings();
 
