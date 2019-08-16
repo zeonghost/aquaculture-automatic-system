@@ -768,48 +768,6 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
-//        recRead.orderByChild("time").limitToLast(1).addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                long recTime = dataSnapshot.child("time").getValue(Long.class);
-//
-//                long millis = System.currentTimeMillis();
-//                millis = millis/1000;
-//                long twt = 20*60;
-//                millis = millis - twt;
-//
-//                if(recTime < millis){
-//                    warnMess.setVisibility(View.VISIBLE);
-//                    sw.setVisibility(View.GONE);
-//                    channel1.setVisibility(View.GONE);;
-//                    channel2.setVisibility(View.GONE);;
-//                    channel3.setVisibility(View.GONE);;
-//                }
-//                else{
-//                    warnMess.setVisibility(View.GONE);
-//                    sw.setVisibility(View.VISIBLE);
-//                    channel1.setVisibility(View.VISIBLE);
-//                    channel2.setVisibility(View.VISIBLE);
-//                    channel3.setVisibility(View.VISIBLE);
-//                }
-//            }
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
     }
 
 

@@ -103,18 +103,10 @@ public class MainActivity extends AppCompatActivity {
             login();
         }
 
-        if(Objects.equals(sp.getString("auto_log1", null), "Y")){//if Y, then auto fill up username and password
-            name.setText(sp.getString("username", null));
-            pass.setText(sp.getString("password", null));
-            Log.d(TAG, "SharedPref: AUTO LOG IN: " + sp.getAll().toString());
-            al.setChecked(true);
-            login();
-        }
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                firebaseConnectionState();
+                //firebaseConnectionState();
                 checkUserNameThenLogin();
             }
         });
@@ -195,13 +187,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+/*
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             return true;
         }
         return false;
-    }
+    }// TODO : Useless?
+   */
     private void checkUserNameThenLogin(){
         myRef.orderByChild("username").equalTo(name.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -244,10 +237,7 @@ public class MainActivity extends AppCompatActivity {
             }, 1);
         }
     }
-
-
-
-
+   /*
     //TESTING PURPOSES
     private void firebaseConnectionState(){
         DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
@@ -255,13 +245,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 boolean connected = snapshot.getValue(Boolean.class);
-                /*if (connected) {
+                if (connected) {
                     Log.d(TAG, "connected");
                     Toast.makeText(MainActivity.this, "CONNECTED TO DATABASE", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "not connected");
                     Toast.makeText(MainActivity.this, "DISCONNECTED FROM DATABASE", Toast.LENGTH_SHORT).show();
-                }*/
+                }
                 if(!connected)
                     Toast.makeText(MainActivity.this, "Cannot connect to database. Please check your Internet connection.", Toast.LENGTH_LONG).show();
             }
@@ -271,5 +261,5 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "Listener was cancelled");
             }
         });
-    }
+    }*/
 }

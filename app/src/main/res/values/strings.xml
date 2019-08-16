@@ -49,4 +49,7 @@
     <string name="select_end_date">Select End Date</string>
     <string name="done">Done</string>
     <string name="pending">Pending</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
