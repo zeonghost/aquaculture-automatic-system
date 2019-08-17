@@ -119,8 +119,9 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH");
                 position = Integer.valueOf(timeFormat.format(cal.getTime()));
+                Log.d(TAG, "onDataChange: POSITION " + position);
 
-                if(position == 24){
+                if(position >= 23){
                     position = 0;
                 } else {
                     position += 1;
