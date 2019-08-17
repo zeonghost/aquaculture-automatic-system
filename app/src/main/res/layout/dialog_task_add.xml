@@ -13,7 +13,7 @@
         android:gravity="center_horizontal"
         android:paddingTop="15dp"
         android:paddingBottom="10dp"
-        android:text="Edit Task "
+        android:text="Add New Task"
         android:textColor="#075E54"
         android:textSize="30sp"
         android:textStyle="bold" />

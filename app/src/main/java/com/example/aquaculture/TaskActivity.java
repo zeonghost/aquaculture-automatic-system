@@ -220,7 +220,7 @@ public class TaskActivity extends AppCompatActivity {
 
     protected void showAddDialog(){
         LayoutInflater factory = LayoutInflater.from(this);
-        final View textEntryView = factory.inflate(R.layout.dialog_task_edit, null);
+        final View textEntryView = factory.inflate(R.layout.dialog_task_add, null);
         final EditText date = (EditText) textEntryView.findViewById(R.id.editTextDate);
         final EditText time = (EditText)textEntryView.findViewById(R.id.editTextTime);
         final EditText task = (EditText)textEntryView.findViewById(R.id.editTextTask);
@@ -409,7 +409,7 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         AlertDialog.Builder ad1 = new AlertDialog.Builder(TaskActivity.this);
-       // ad1.setTitle("Edit Task:");
+        //ad1.setTitle("Edit Task:");
         ad1.setView(textEntryView);
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {

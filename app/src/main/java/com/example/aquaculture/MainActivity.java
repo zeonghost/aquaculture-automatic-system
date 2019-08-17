@@ -100,7 +100,12 @@ public class MainActivity extends AppCompatActivity {
             al.setChecked(true);
             name.setText(sp.getString("username", null));
             pass.setText(sp.getString("password", null));
-            login();
+            if(name.getText().toString().isEmpty() && pass.getText().toString().isEmpty()){
+                Toast.makeText(MainActivity.this, "Please enter a username or password.", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                login();
+            }
         }
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(final DataSnapshot dataSnapshot, String prevChildKey) {
                 a = dataSnapshot.getKey();
                 b = dataSnapshot.child("password").getValue().toString();
-                if(Objects.equals(b, pass.getText().toString())){
+                if(Objects.equals(b, pass.getText().toString()))
+                {
                     sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                         sp.edit()
                             .putString("username", name.getText().toString())
@@ -171,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setClass(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
+
                 }
                 else {
                     waitingDialog.dismiss();

@@ -1,6 +1,7 @@
 package com.example.aquaculture;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -60,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
     private SharedPreferences sp;
     public static String transferData;
     public static String qrResult;
-
+    private boolean clockDetails;
     private ViewPager viewPager;
     private MenuItem menuItem;
 
@@ -141,7 +142,9 @@ public class HomeActivity extends AppCompatActivity {
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
                             sp.edit().putString("device", piID).apply();
                             sp.edit().putString("location", location).apply();
-                            if(TIME_IN_STATUS == 0){
+                            clockDetails=sp.getBoolean("clockInDetails",false);
+                            Log.d(TAG, "onStart: clockInDetails " + clockDetails);
+                            if(!clockDetails){
                                 checkInOutDialog();
                             } else {
                                 Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);

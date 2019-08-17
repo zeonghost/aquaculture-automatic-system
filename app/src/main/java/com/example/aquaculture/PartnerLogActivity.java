@@ -60,6 +60,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     private String username;
     private String device;
     private TextView txtName;
+    private Boolean clockDetails;
     private TextView txtDevice;
     private TextView txtLocation;
     private TextView txtTimeIn;
@@ -105,6 +106,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                 fullname = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
                 username = sp.getString("username", "");
                 device = sp.getString("device", "");
+
                 partnerLog = new PartnerLocationLog (username, fullname, device, myLocation.getTime(), 0, myLocation.getLatitude(), myLocation.getLongitude());
             }
         });
@@ -114,12 +116,17 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onStart() {
         super.onStart();
-        if(TIME_IN_STATUS == 1){
+        clockDetails=sp.getBoolean("clockInDetails",false);
+        Log.d(TAG, "onStart: clockInDetails " + clockDetails);
+        if(clockDetails)
+        {
             timeOut.setEnabled(true);
             timeOut.setBackgroundColor(Color.parseColor("#0F7D63"));
             timeIn.setEnabled(false);
             timeIn.setBackgroundColor(Color.GRAY);
-        } else {
+        }
+        else
+        {
             timeOut.setEnabled(false);
             timeOut.setBackgroundColor(Color.GRAY);
             timeIn.setEnabled(true);
@@ -160,20 +167,20 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 myRef.child(username).setValue(partnerLog);
                 txtTimeOut.setText("--- --, ---- --:-- AM/PM");
-                //sp.edit().putBoolean("timeInStatus", true).apply();
-                TIME_IN_STATUS = 1;
+                sp.edit().putBoolean("clockInDetails", true).apply();
+                //TIME_IN_STATUS = 1;
                 finish();
                 //Intent toPondInfoActivity = new Intent (PartnerLogActivity.this, PondInfoActivity.class);
                 //startActivity(toPondInfoActivity);
             }
         });
-        timeOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                timeOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 long currentTimestamp = System.currentTimeMillis();
                 myRef.child(username).child("timeOut").setValue(currentTimestamp);
-                //sp.edit().putBoolean("timeInStatus", false).apply();
-                TIME_IN_STATUS = 0;
+                sp.edit().putBoolean("clockInDetails", false).apply();
+                // TIME_IN_STATUS = 0;
                 Intent toProfileActivity = new Intent (PartnerLogActivity.this, ProfileActivity.class);
                 startActivity(toProfileActivity);
             }
