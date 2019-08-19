@@ -114,7 +114,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Toast.makeText(ForgetPasswordActivity.this, "Password Reset Fail. Please check if any of the fields is incorrect.", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                 });
 
@@ -125,7 +126,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                         if(!(dataSnapshot.exists())){
                             Toast.makeText(ForgetPasswordActivity.this, "Password Reset Fail. Please check if any of the fields is incorrect.", Toast.LENGTH_SHORT).show();
                             return;
-                        }
+                        }/*
                         DatabaseReference Ref2 = db.getReference();
                         Query q = Ref2.orderByChild("location").equalTo(locat.getText().toString());
                         q.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -148,9 +149,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
                             }
                         });
-
+                        */
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
