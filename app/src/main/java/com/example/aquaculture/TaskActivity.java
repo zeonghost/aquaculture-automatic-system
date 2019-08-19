@@ -195,7 +195,8 @@ public class TaskActivity extends AppCompatActivity {
         super.onResume();
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         String role = sp.getString("role", null);
-        if(TIME_IN_STATUS == 0){
+        boolean clockedIn = sp.getBoolean("clockInDetails", false);
+        if(!clockedIn){
             if(Objects.equals(role, "Partner")){
                 reminderToClockIn();
             }

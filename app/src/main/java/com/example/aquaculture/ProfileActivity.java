@@ -134,7 +134,10 @@ public class ProfileActivity extends AppCompatActivity {
         signOutCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TIME_IN_STATUS == 1){
+                boolean clockedIn = sp.getBoolean("clockInDetails", false);
+                Log.d(TAG, "onClick: SP CLOCKED IN " + clockedIn);
+
+                if(clockedIn){
                     AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
                     timeOutDialog.setTitle("Reminder:");
                     timeOutDialog.setMessage("Please clock out prior signing out.");
@@ -355,7 +358,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void hideTestingButtons(Button a, Button b, Button c){
         a.setVisibility(View.INVISIBLE);
-        b.setVisibility(View.VISIBLE);
+        b.setVisibility(View.INVISIBLE);
         c.setVisibility(View.INVISIBLE);
     }
 }
