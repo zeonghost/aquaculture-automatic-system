@@ -3,7 +3,7 @@ package com.example.aquaculture.Model;
 import com.google.firebase.database.PropertyName;
 
 public class Task {
-    //private String TaskId;
+    private String TaskId;
     private String date;
     private String receiver;
     private String status;
@@ -28,7 +28,7 @@ public class Task {
     }
 
     public Task(String date, String receiver, String status, String task, String time, String uploader){
-        //this.TaskId = TaskId;
+        this.TaskId = TaskId;
         this.date = date;
         this.receiver = receiver;
         this.status = status;
@@ -45,10 +45,10 @@ public class Task {
         this.task = task;
         this.time = time;
     }
-    //@PropertyName("TaskId")
-    //public String getTaskId() {
-      //  return TaskId;
-    //}
+    @PropertyName("TaskId")
+    public String getTaskId() {
+        return TaskId;
+    }
     //@PropertyName("receiveToken")
     //public String getReceiveToken() {
      //   return receiveToken;

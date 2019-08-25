@@ -1,5 +1,6 @@
 package com.example.aquaculture;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,12 +53,17 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
     private MapFragment mapFragment;
     private LatLng location;
     private String logInfo;
+    public ProgressDialog waitingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partner_admin);
         buttonNavigationSettings();
+        waitingDialog= new ProgressDialog(PartnerAdminActivity.this);
+        waitingDialog.setMessage("Connecting...");
+        waitingDialog.setIndeterminate(true);
+        waitingDialog.setCancelable(true);
         linkUser = findViewById(R.id.btnLinkUser);
         recyclerPartner = findViewById(R.id.partnerRecyclerView);
         recyclerPartner.setHasFixedSize(true);
@@ -87,6 +93,7 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        waitingDialog.show();
                         getLocationPartner(username);
                     }
                 });
@@ -145,6 +152,7 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
+                    waitingDialog.dismiss();
                     location = new LatLng(dataSnapshot.child("latitude").getValue(Double.class), dataSnapshot.child("longitude").getValue(Double.class));
                     long timestampTimeIn = dataSnapshot.child("timeIn").getValue(Long.class);
                     long timestampTimeOut = dataSnapshot.child("timeOut").getValue(Long.class);

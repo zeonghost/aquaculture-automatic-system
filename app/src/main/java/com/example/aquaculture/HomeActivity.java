@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean clockDetails;
     private ViewPager viewPager;
     private MenuItem menuItem;
+    public ProgressDialog waitingDialog;
 
     ArrayList<View> viewContainter = new ArrayList<View>();
 
@@ -73,16 +74,6 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_home);
         addPondButton();
-
-        //View view1 = LayoutInflater.from(this).inflate(R.layout.activity_home, null);
-        //View view2 = LayoutInflater.from(this).inflate(R.layout.activity_task, null);
-        //View view3 = LayoutInflater.from(this).inflate(R.layout.activity_profile, null);
-        //viewContainter.add(view1);
-        //viewContainter.add(view2);
-        //viewContainter.add(view3);
-
-        //ViewPager viewPager = findViewById(R.id.vp_home);
-        //viewPager.setAdapter(new MyPagerAdapter());
 
         buttonNavigationSettings();
 
@@ -111,6 +102,11 @@ public class HomeActivity extends AppCompatActivity {
                 tokRef.child(uid).updateChildren(tokenUpt);
             }
         });
+        waitingDialog= new ProgressDialog(HomeActivity.this);
+        waitingDialog.setMessage("Connecting...");
+        waitingDialog.setIndeterminate(true);
+        waitingDialog.setCancelable(true);
+        waitingDialog.dismiss();
 
         Log.d(TAG, "SP: " + sp.getAll().toString());
         myRef = database.getReference("/PondDetail");
@@ -147,12 +143,16 @@ public class HomeActivity extends AppCompatActivity {
                             if(!clockDetails){
                                 checkInOutDialog();
                             } else {
+                                waitingDialog.show();
                                 Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
                                 startActivity(toPondInfoActivity);
+                                //waitingDialog.dismiss();
                             }
                         } else {
+                            waitingDialog.show();
                             Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
                             startActivity(toPondInfoActivity);
+                            //waitingDialog.dismiss();
                         }
                     }
                 });
@@ -179,7 +179,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
-
+        waitingDialog.dismiss();
     }
 
     public class MyPagerAdapter extends PagerAdapter {
@@ -292,7 +292,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 */
-
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

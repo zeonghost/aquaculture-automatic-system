@@ -122,7 +122,7 @@ public class TaskActivity extends AppCompatActivity {
                 String uploaderName = model.getUploaderName();
                 String receiverName = model.getReceiverName();
 
-                holder.TaskId.setText(taskId);
+                //holder.TaskId.setText(taskId);
                 holder.date.setText(date);
                 holder.receiver.setText(receiver);
                 holder.status.setText(status);

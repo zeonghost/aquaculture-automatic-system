@@ -1,6 +1,7 @@
 package com.example.aquaculture;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -428,7 +429,13 @@ public class PondInfoActivity extends AppCompatActivity {
         String path3 = getData + "-push";
         String path4 = getData + "-log";
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final ProgressDialog waitingDialog= new ProgressDialog(PondInfoActivity.this);
+        waitingDialog.setMessage("Connecting...");
+        waitingDialog.setIndeterminate(true);
+        waitingDialog.setCancelable(true);
+        waitingDialog.show();
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference loc = database.getReference(path3);
         final DatabaseReference logWrite = database.getReference(path4);
 
@@ -495,6 +502,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 piID.setText(dataSnapshot.child("piID").getValue().toString());
                 pondName.setText(dataSnapshot.child("pondName").getValue().toString());
                 location.setText(dataSnapshot.child("location").getValue().toString());
+                waitingDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError error) {

@@ -19,7 +19,7 @@ import java.util.Objects;
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
 public class TaskViewHolder extends RecyclerView.ViewHolder {
-    public TextView TaskId;
+    //public TextView TaskId;
     public TextView date;
     public TextView receiver;
     public TextView receiverName;
@@ -34,7 +34,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
     public TaskViewHolder(@NonNull View itemView){
         super(itemView);
-        TaskId = itemView.findViewById(R.id.taskId);
+        //TaskId = itemView.findViewById(R.id.taskId);
         date = itemView.findViewById(R.id.date);
         receiver = itemView.findViewById(R.id.receiver);
         status = itemView.findViewById(R.id.status);
