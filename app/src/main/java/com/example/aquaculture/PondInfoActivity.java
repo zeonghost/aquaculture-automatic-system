@@ -98,7 +98,6 @@ public class PondInfoActivity extends AppCompatActivity {
     private static long lastClickTime;
     private boolean isGraphVisible;
 
-    private FirebaseDatabase myDatabase;
     private DatabaseReference myRef;
     private Forecast forecast;
     private SimpleExponentialSmoothing sme;
@@ -110,6 +109,8 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView wDesc;
     private TextView wDateTime;
 
+    private FirebaseDatabase myDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +119,7 @@ public class PondInfoActivity extends AppCompatActivity {
         StatusBarCompat.setStatusBarColor(this, Color.parseColor("#148D7F"));
 
         myDatabase = FirebaseDatabase.getInstance();
+
         piID = findViewById(R.id.txtViewPiID);
         pondName = findViewById(R.id.txtViewPondName);
         location = findViewById(R.id.txtViewPondLocation);
