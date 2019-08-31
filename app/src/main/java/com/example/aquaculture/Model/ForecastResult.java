@@ -26,7 +26,8 @@ public class ForecastResult {
     private float time21;
     private float time22;
     private float time23;
-    private long dateUpdated;
+    private float highCritical;
+    private float lowCritical;
 
     public ForecastResult() {
     }
@@ -105,6 +106,14 @@ public class ForecastResult {
     public float getTime22() {return time22;}
 
     public float getTime23() {return time23;}
+
+    public float getHighCritical() {return highCritical;}
+
+    public void setHighCritical(float highCritical) {this.highCritical = highCritical;}
+
+    public float getLowCritical() {return lowCritical;}
+
+    public void setLowCritical(float lowCritical) {this.lowCritical = lowCritical;}
 
     public void setTime00(float time00) {this.time00 = time00;}
 

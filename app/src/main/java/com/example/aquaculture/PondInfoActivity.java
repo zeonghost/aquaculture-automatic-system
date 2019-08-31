@@ -17,6 +17,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -48,6 +51,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -97,6 +101,8 @@ public class PondInfoActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private static long lastClickTime;
     private boolean isGraphVisible;
+    public static float high;
+    public static float low;
 
     private FirebaseDatabase myDatabase;
     private DatabaseReference myRef;
@@ -165,12 +171,13 @@ public class PondInfoActivity extends AppCompatActivity {
         forecast = new Forecast();
         sme = new SimpleExponentialSmoothing();
         weather = new Weather();
-        startingTempGraph();
         basicReadWrite();
+        startingTempGraph();
         buttomNavigation();
         logRead();
         setChannelNames();
         getForecastGraph();
+        getCriticalLevels();
     }
 
     @Override
@@ -288,6 +295,9 @@ public class PondInfoActivity extends AppCompatActivity {
                     val = snaps.getValue(Double.class);
                     initialValue = Integer.valueOf((int) (Math.round(val * 10)));
                     newVal = initialValue/10.0f;
+                    if((newVal > high)||(newVal < low)){
+                        //forecastRead.setCardBackgroundColor(Color.parseColor("#F44336"));
+                    }
                     yValues.add(new Entry(i, newVal));
                     i++;
                 }
@@ -453,8 +463,7 @@ public class PondInfoActivity extends AppCompatActivity {
         if(Objects.equals(push, "Y")){
             sw1.setChecked(true);
         }
-        else
-        {
+        else {
             sw1.setChecked(false);
         }
 
@@ -518,11 +527,14 @@ public class PondInfoActivity extends AppCompatActivity {
                 final Integer ch2OnTimeInterval = dataSnapshot.child("gap1").getValue(Integer.class);
                 final Integer ch2OffTimeInterval = dataSnapshot.child("gap2").getValue(Integer.class);
                 TextView textElement = (TextView) findViewById(R.id.tempRead);
+                high = highTempRead;
+                low = lowTempRead;
                 textElement.setText(tempRead.toString() + " °C");
                 highTemp.setText(highTempRead.toString() + " °C");
                 lowTemp.setText(lowTempRead.toString() + " °C");
                 ch2OnTimeInt.setText(ch2OnTimeInterval.toString() + " second/s");
                 ch2OffTimeInt.setText(ch2OffTimeInterval.toString() + " second/s");
+
                 SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
@@ -580,7 +592,6 @@ public class PondInfoActivity extends AppCompatActivity {
                 });
 
                 final Integer val1 = dataSnapshot.child("ch1").getValue(Integer.class);
-                //final Button btr1 = (Button) findViewById(R.id.ch1);
                 if(val1 ==1)//1 means on
                 {
                     channel1.setImageResource(R.drawable.icons_switch_on_s);
@@ -1067,6 +1078,22 @@ public class PondInfoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void getCriticalLevels(){
+        DatabaseReference refPiPondNode = myDatabase.getReference("pi1-pond1");
+        refPiPondNode.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "getCriticalLevels: " + dataSnapshot.child("low").getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void init_forecastNode(){

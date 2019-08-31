@@ -62,8 +62,8 @@ public class HomeActivity extends AppCompatActivity {
     public static String transferData;
     public static String qrResult;
     private boolean clockDetails;
-    private ViewPager viewPager;
-    private MenuItem menuItem;
+    //private ViewPager viewPager;
+    //private MenuItem menuItem;
     public ProgressDialog waitingDialog;
 
     ArrayList<View> viewContainter = new ArrayList<View>();
@@ -146,13 +146,11 @@ public class HomeActivity extends AppCompatActivity {
                                 waitingDialog.show();
                                 Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
                                 startActivity(toPondInfoActivity);
-                                //waitingDialog.dismiss();
                             }
                         } else {
                             waitingDialog.show();
                             Intent toPondInfoActivity = new Intent(HomeActivity.this, PondInfoActivity.class);
                             startActivity(toPondInfoActivity);
-                            //waitingDialog.dismiss();
                         }
                     }
                 });
@@ -180,26 +178,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
         waitingDialog.dismiss();
-    }
-
-    public class MyPagerAdapter extends PagerAdapter {
-        @Override
-        public int getCount() {
-            return viewContainter.size();
-        }
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(viewContainter.get(position));
-        }
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            container.addView(viewContainter.get(position));
-            return viewContainter.get(position);
-        }
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
     }
 
     private long firstPressedTime;//first time press back button
@@ -249,49 +227,6 @@ public class HomeActivity extends AppCompatActivity {
     }//get result of qr scanner
 
     private void buttonNavigationSettings(){
-        //viewPager = (ViewPager) findViewById(R.id.vp_home);
-/*
-        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item1://btn 1 -> HomeActivity
-                        viewPager.setCurrentItem(0);
-                        break;
-                    case R.id.item2://btn 2 -> task
-                        viewPager.setCurrentItem(1);
-                        break;
-                    case R.id.item3://btn 3 -> profile
-                        viewPager.setCurrentItem(2);
-                        break;
-                }
-                return false;
-            }
-        });//bottom navigation
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                if(menuItem !=null){
-                    menuItem.setChecked(false);
-                }else{
-                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
-            }
-                menuItem = bottomNavigationView.getMenu().getItem(0);
-                menuItem.setChecked(true);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-*/
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

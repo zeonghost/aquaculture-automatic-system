@@ -202,14 +202,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-/*
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return true;
-        }
-        return false;
-    }// TODO : Useless?
-   */
+
     private void checkUserNameThenLogin(){
         myRef.orderByChild("username").equalTo(name.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

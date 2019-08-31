@@ -55,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView updatePond;
     private TextView deletePond;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
