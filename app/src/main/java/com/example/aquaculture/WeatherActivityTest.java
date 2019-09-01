@@ -1,5 +1,6 @@
 package com.example.aquaculture;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -10,8 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.aquaculture.Model.Weather;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class WeatherActivityTest extends AppCompatActivity {
     private static final String TAG = "LOG";
@@ -25,6 +32,12 @@ public class WeatherActivityTest extends AppCompatActivity {
     private TextView wDesc;
     private TextView wDateTime;
 
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+
+    private Weather w;
+    private String dateString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +49,13 @@ public class WeatherActivityTest extends AppCompatActivity {
         tempMaxData = findViewById(R.id.txtViewTempMax);
         wDesc = findViewById(R.id.txtViewWeatherDesc);
         wDateTime = findViewById(R.id.txtViewWeatherDate);
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("pi1-evap");
+        w = new Weather();
+        w.search("Manila");
+        w.calculateEvaporationRate();
+        dateString = convertToDate(w.getDateTime());
+
 
         getWeatherInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +72,30 @@ public class WeatherActivityTest extends AppCompatActivity {
                 wDesc.setText(weather.getCloud() + " - " + weather.getCloudDescription());
                 dateStr = convertToDate(weather.getDateTime());
                 wDateTime.setText(dateStr);
+            }
+        });
+
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
+                if(!dataSnapshot.exists()){
+                    reference.child(dateString).setValue(w.getEvaporationRate());
+                }
+
+
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    String date_in_database = snaps.getKey();
+                    Log.d(TAG, "Date Keys: " + date_in_database);
+                    if(Objects.equals(date_in_database, "August 28, 2019")){
+                        Log.d(TAG, "TODAY IS AUG 28" );
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });

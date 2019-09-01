@@ -115,6 +115,8 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView tempMaxData;
     private TextView wDesc;
     private TextView wDateTime;
+    private float highCriticalLevel;
+    private float lowCriticalLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,13 +173,14 @@ public class PondInfoActivity extends AppCompatActivity {
         forecast = new Forecast();
         sme = new SimpleExponentialSmoothing();
         weather = new Weather();
+        getCriticalLevels();
         basicReadWrite();
         startingTempGraph();
         buttomNavigation();
         logRead();
         setChannelNames();
+        initializeForecast();
         getForecastGraph();
-        getCriticalLevels();
     }
 
     @Override
@@ -265,7 +268,7 @@ public class PondInfoActivity extends AppCompatActivity {
         super.onResume();
         String counter = getSystemTime();
         if(Objects.equals(counter, "time00")){
-//            getForecast();
+            updateForecast();
             Log.d(TAG, "onResume:  SHOULD HAVE BEEN CALLING THE FORECAST FUNCTION");
         }
         getWeatherAndEvaporationRate();
@@ -274,7 +277,7 @@ public class PondInfoActivity extends AppCompatActivity {
     }
 
     private void getForecastGraph(){
-        DatabaseReference myForecastRef = FirebaseDatabase.getInstance().getReference("pi1-forecast");
+        final DatabaseReference myForecastRef = FirebaseDatabase.getInstance().getReference("pi1-forecast");
         final ArrayList<Entry> yValues = new ArrayList<>();
         lineChartForecastGraph.setDragEnabled(false);
         lineChartForecastGraph.setEnabled(true);
@@ -287,11 +290,18 @@ public class PondInfoActivity extends AppCompatActivity {
         myForecastRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int index = 0;
                 float i = 0, newVal;
                 double val;
                 Integer initialValue;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                    Log.d(TAG, "FORECAST: " + snaps.getValue());
+                    Log.d(TAG, "INDEX: " + i);
+                    if(index < 2){
+                        Log.d(TAG, "ENTER THE DRAGON");
+                        index++;
+                        continue;
+                    }
+                    Log.d(TAG, "FORECAST CHECK " + snaps.getValue());
                     val = snaps.getValue(Double.class);
                     initialValue = Integer.valueOf((int) (Math.round(val * 10)));
                     newVal = initialValue/10.0f;
@@ -966,7 +976,7 @@ public class PondInfoActivity extends AppCompatActivity {
         ad1.show();
     }
 
-    private void getForecast(){
+    private void updateForecast(){
         myRef = myDatabase.getReference("pi1-forecast-test");
         Query query = myRef.orderByChild("time");
         query.addValueEventListener(new ValueEventListener() {
@@ -1080,12 +1090,36 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
+    private void initializeForecast(){
+        myRef = myDatabase.getReference("pi1-forecast");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    updateForecast();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void getCriticalLevels(){
         DatabaseReference refPiPondNode = myDatabase.getReference("pi1-pond1");
         refPiPondNode.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "getCriticalLevels: " + dataSnapshot.child("low").getValue());
+                if(dataSnapshot.exists()){
+                    Integer lowCritValue = dataSnapshot.child("low").getValue(Integer.class);
+                    lowCriticalLevel = (float) lowCritValue/10.0f;
+                    Integer highCritValue = dataSnapshot.child("high").getValue(Integer.class);
+                    highCriticalLevel = (float) highCritValue/10.0f;
+                    Log.d(TAG, "getCriticalLevels: " + dataSnapshot.child("low").getValue());
+                }
+
             }
 
             @Override
@@ -1106,6 +1140,9 @@ public class PondInfoActivity extends AppCompatActivity {
             result.add(sme.getBestSME());
         }
         forecastResult.update(result);
+        forecastResult.setHighCritical(highCriticalLevel);
+        forecastResult.setLowCritical(lowCriticalLevel);
+        Log.d(TAG, "init_forecastNode RESULT: " + forecastResult);
         refForecastNode.setValue(forecastResult);
     }
 
@@ -1131,10 +1168,12 @@ public class PondInfoActivity extends AppCompatActivity {
         forecastRef.child(forecastTime).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
-                Integer initialValue = Integer.valueOf((int) Math.round(dataSnapshot.getValue(Double.class) * 10));
-                String tempValue = (double) initialValue/10.0 + " °C";
-                forecastTemp.setText(tempValue);
+                if(dataSnapshot.exists()){
+                    Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
+                    Integer initialValue = Integer.valueOf((int) Math.round(dataSnapshot.getValue(Double.class) * 10));
+                    String tempValue = (double) initialValue/10.0 + " °C";
+                    forecastTemp.setText(tempValue);
+                }
             }
 
             @Override

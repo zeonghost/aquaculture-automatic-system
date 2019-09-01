@@ -79,10 +79,15 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
         myForecastReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int index = 0;
                 float i = 0, newVal;
                 double val;
                 Integer initialValue;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    if(index < 2){
+                        index++;
+                        continue;
+                    }
                     Log.d(TAG, "FORECAST: " + snaps.getValue());
                     val = snaps.getValue(Double.class);
                     initialValue = Integer.valueOf((int) (Math.round(val * 10)));
