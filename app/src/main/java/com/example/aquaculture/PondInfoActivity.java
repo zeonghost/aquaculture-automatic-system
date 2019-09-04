@@ -73,6 +73,7 @@ public class PondInfoActivity extends AppCompatActivity {
     private LinearLayout weatherForecastLayout;
     private LineChart lineChart;
     private LineChart lineChartForecastGraph;
+    private LineChart lineChartEvaporation;
     private TextView piID;
     private TextView location;
     private TextView pondName;
@@ -132,6 +133,7 @@ public class PondInfoActivity extends AppCompatActivity {
         graphCheck = findViewById(R.id.graphCardView);
         lineChart = findViewById(R.id.lineChart); //line graph for water temp
         lineChartForecastGraph = findViewById(R.id.lineChartForecast); //line graph for temp forecast
+        lineChartEvaporation = findViewById(R.id.lineChartEvaporation);
         weatherForecastLayout = findViewById(R.id.weatherForecastLayout); //layout containing weather forecast
         tempData = findViewById(R.id.txtViewTemp);
         tempMinData = findViewById(R.id.txtViewTempMin);
@@ -170,6 +172,7 @@ public class PondInfoActivity extends AppCompatActivity {
         lineChart.setVisibility(View.GONE);
         lineChartForecastGraph.setVisibility(View.GONE);
         weatherForecastLayout.setVisibility(View.GONE);
+        lineChartEvaporation.setVisibility(View.GONE);
         forecast = new Forecast();
         sme = new SimpleExponentialSmoothing();
         weather = new Weather();
@@ -193,11 +196,13 @@ public class PondInfoActivity extends AppCompatActivity {
                     lineChart.setVisibility(View.GONE);
                     lineChartForecastGraph.setVisibility(View.GONE);
                     weatherForecastLayout.setVisibility(View.GONE);
+                    lineChartEvaporation.setVisibility(View.GONE);
                     isGraphVisible = false;
                 } else {
                     lineChart.setVisibility(View.VISIBLE);
                     lineChartForecastGraph.setVisibility(View.VISIBLE);
                     weatherForecastLayout.setVisibility(View.VISIBLE);
+                    lineChartEvaporation.setVisibility(View.VISIBLE);
                     isGraphVisible = true;
                 }
             }
@@ -240,6 +245,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineChart.setVisibility(View.VISIBLE);
                 lineChartForecastGraph.setVisibility(View.GONE);
                 weatherForecastLayout.setVisibility(View.GONE);
+                lineChartEvaporation.setVisibility(View.GONE);
             }
         });
 
@@ -249,6 +255,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineChart.setVisibility(View.GONE);
                 lineChartForecastGraph.setVisibility(View.VISIBLE);
                 weatherForecastLayout.setVisibility(View.GONE);
+                lineChartEvaporation.setVisibility(View.GONE);
             }
         });
 
@@ -258,8 +265,21 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineChart.setVisibility(View.GONE);
                 lineChartForecastGraph.setVisibility(View.GONE);
                 weatherForecastLayout.setVisibility(View.VISIBLE);
+                lineChartEvaporation.setVisibility(View.GONE);
             }
         });
+
+        evaporateRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lineChart.setVisibility(View.GONE);
+                lineChartForecastGraph.setVisibility(View.GONE);
+                weatherForecastLayout.setVisibility(View.GONE);
+                lineChartEvaporation.setVisibility(View.VISIBLE);
+            }
+        });
+
+
         statusCheck();
     }
 
@@ -1192,7 +1212,8 @@ public class PondInfoActivity extends AppCompatActivity {
         weather.calculateEvaporationRate();
         Log.d(TAG, "getWeatherAndEvaporationRate: EVAP " + weather.getEvaporationRate());
         Integer initialEvapRate = Integer.valueOf((int) (Math.round(weather.getEvaporationRate() * 1000)));
-        String evapRate = String.valueOf((double) initialEvapRate/1000.0);
+        final double roundedEvapRate = (double) initialEvapRate/1000.0;
+        String evapRate = String.valueOf(roundedEvapRate);
         evaporateRate.setText(evapRate);
 
         tempData.setText(weather.getTemp() + " °C");
@@ -1201,6 +1222,56 @@ public class PondInfoActivity extends AppCompatActivity {
         wDesc.setText(weather.getCloud() + " - " + weather.getCloudDescription());
         String dateStr = convertToDate(weather.getDateTime());
         wDateTime.setText(dateStr);
+
+        final String dataArray[] = dateStr.split(" -", 2);
+        Log.d(TAG, "CHECK DATE SPLIT " + dataArray[0]);
+        final String getData = HomeActivity.transferData;
+        String evapPath = getData + "-evap";
+
+        final DatabaseReference evapRef = myDatabase.getReference(evapPath);
+        evapRef.orderByKey().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
+                if(!dataSnapshot.exists()){
+                    evapRef.child(dataArray[0]).setValue(roundedEvapRate);
+                } else {
+                    for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                        String dateToday = getSystemDate();
+                        Log.d(TAG, "DATE TODAY: " + dateToday);
+                        String date_in_database = snaps.getKey();
+                        Log.d(TAG, "Date Keys: " + date_in_database);
+                        String dateTodayMonth[] = dateToday.split(" ", 2);
+                        String dateDatabaseMonth[] = date_in_database.split(" ", 2);
+
+                        Log.d(TAG, "onDataChange: deteTODAYMONTH " + dateTodayMonth[0]);
+                        Log.d(TAG, "onDataChange: dateDBMONTH " + dateDatabaseMonth[0]);
+
+                        if(!Objects.equals(dateTodayMonth[0], dateDatabaseMonth[0])){
+                            Log.d(TAG, "onDataChange: MONTHS DID NOT MATCH!");
+                            evapRef.removeValue();
+                            evapRef.child(dataArray[0]).setValue(roundedEvapRate);
+                            return;
+                        }
+
+
+                        if(Objects.equals(date_in_database, dateToday)){
+                            Log.d(TAG, "IN!!!");
+                            if(snaps.getValue(Float.class) < roundedEvapRate){
+                                evapRef.child(dataArray[0]).setValue(roundedEvapRate);
+                                Log.d(TAG, "STORE NEW EVAPORATION RATE! ");
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void setChannelNames(){
@@ -1234,5 +1305,13 @@ public class PondInfoActivity extends AppCompatActivity {
         calendar.setTimeInMillis(ts * 1000);
         String dateString = DateFormat.format("MMMM dd, yyyy - h:mm a", calendar).toString();
         return dateString;
+    }
+
+    private String getSystemDate(){
+        String date;
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("MMMM dd, yyyy");
+        date = timeFormat.format(cal.getTimeInMillis());
+        return date;
     }
 }

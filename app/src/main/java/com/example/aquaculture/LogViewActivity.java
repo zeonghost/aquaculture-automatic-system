@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aquaculture.Fragment.DatePickerFragment;
@@ -24,12 +23,9 @@ import com.example.aquaculture.Model.Log;
 import com.example.aquaculture.ViewHolder.LogViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -174,7 +170,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                 tr1 = toDate;
                 tr2 = fromDate;
 
-                Intent intent4 = new Intent(LogViewActivity.this, logSearchActivity.class);
+                Intent intent4 = new Intent(LogViewActivity.this, LogSearchActivity.class);
                 startActivity(intent4);
             }
 

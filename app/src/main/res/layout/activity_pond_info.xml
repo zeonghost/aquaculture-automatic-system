@@ -306,6 +306,16 @@
 
                     </com.github.mikephil.charting.charts.LineChart>
 
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChartEvaporation"
+                        android:layout_width="match_parent"
+                        android:layout_height="155dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp">
+
+                    </com.github.mikephil.charting.charts.LineChart>
+
                     <LinearLayout
                         android:id="@+id/weatherForecastLayout"
                         android:layout_width="match_parent"

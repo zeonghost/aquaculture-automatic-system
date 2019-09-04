@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class logSearchActivity extends AppCompatActivity {
+public class LogSearchActivity extends AppCompatActivity {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private FirebaseRecyclerOptions<Log> options;
@@ -45,7 +45,7 @@ public class logSearchActivity extends AppCompatActivity {
         logInfo = findViewById(R.id.recycle_view);
         logInfo.setHasFixedSize(true);
 
-        LinearLayoutManager layout = new LinearLayoutManager(logSearchActivity.this);
+        LinearLayoutManager layout = new LinearLayoutManager(LogSearchActivity.this);
         layout.setStackFromEnd(true);
         layout.setReverseLayout(true);
 
@@ -85,7 +85,7 @@ public class logSearchActivity extends AppCompatActivity {
             @NonNull
             @Override
             public LogViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                View view = LayoutInflater.from(logSearchActivity.this).inflate(R.layout.log_info, viewGroup, false);
+                View view = LayoutInflater.from(LogSearchActivity.this).inflate(R.layout.log_info, viewGroup, false);
                 LogViewHolder holder = new LogViewHolder(view);
                 return holder;
             }
@@ -113,15 +113,15 @@ public class logSearchActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item1:
-                        Intent intent1 = new Intent(logSearchActivity.this, HomeActivity.class);
+                        Intent intent1 = new Intent(LogSearchActivity.this, HomeActivity.class);
                         startActivity(intent1);
                         break;
                     case R.id.item2:
-                        Intent intent2 = new Intent(logSearchActivity.this, TaskActivity.class);
+                        Intent intent2 = new Intent(LogSearchActivity.this, TaskActivity.class);
                         startActivity(intent2);
                         break;
                     case R.id.item3:
-                        Intent intent3 = new Intent(logSearchActivity.this, ProfileActivity.class);
+                        Intent intent3 = new Intent(LogSearchActivity.this, ProfileActivity.class);
                         startActivity(intent3);
                         break;
                 }

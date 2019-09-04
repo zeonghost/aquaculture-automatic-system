@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -57,6 +58,7 @@ public class WeatherActivityTest extends AppCompatActivity {
         dateString = convertToDate(w.getDateTime());
 
 
+
         getWeatherInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +72,7 @@ public class WeatherActivityTest extends AppCompatActivity {
                 tempMinData.setText(weather.getTemp_min() + " °C");
                 tempMaxData.setText(weather.getTemp_max() + " °C");
                 wDesc.setText(weather.getCloud() + " - " + weather.getCloudDescription());
-                dateStr = convertToDate(weather.getDateTime());
+                dateStr = convertToDate(w.getDateTime());
                 wDateTime.setText(dateStr);
             }
         });
@@ -81,15 +83,20 @@ public class WeatherActivityTest extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
                 if(!dataSnapshot.exists()){
-                    reference.child(dateString).setValue(w.getEvaporationRate());
-                }
-
-
-                for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                    String date_in_database = snaps.getKey();
-                    Log.d(TAG, "Date Keys: " + date_in_database);
-                    if(Objects.equals(date_in_database, "August 28, 2019")){
-                        Log.d(TAG, "TODAY IS AUG 28" );
+                    reference.child(String.valueOf(w.getDateTime())).setValue(w.getEvaporationRate());
+                } else {
+                    for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                        String dateToday = getSystemDate();
+                        Log.d(TAG, "DATE TODAY: " + dateToday);
+                        String date_in_database = snaps.getKey();
+                        Log.d(TAG, "Date Keys: " + date_in_database);
+                        if(Objects.equals(date_in_database, dateToday)){
+                            Log.d(TAG, "IN!!!");
+                            if(snaps.getValue(Float.class) < w.getEvaporationRate()){
+                                reference.child(dateString).setValue(w.getEvaporationRate());
+                                Log.d(TAG, "STORE NEW EVAPORATION RATE! ");
+                            }
+                        }
                     }
                 }
             }
@@ -104,7 +111,15 @@ public class WeatherActivityTest extends AppCompatActivity {
     private String convertToDate(long ts){
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(ts * 1000);
-        String dateString = DateFormat.format("MMMM dd, yyyy - h:mm a", calendar).toString();
+        String dateString = DateFormat.format("MMMM dd, yyyy", calendar).toString();
         return dateString;
+    }
+
+    private String getSystemDate(){
+        String date;
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("MMMM dd, yyyy");
+        date = timeFormat.format(cal.getTimeInMillis());
+        return date;
     }
 }
