@@ -105,7 +105,6 @@ public class PondInfoActivity extends AppCompatActivity {
     public static float high;
     public static float low;
 
-    private FirebaseDatabase myDatabase;
     private DatabaseReference myRef;
     private Forecast forecast;
     private SimpleExponentialSmoothing sme;
@@ -119,6 +118,8 @@ public class PondInfoActivity extends AppCompatActivity {
     private float highCriticalLevel;
     private float lowCriticalLevel;
 
+    private FirebaseDatabase myDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +128,7 @@ public class PondInfoActivity extends AppCompatActivity {
         StatusBarCompat.setStatusBarColor(this, Color.parseColor("#148D7F"));
 
         myDatabase = FirebaseDatabase.getInstance();
+
         piID = findViewById(R.id.txtViewPiID);
         pondName = findViewById(R.id.txtViewPondName);
         location = findViewById(R.id.txtViewPondLocation);
@@ -184,6 +186,7 @@ public class PondInfoActivity extends AppCompatActivity {
         setChannelNames();
         initializeForecast();
         getForecastGraph();
+        getEvaporateGraph();
     }
 
     @Override
@@ -294,6 +297,53 @@ public class PondInfoActivity extends AppCompatActivity {
         getWeatherAndEvaporationRate();
         Log.d(TAG, "onResume: CALL EVAP FUNCTIUON");
         statusCheck();
+    }
+
+    private void getEvaporateGraph(){
+        String getData = HomeActivity.transferData;
+        String myEvapPath = getData + "-evap";
+        final DatabaseReference myEveporateRef = FirebaseDatabase.getInstance().getReference(myEvapPath);
+        final ArrayList<Entry> yValues = new ArrayList<>();
+        lineChartEvaporation.setDragEnabled(false);
+        lineChartEvaporation.setEnabled(true);
+        lineChartEvaporation.setPinchZoom(false);
+        lineChartEvaporation.setDoubleTapToZoomEnabled(false);
+        lineChartEvaporation.setHighlightPerTapEnabled(false);
+        lineChartEvaporation.getDescription().setText("Evaporation Rates Per Month");
+        lineChartEvaporation.getLegend().setEnabled(false);
+
+        myEveporateRef.orderByKey().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                float i = 0;
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    yValues.add(new Entry(i, snaps.getValue(Float.class)));
+                    i++;
+                }
+                Log.d(TAG, "Y VALUES EVAPORATION: " + yValues);
+
+                LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature Forecast");
+                lineDataSet.setFillAlpha(0);
+                lineDataSet.setColor(Color.RED);
+                lineDataSet.setLineWidth(2f);
+                lineDataSet.setValueTextSize(0);
+                lineDataSet.setCircleHoleRadius(0.5f);
+                lineDataSet.setCircleColor(Color.BLUE);
+                lineDataSet.setDrawCircles(false);
+
+                LineData lineData = new LineData(lineDataSet);
+                lineChartEvaporation.getXAxis().setEnabled(false);
+                lineChartEvaporation.getAxisRight().setEnabled(false);
+                lineChartEvaporation.setData(lineData);
+                lineChartEvaporation.notifyDataSetChanged();
+                lineChartEvaporation.invalidate();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getForecastGraph(){
