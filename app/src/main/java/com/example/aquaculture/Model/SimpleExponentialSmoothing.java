@@ -69,16 +69,17 @@ public class SimpleExponentialSmoothing extends Forecast{
 //        calculateForecast(valList, 0.8f);
 //        calculateForecast(valList, 0.9f);
 
-        float smallestMSE = Float.MAX_VALUE;
-        for(Map.Entry<Float, Float> e : mseMap.entrySet()){
-            if(e.getKey() < smallestMSE){
-                smallestMSE = e.getKey();
-            }
-        }
+//        float smallestMSE = Float.MAX_VALUE;
+//        for(Map.Entry<Float, Float> e : mseMap.entrySet()){
+//            if(e.getKey() < smallestMSE){
+//                smallestMSE = e.getKey();
+//            }
+//        }
 
         this.valList.clear();
         this.errorSq = 0;
         this.forecastingPeriod = 0;
-        return mseMap.get(smallestMSE).floatValue();
+//        return mseMap.get(smallestMSE).floatValue();
+        return iForecast;
     }
 }

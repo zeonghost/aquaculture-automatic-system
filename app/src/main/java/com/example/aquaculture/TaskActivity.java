@@ -150,6 +150,9 @@ public class TaskActivity extends AppCompatActivity {
 
                 if(Objects.equals(role, "Partner")){
                     if(Objects.equals(status, "Pending")){
+                        holder.edit.setVisibility(View.INVISIBLE);
+                        holder.delete.setVisibility(View.INVISIBLE);
+                        holder.done.setVisibility(View.VISIBLE);
                         holder.done.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

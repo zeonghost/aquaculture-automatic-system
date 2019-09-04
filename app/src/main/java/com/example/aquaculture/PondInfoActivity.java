@@ -185,7 +185,7 @@ public class PondInfoActivity extends AppCompatActivity {
         logRead();
         setChannelNames();
         initializeForecast();
-        getForecastGraph();
+//        getForecastGraph();
         getEvaporateGraph();
     }
 
@@ -231,6 +231,14 @@ public class PondInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent toForecastActivity = new Intent (PondInfoActivity.this, ForecastActivity.class);
                 startActivity(toForecastActivity);
+            }
+        });
+
+        lineChartEvaporation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toEvaporationGraph = new Intent(PondInfoActivity.this, EvaporationActivity.class);
+                startActivity(toEvaporationGraph);
             }
         });
 
@@ -281,8 +289,6 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineChartEvaporation.setVisibility(View.VISIBLE);
             }
         });
-
-
         statusCheck();
     }
 
@@ -324,7 +330,7 @@ public class PondInfoActivity extends AppCompatActivity {
 
                 LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature Forecast");
                 lineDataSet.setFillAlpha(0);
-                lineDataSet.setColor(Color.RED);
+                lineDataSet.setColor(Color.MAGENTA);
                 lineDataSet.setLineWidth(2f);
                 lineDataSet.setValueTextSize(0);
                 lineDataSet.setCircleHoleRadius(0.5f);
@@ -360,43 +366,45 @@ public class PondInfoActivity extends AppCompatActivity {
         myForecastRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int index = 0;
-                float i = 0, newVal;
-                double val;
-                Integer initialValue;
-                for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                    Log.d(TAG, "INDEX: " + i);
-                    if(index < 2){
-                        Log.d(TAG, "ENTER THE DRAGON");
-                        index++;
-                        continue;
+                if(dataSnapshot.exists()){
+                    int index = 0;
+                    float i = 0, newVal;
+                    double val;
+                    Integer initialValue;
+                    for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                        Log.d(TAG, "INDEX: " + i);
+                        if(index < 2){
+                            Log.d(TAG, "ENTER THE DRAGON");
+                            index++;
+                            continue;
+                        }
+                        Log.d(TAG, "FORECAST CHECK " + snaps.getValue());
+                        val = snaps.getValue(Double.class);
+                        initialValue = Integer.valueOf((int) (Math.round(val * 10)));
+                        newVal = initialValue/10.0f;
+                        if((newVal > high)||(newVal < low)){
+                            //forecastRead.setCardBackgroundColor(Color.parseColor("#F44336"));
+                        }
+                        yValues.add(new Entry(i, newVal));
+                        i++;
                     }
-                    Log.d(TAG, "FORECAST CHECK " + snaps.getValue());
-                    val = snaps.getValue(Double.class);
-                    initialValue = Integer.valueOf((int) (Math.round(val * 10)));
-                    newVal = initialValue/10.0f;
-                    if((newVal > high)||(newVal < low)){
-                        //forecastRead.setCardBackgroundColor(Color.parseColor("#F44336"));
-                    }
-                    yValues.add(new Entry(i, newVal));
-                    i++;
+
+                    LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature Forecast");
+                    lineDataSet.setFillAlpha(0);
+                    lineDataSet.setColor(Color.RED);
+                    lineDataSet.setLineWidth(2f);
+                    lineDataSet.setValueTextSize(0);
+                    lineDataSet.setCircleHoleRadius(0.5f);
+                    lineDataSet.setCircleColor(Color.BLUE);
+                    lineDataSet.setDrawCircles(false);
+
+                    LineData lineData = new LineData(lineDataSet);
+                    lineChartForecastGraph.getXAxis().setEnabled(false);
+                    lineChartForecastGraph.getAxisRight().setEnabled(false);
+                    lineChartForecastGraph.setData(lineData);
+                    lineChartForecastGraph.notifyDataSetChanged();
+                    lineChartForecastGraph.invalidate();
                 }
-
-                LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature Forecast");
-                lineDataSet.setFillAlpha(0);
-                lineDataSet.setColor(Color.RED);
-                lineDataSet.setLineWidth(2f);
-                lineDataSet.setValueTextSize(0);
-                lineDataSet.setCircleHoleRadius(0.5f);
-                lineDataSet.setCircleColor(Color.BLUE);
-                lineDataSet.setDrawCircles(false);
-
-                LineData lineData = new LineData(lineDataSet);
-                lineChartForecastGraph.getXAxis().setEnabled(false);
-                lineChartForecastGraph.getAxisRight().setEnabled(false);
-                lineChartForecastGraph.setData(lineData);
-                lineChartForecastGraph.notifyDataSetChanged();
-                lineChartForecastGraph.invalidate();
             }
 
             @Override
@@ -1046,6 +1054,25 @@ public class PondInfoActivity extends AppCompatActivity {
         ad1.show();
     }
 
+    private void initializeForecast(){
+        myRef = myDatabase.getReference("pi1-forecast");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    updateForecast();
+                } else {
+                    updateForecast();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void updateForecast(){
         myRef = myDatabase.getReference("pi1-forecast-test");
         Query query = myRef.orderByChild("time");
@@ -1057,39 +1084,39 @@ public class PondInfoActivity extends AppCompatActivity {
                         forecast.addClock0(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "1:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "01:00 AM")){
                         forecast.addClock1(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "2:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "02:00 AM")){
                         forecast.addClock2(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "3:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "03:00 AM")){
                         forecast.addClock3(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "4:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "04:00 AM")){
                         forecast.addClock4(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "5:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "05:00 AM")){
                         forecast.addClock5(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "6:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "06:00 AM")){
                         forecast.addClock6(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "7:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "07:00 AM")){
                         forecast.addClock7(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "8:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "08:00 AM")){
                         forecast.addClock8(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "9:00 AM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "09:00 AM")){
                         forecast.addClock9(snaps.child("val").getValue(Float.class)/10);
                     }
 
@@ -1105,39 +1132,39 @@ public class PondInfoActivity extends AppCompatActivity {
                         forecast.addClock12(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "1:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "01:00 PM")){
                         forecast.addClock13(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "2:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "02:00 PM")){
                         forecast.addClock14(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "3:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "03:00 PM")){
                         forecast.addClock15(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "4:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "04:00 PM")){
                         forecast.addClock16(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "5:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "05:00 PM")){
                         forecast.addClock17(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "6:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "06:00 PM")){
                         forecast.addClock18(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "7:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "07:00 PM")){
                         forecast.addClock19(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "8:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "08:00 PM")){
                         forecast.addClock20(snaps.child("val").getValue(Float.class)/10);
                     }
 
-                    if(Objects.equals(snaps.child("time").getValue(String.class), "9:00 PM")){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "09:00 PM")){
                         forecast.addClock21(snaps.child("val").getValue(Float.class)/10);
                     }
 
@@ -1151,6 +1178,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 }
                 forecast.collectClockLists();
                 init_forecastNode();
+                getForecastGraph();
             }
 
             @Override
@@ -1160,22 +1188,22 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeForecast(){
-        myRef = myDatabase.getReference("pi1-forecast");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
-                    updateForecast();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+    private void init_forecastNode(){
+        DatabaseReference refForecastNode = myDatabase.getReference("pi1-forecast");
+        ForecastResult forecastResult = new ForecastResult();
+        ArrayList<Float> result = new ArrayList<>();
+        int size = forecast.getAllClock().size();
+        for(int i = 0 ; i < size ; i++){
+            sme.setValueList(forecast.getClockIndex(i));
+            result.add(sme.getBestSME());
+        }
+        forecastResult.setHighCritical(highCriticalLevel);
+        forecastResult.setLowCritical(lowCriticalLevel);
+        forecastResult.update(result);
+        Log.d(TAG, "init_forecastNode RESULT: " + forecastResult);
+        refForecastNode.setValue(forecastResult);
     }
+
 
     private void getCriticalLevels(){
         DatabaseReference refPiPondNode = myDatabase.getReference("pi1-pond1");
@@ -1198,22 +1226,6 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void init_forecastNode(){
-        DatabaseReference refForecastNode = myDatabase.getReference("pi1-forecast");
-        ForecastResult forecastResult = new ForecastResult();
-        ArrayList<Float> result = new ArrayList<>();
-        int size = forecast.getAllClock().size();
-        for(int i = 0 ; i < size ; i++){
-            sme.setValueList(forecast.getClockIndex(i));
-            result.add(sme.getBestSME());
-        }
-        forecastResult.update(result);
-        forecastResult.setHighCritical(highCriticalLevel);
-        forecastResult.setLowCritical(lowCriticalLevel);
-        Log.d(TAG, "init_forecastNode RESULT: " + forecastResult);
-        refForecastNode.setValue(forecastResult);
     }
 
     private String getSystemTime(){

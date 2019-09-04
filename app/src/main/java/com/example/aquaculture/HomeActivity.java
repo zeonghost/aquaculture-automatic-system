@@ -23,6 +23,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.aquaculture.Model.Forecast;
+import com.example.aquaculture.Model.ForecastResult;
+import com.example.aquaculture.Model.SimpleExponentialSmoothing;
 import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -68,6 +71,11 @@ public class HomeActivity extends AppCompatActivity {
 
     ArrayList<View> viewContainter = new ArrayList<View>();
 
+    private Forecast forecast;
+    private float highCriticalLevel;
+    private float lowCriticalLevel;
+    private SimpleExponentialSmoothing sme;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +115,10 @@ public class HomeActivity extends AppCompatActivity {
         waitingDialog.setIndeterminate(true);
         waitingDialog.setCancelable(true);
         waitingDialog.dismiss();
+
+        forecast = new Forecast();
+        sme = new SimpleExponentialSmoothing();
+
 
         Log.d(TAG, "SP: " + sp.getAll().toString());
         myRef = database.getReference("/PondDetail");
@@ -290,18 +302,20 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    //TESTING PURPOSES
-    private void connectionState(){
-        String userID = sp.getString("uid", "");
-        Log.d(TAG, "connectionState: " + userID);
-        final DatabaseReference testRef = database.getReference().child("user").child(userID);
-        testRef.addValueEventListener(new ValueEventListener() {
+
+
+
+
+    private void initializeForecast(){
+        myRef = database.getReference("pi1-forecast");
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    testRef.child("online").onDisconnect().setValue(false);
-                    testRef.child("online").setValue(true);
-                }
+//                if(!dataSnapshot.exists()){
+//                    updateForecast();
+//                }
+
+                updateForecast();
             }
 
             @Override
@@ -309,5 +323,159 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void updateForecast(){
+        myRef = database.getReference("pi1-forecast-test");
+        Query query = myRef.orderByChild("time");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "12:00 AM")){
+                        forecast.addClock0(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "1:00 AM")){
+                        forecast.addClock1(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "2:00 AM")){
+                        forecast.addClock2(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "3:00 AM")){
+                        forecast.addClock3(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "4:00 AM")){
+                        forecast.addClock4(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "5:00 AM")){
+                        forecast.addClock5(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "6:00 AM")){
+                        forecast.addClock6(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "7:00 AM")){
+                        forecast.addClock7(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "8:00 AM")){
+                        forecast.addClock8(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "9:00 AM")){
+                        forecast.addClock9(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "10:00 AM")){
+                        forecast.addClock10(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "11:00 AM")){
+                        forecast.addClock11(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "12:00 PM")){
+                        forecast.addClock12(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "1:00 PM")){
+                        forecast.addClock13(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "2:00 PM")){
+                        forecast.addClock14(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "3:00 PM")){
+                        forecast.addClock15(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "4:00 PM")){
+                        forecast.addClock16(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "5:00 PM")){
+                        forecast.addClock17(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "6:00 PM")){
+                        forecast.addClock18(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "7:00 PM")){
+                        forecast.addClock19(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "8:00 PM")){
+                        forecast.addClock20(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "9:00 PM")){
+                        forecast.addClock21(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "10:00 PM")){
+                        forecast.addClock22(snaps.child("val").getValue(Float.class)/10);
+                    }
+
+                    if(Objects.equals(snaps.child("time").getValue(String.class), "11:00 PM")){
+                        forecast.addClock23(snaps.child("val").getValue(Float.class)/10);
+                    }
+                }
+                forecast.collectClockLists();
+                init_forecastNode();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void init_forecastNode(){
+        DatabaseReference refForecastNode = database.getReference("pi1-forecast");
+        ForecastResult forecastResult = new ForecastResult();
+        ArrayList<Float> result = new ArrayList<>();
+        int size = forecast.getAllClock().size();
+        for(int i = 0 ; i < size ; i++){
+            sme.setValueList(forecast.getClockIndex(i));
+            result.add(sme.getBestSME());
+        }
+        forecastResult.setHighCritical(highCriticalLevel);
+        forecastResult.setLowCritical(lowCriticalLevel);
+        forecastResult.update(result);
+        Log.d(TAG, "init_forecastNode RESULT: " + forecastResult);
+        refForecastNode.setValue(forecastResult);
+    }
+
+
+    private void getCriticalLevels(){
+        DatabaseReference refPiPondNode = database.getReference("pi1-pond1");
+        refPiPondNode.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Integer lowCritValue = dataSnapshot.child("low").getValue(Integer.class);
+                    lowCriticalLevel = (float) lowCritValue/10.0f;
+                    Integer highCritValue = dataSnapshot.child("high").getValue(Integer.class);
+                    highCriticalLevel = (float) highCritValue/10.0f;
+                    Log.d(TAG, "getCriticalLevels: " + dataSnapshot.child("low").getValue());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }
