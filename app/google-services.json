@@ -52,6 +52,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "151903542382-i17leqqblv2go4eggq6e3trl5ho1ke0m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aquaculture",
+            "certificate_hash": "844fd75856e92a8081c54835cba2c1990e9e8ef1"
+          }
+        },
+        {
           "client_id": "151903542382-7va3pn7epg4br5t0tcb0ujfium50o5dv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

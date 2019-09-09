@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="10dp"
-                android:text="Time Here"
+                android:text="..."
                 android:textColor="#6FFFB5"
                 android:textSize="35sp" />
         </LinearLayout>
@@ -63,7 +63,6 @@
                 android:layout_height="185dp"
                 android:gravity="center"
                 android:paddingTop="40dp"
-                android:text="Temperature"
                 android:textColor="#ffff"
                 android:textSize="90sp"
                 android:textStyle="bold" />

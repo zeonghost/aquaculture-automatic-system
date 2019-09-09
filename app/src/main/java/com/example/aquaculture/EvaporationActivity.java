@@ -90,7 +90,7 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
                     }
                     Log.d(TAG, "Y VALUES EVAPORATION: " + yValues);
                     evaporationGraph.getDescription().setText(month);
-                    LineDataSet lineDataSet = new LineDataSet(yValues, "Evaporation Rate this Month");
+                    LineDataSet lineDataSet = new LineDataSet(yValues, "Highest Evaporation Rate Per Day");
                     lineDataSet.setFillAlpha(0);
                     lineDataSet.setColor(Color.CYAN);
                     lineDataSet.setLineWidth(5f);
@@ -203,7 +203,7 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
         Log.d(TAG, "Date: " + xValuesEvap.get((int) e.getX()));
 
         dateEvap.setText(xValuesEvap.get((int) e.getX()));
-        evapRate.setText(String.valueOf(e.getY()) + " mm/day");
+        evapRate.setText(String.valueOf(e.getY()));
     }
 
     @Override

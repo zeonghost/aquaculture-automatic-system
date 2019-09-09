@@ -356,8 +356,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void hideTestingButtons(Button a, Button b, Button c){
-        a.setVisibility(View.VISIBLE);
-        b.setVisibility(View.VISIBLE);
-        c.setVisibility(View.VISIBLE);
+        a.setVisibility(View.GONE);
+        b.setVisibility(View.GONE);
+        c.setVisibility(View.GONE);
     }
 }

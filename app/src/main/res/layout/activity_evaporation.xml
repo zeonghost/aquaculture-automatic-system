@@ -45,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="10dp"
-                android:text="Date Here"
                 android:textColor="#6FFFB5"
                 android:textSize="25sp" />
         </LinearLayout>
@@ -60,12 +59,22 @@
             <TextView
                 android:id="@+id/textViewEvaporation"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
+                android:layout_height="130dp"
                 android:gravity="center"
-                android:paddingTop="40dp"
-                android:text="xxx"
+                android:paddingTop="28dp"
                 android:textColor="#ffff"
-                android:textSize="45sp"
+                android:textSize="80sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewUnit"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:text="mm/day"
+                android:textColor="#ffff"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
