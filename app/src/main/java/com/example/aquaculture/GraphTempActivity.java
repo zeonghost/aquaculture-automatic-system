@@ -1,6 +1,8 @@
 package com.example.aquaculture;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -215,6 +217,23 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                         xValues.clear();
                         yValues.clear();
 
+                        if(!dataSnapshot.exists()){
+
+                            final AlertDialog.Builder normalDialog =
+                                    new AlertDialog.Builder(GraphTempActivity.this);
+                            normalDialog.setTitle("Warning");
+                            normalDialog.setMessage("No data on picked date");
+                            normalDialog.setPositiveButton("Back",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            startingGraph();
+                                        }
+                                    });
+                            normalDialog.show();
+                            //Toast.makeText(GraphTempActivity.this, "No Data!", Toast.LENGTH_SHORT).show();
+                        }
+
                         Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
                         Timestamp timestamp;
                         Date date;
@@ -274,10 +293,9 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        //Log.d("TAG", "Result:1111");
                     }
                 });
-
                 startDate.setText(null);
                 endDate.setText(null);
             }

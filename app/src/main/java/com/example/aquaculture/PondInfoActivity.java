@@ -1276,6 +1276,7 @@ public class PondInfoActivity extends AppCompatActivity {
         Integer initialEvapRate = Integer.valueOf((int) (Math.round(weather.getEvaporationRate() * 1000)));
         final double roundedEvapRate = (double) initialEvapRate/1000.0;
         String evapRate = String.valueOf(roundedEvapRate);
+        Log.d(TAG, "getWeatherAndEvaporationRate: EVAP RATE ROUNDED " + evapRate);
         evaporateRate.setText(evapRate);
 
         tempData.setText(weather.getTemp() + " °C");
