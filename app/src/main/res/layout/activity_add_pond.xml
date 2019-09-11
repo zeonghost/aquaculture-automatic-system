@@ -116,7 +116,14 @@
             android:hint="Channel 1"
             android:inputType="textPersonName"
             android:textCursorDrawable="@drawable/cursor"
-            android:layout_weight="2"/>
+            android:layout_weight="1"/>
+        <CheckBox
+            android:id="@+id/activeChannel1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Active"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -143,8 +150,15 @@
             android:textSize="15sp"
             android:hint="Channel 2"
             android:inputType="textPersonName"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:textCursorDrawable="@drawable/cursor"/>
+        <CheckBox
+            android:id="@+id/activeChannel2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Active"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -173,7 +187,14 @@
             android:hint="Channel 3"
             android:inputType="textPersonName"
             android:textCursorDrawable="@drawable/cursor"
-            android:layout_weight="2"/>
+            android:layout_weight="1"/>
+        <CheckBox
+            android:id="@+id/activeChannel3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Active"
+            />
     </LinearLayout>
 
     <LinearLayout

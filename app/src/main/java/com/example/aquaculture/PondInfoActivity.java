@@ -81,14 +81,14 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView lowTemp;
     private TextView ch2OnTimeInt;
     private TextView ch2OffTimeInt;
-    private TextView time1;
-    private TextView log1;
-    private TextView time2;
-    private TextView log2;
-    private TextView time3;
-    private TextView log3;
-    private TextView time4;
-    private TextView log4;
+//    private TextView time1;
+//    private TextView log1;
+//    private TextView time2;
+//    private TextView log2;
+//    private TextView time3;
+//    private TextView log3;
+//    private TextView time4;
+//    private TextView log4;
     private TextView forecastTemp;
     private TextView forecastWeather;
     private TextView evaporateRate;
@@ -151,14 +151,14 @@ public class PondInfoActivity extends AppCompatActivity {
         lowTemp = findViewById(R.id.txtViewLowTemp);
         ch2OnTimeInt = findViewById(R.id.txtCh2OnTime);
         ch2OffTimeInt = findViewById(R.id.txtCh2OffTime);
-        time1 = findViewById(R.id.T1);
-        log1 = findViewById(R.id.L1);
-        time2 = findViewById(R.id.T2);
-        log2 = findViewById(R.id.L2);
-        time3 = findViewById(R.id.T3);
-        log3 = findViewById(R.id.L3);
-        time4 = findViewById(R.id.T4);
-        log4 = findViewById(R.id.L4);
+//        time1 = findViewById(R.id.T1);
+//        log1 = findViewById(R.id.L1);
+//        time2 = findViewById(R.id.T2);
+//        log2 = findViewById(R.id.L2);
+//        time3 = findViewById(R.id.T3);
+//        log3 = findViewById(R.id.L3);
+//        time4 = findViewById(R.id.T4);
+//        log4 = findViewById(R.id.L4);
         channel1 = findViewById(R.id.ch1btr);
         channel2 = findViewById(R.id.ch2btr);
         channel3 = findViewById(R.id.ch3btr);
@@ -182,8 +182,8 @@ public class PondInfoActivity extends AppCompatActivity {
         basicReadWrite();
         startingTempGraph();
         buttomNavigation();
-        logRead();
-        setChannelNames();
+//        logRead();
+        setChannels();
         initializeForecast();
 //        getForecastGraph();
         getEvaporateGraph();
@@ -298,10 +298,8 @@ public class PondInfoActivity extends AppCompatActivity {
         String counter = getSystemTime();
         if(Objects.equals(counter, "time00")){
             updateForecast();
-            Log.d(TAG, "onResume:  SHOULD HAVE BEEN CALLING THE FORECAST FUNCTION");
         }
         getWeatherAndEvaporationRate();
-        Log.d(TAG, "onResume: CALL EVAP FUNCTIUON");
         statusCheck();
     }
 
@@ -321,13 +319,12 @@ public class PondInfoActivity extends AppCompatActivity {
         myEveporateRef.orderByKey().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                yValues.clear();
                 float i = 0;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
                     yValues.add(new Entry(i, snaps.getValue(Float.class)));
                     i++;
                 }
-                Log.d(TAG, "Y VALUES EVAPORATION: " + yValues);
-
                 LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature Forecast");
                 lineDataSet.setFillAlpha(0);
                 lineDataSet.setColor(Color.MAGENTA);
@@ -371,20 +368,15 @@ public class PondInfoActivity extends AppCompatActivity {
                     float i = 0, newVal;
                     double val;
                     Integer initialValue;
+                    yValues.clear();
                     for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                        Log.d(TAG, "INDEX: " + i);
                         if(index < 2){
-                            Log.d(TAG, "ENTER THE DRAGON");
                             index++;
                             continue;
                         }
-                        Log.d(TAG, "FORECAST CHECK " + snaps.getValue());
                         val = snaps.getValue(Double.class);
                         initialValue = Integer.valueOf((int) (Math.round(val * 10)));
                         newVal = initialValue/10.0f;
-                        if((newVal > high)||(newVal < low)){
-                            //forecastRead.setCardBackgroundColor(Color.parseColor("#F44336"));
-                        }
                         yValues.add(new Entry(i, newVal));
                         i++;
                     }
@@ -432,7 +424,6 @@ public class PondInfoActivity extends AppCompatActivity {
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "Count Starting Graph: " + dataSnapshot.getChildrenCount());
                 float i = 0;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
                     String snapTemp = snaps.child("val").getValue().toString();
@@ -440,7 +431,6 @@ public class PondInfoActivity extends AppCompatActivity {
                     yValues.add(new Entry(i, temp));
                     i += 1;
                 }
-                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
                 LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature");
 
                 //DESIGN OF THE LINES
@@ -473,55 +463,54 @@ public class PondInfoActivity extends AppCompatActivity {
         });
     }
 
-    public void logRead(){
-        final String getData = HomeActivity.transferData;
-        String path4 = getData + "-log";
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference logPath = database.getReference(path4);
-
-        logPath.orderByChild("logTime").limitToLast(4).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int i = 0;
-                for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                    String logDetail = snaps.child("logDetail").getValue().toString();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-                    Long logTime = snaps.child("logTime").getValue(Long.class);
-                    Timestamp timestamp = new Timestamp(logTime);
-                    Date date = new Date(timestamp.getTime());
-                    String formattedDateTime = dateFormat.format(date);
-                    if(i == 3) {
-                        time1.setText(formattedDateTime);
-                        log1.setText(logDetail);
-                    }
-                    if(i == 2){
-                        time2.setText(formattedDateTime);
-                        log2.setText(logDetail);
-                    }
-                    if(i == 1){
-                        time3.setText(formattedDateTime);
-                        log3.setText(logDetail);
-                    }
-                    if(i == 0){
-                        time4.setText(formattedDateTime);
-                        log4.setText(logDetail);
-                    }
-                    i += 1;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    public void logRead(){
+//        final String getData = HomeActivity.transferData;
+//        String path4 = getData + "-log";
+//
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference logPath = database.getReference(path4);
+//
+//        logPath.orderByChild("logTime").limitToLast(4).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                int i = 0;
+//                for(DataSnapshot snaps : dataSnapshot.getChildren()){
+//                    String logDetail = snaps.child("logDetail").getValue().toString();
+//                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+//                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//                    Long logTime = snaps.child("logTime").getValue(Long.class);
+//                    Timestamp timestamp = new Timestamp(logTime);
+//                    Date date = new Date(timestamp.getTime());
+//                    String formattedDateTime = dateFormat.format(date);
+//                    if(i == 3) {
+//                        time1.setText(formattedDateTime);
+//                        log1.setText(logDetail);
+//                    }
+//                    if(i == 2){
+//                        time2.setText(formattedDateTime);
+//                        log2.setText(logDetail);
+//                    }
+//                    if(i == 1){
+//                        time3.setText(formattedDateTime);
+//                        log3.setText(logDetail);
+//                    }
+//                    if(i == 0){
+//                        time4.setText(formattedDateTime);
+//                        log4.setText(logDetail);
+//                    }
+//                    i += 1;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     public void basicReadWrite() {
         final String getData = HomeActivity.transferData;
-        Log.d(TAG, "Result-transfer Data: "+ getData);
         String path1 = getData + "-detail";
         String path2 = getData + "-pond1";
         String path3 = getData + "-push";
@@ -819,53 +808,50 @@ public class PondInfoActivity extends AppCompatActivity {
         final DatabaseReference tempRead = database.getReference(path6);
         final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
 
-        tempRead.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                warnMess.setVisibility(View.GONE);
-                sw.setVisibility(View.VISIBLE);
-                channel1.setVisibility(View.VISIBLE);
-                channel2.setVisibility(View.VISIBLE);
-                channel3.setVisibility(View.VISIBLE);
-                Log.d(TAG,"data changed");
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        tempRead.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                warnMess.setVisibility(View.GONE);
+//                sw.setVisibility(View.VISIBLE);
+//                channel1.setVisibility(View.VISIBLE);
+//                channel2.setVisibility(View.VISIBLE);
+//                channel3.setVisibility(View.VISIBLE);
+//                Log.d(TAG,"data changed");
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         recRead.orderByChild("time").limitToLast(1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "time check: " + dataSnapshot.getValue());
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                    Log.d(TAG, "time check data: " + snaps.child("time").getValue());
                     long recTime = snaps.child("time").getValue(Long.class);
-                    Log.d(TAG, "recTime: " + recTime);
 
                     long millis = System.currentTimeMillis();
                     long newTime;
                     newTime = millis/1000;
                     long twt = 20*60;
                     newTime = newTime - twt;
-                    Log.d(TAG, "millis: " + newTime);
 
                     if(recTime < newTime){
                         Log.d(TAG, "The hardware should be offline.");
                         warnMess.setVisibility(View.VISIBLE);
+                        warnMess.setTranslationZ(1);
                         sw.setVisibility(View.GONE);
-                        channel1.setVisibility(View.GONE);
-                        channel2.setVisibility(View.GONE);
-                        channel3.setVisibility(View.GONE);
+//                        channel1.setVisibility(View.GONE);
+//                        channel2.setVisibility(View.GONE);
+//                        channel3.setVisibility(View.GONE);
                     }
                     else{
                         warnMess.setVisibility(View.GONE);
                         sw.setVisibility(View.VISIBLE);
-                        channel1.setVisibility(View.VISIBLE);
-                        channel2.setVisibility(View.VISIBLE);
-                        channel3.setVisibility(View.VISIBLE);
+//                        channel1.setVisibility(View.VISIBLE);
+//                        channel2.setVisibility(View.VISIBLE);
+//                        channel3.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -1200,7 +1186,6 @@ public class PondInfoActivity extends AppCompatActivity {
         forecastResult.setHighCritical(highCriticalLevel);
         forecastResult.setLowCritical(lowCriticalLevel);
         forecastResult.update(result);
-        Log.d(TAG, "init_forecastNode RESULT: " + forecastResult);
         refForecastNode.setValue(forecastResult);
     }
 
@@ -1215,7 +1200,6 @@ public class PondInfoActivity extends AppCompatActivity {
                     lowCriticalLevel = (float) lowCritValue/10.0f;
                     Integer highCritValue = dataSnapshot.child("high").getValue(Integer.class);
                     highCriticalLevel = (float) highCritValue/10.0f;
-                    Log.d(TAG, "getCriticalLevels: " + dataSnapshot.child("low").getValue());
                 }
 
             }
@@ -1242,16 +1226,12 @@ public class PondInfoActivity extends AppCompatActivity {
         } else {
             forecastTime = "time" + (time);
         }
-        Log.d(TAG, "getSystemTime: timeFormat " + timeFormat.format(cal.getTime()));
-        Log.d(TAG, "getSystemTime: time " + time);
-        Log.d(TAG, "getSystemTime:  forecastTime " + forecastTime);
 
         DatabaseReference forecastRef = myDatabase.getReference("pi1-forecast");
         forecastRef.child(forecastTime).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
                     Integer initialValue = Integer.valueOf((int) Math.round(dataSnapshot.getValue(Double.class) * 10));
                     String tempValue = (double) initialValue/10.0 + " °C";
                     forecastTemp.setText(tempValue);
@@ -1272,11 +1252,9 @@ public class PondInfoActivity extends AppCompatActivity {
         String weatherValue = (double) initialWeatherValue/10.0 + " °C";
         forecastWeather.setText(weatherValue);
         weather.calculateEvaporationRate();
-        Log.d(TAG, "getWeatherAndEvaporationRate: EVAP " + weather.getEvaporationRate());
         Integer initialEvapRate = Integer.valueOf((int) (Math.round(weather.getEvaporationRate() * 1000)));
         final double roundedEvapRate = (double) initialEvapRate/1000.0;
         String evapRate = String.valueOf(roundedEvapRate);
-        Log.d(TAG, "getWeatherAndEvaporationRate: EVAP RATE ROUNDED " + evapRate);
         evaporateRate.setText(evapRate);
 
         tempData.setText(weather.getTemp() + " °C");
@@ -1287,7 +1265,6 @@ public class PondInfoActivity extends AppCompatActivity {
         wDateTime.setText(dateStr);
 
         final String dataArray[] = dateStr.split(" -", 2);
-        Log.d(TAG, "CHECK DATE SPLIT " + dataArray[0]);
         final String getData = HomeActivity.transferData;
         String evapPath = getData + "-evap";
 
@@ -1295,15 +1272,13 @@ public class PondInfoActivity extends AppCompatActivity {
         evapRef.orderByKey().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: " + dataSnapshot.getValue());
+                String dateToday = getSystemDate();
+                String date_in_database = "";
                 if(!dataSnapshot.exists()){
                     evapRef.child(dataArray[0]).setValue(roundedEvapRate);
                 } else {
                     for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                        String dateToday = getSystemDate();
-                        Log.d(TAG, "DATE TODAY: " + dateToday);
-                        String date_in_database = snaps.getKey();
-                        Log.d(TAG, "Date Keys: " + date_in_database);
+                        date_in_database = snaps.getKey();
                         String dateTodayMonth[] = dateToday.split(" ", 2);
                         String dateDatabaseMonth[] = date_in_database.split(" ", 2);
 
@@ -1317,7 +1292,6 @@ public class PondInfoActivity extends AppCompatActivity {
                             return;
                         }
 
-
                         if(Objects.equals(date_in_database, dateToday)){
                             Log.d(TAG, "IN!!!");
                             if(snaps.getValue(Float.class) < roundedEvapRate){
@@ -1326,6 +1300,11 @@ public class PondInfoActivity extends AppCompatActivity {
                             }
                         }
                     }
+
+                    if(!Objects.equals(date_in_database, dateToday)){
+                        evapRef.child(dataArray[0]).setValue(roundedEvapRate);
+                    }
+                    Log.d(TAG, "LAST DATE IN DB: " + date_in_database);
                 }
             }
 
@@ -1337,23 +1316,44 @@ public class PondInfoActivity extends AppCompatActivity {
 
     }
 
-    private void setChannelNames(){
+    private void setChannels(){
         String piID = HomeActivity.transferData;
-        Log.d(TAG, "setChannelNames: device " + piID);
         String path = piID + "-detail";
-        Log.d(TAG, "setChannelNames: path " + path);
         final DatabaseReference detailRef = myDatabase.getReference(path);
         detailRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: channelName " + dataSnapshot.getValue());
                 String ch1Name = dataSnapshot.child("ch1n").getValue(String.class);
                 String ch2Name = dataSnapshot.child("ch2n").getValue(String.class);
                 String ch3Name = dataSnapshot.child("ch3n").getValue(String.class);
 
-                channel1Text.setText(ch1Name);
-                channel2Text.setText(ch2Name);
-                channel3Text.setText(ch3Name);
+                if(Objects.equals(ch1Name, "non-active")){
+                    channel1Text.setVisibility(View.GONE);
+                    channel1.setVisibility(View.GONE);
+                } else {
+                    channel1Text.setVisibility(View.VISIBLE);
+                    channel1.setVisibility(View.VISIBLE);
+                    channel1Text.setText(ch1Name);
+                }
+
+                if(Objects.equals(ch2Name, "non-active")){
+                    channel2Text.setVisibility(View.GONE);
+                    channel2.setVisibility(View.GONE);
+                } else {
+                    channel2Text.setVisibility(View.VISIBLE);
+                    channel2.setVisibility(View.VISIBLE);
+                    channel2Text.setText(ch2Name);
+                }
+
+                if(Objects.equals(ch3Name, "non-active")){
+                    channel3Text.setVisibility(View.GONE);
+                    channel3.setVisibility(View.GONE);
+                } else {
+                    channel3Text.setVisibility(View.VISIBLE);
+                    channel3.setVisibility(View.VISIBLE);
+                    channel3Text.setText(ch3Name);
+                }
+
             }
 
             @Override

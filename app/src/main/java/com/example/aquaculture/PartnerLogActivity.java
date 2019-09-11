@@ -50,6 +50,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     private FusedLocationProviderClient fusedLocationProviderClient;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private DatabaseReference myLog;
     private LatLng currentLocation;
     private Button timeIn;
     private Button timeOut;
@@ -72,6 +73,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.activity_partner_log);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("PartnerLog");
+        myLog = database.getReference("pi1-log");
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.fragmentMap);
         mapFragment.getMapAsync(PartnerLogActivity.this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -81,6 +83,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         txtName = findViewById(R.id.txtViewName);
         txtTimeIn = findViewById(R.id.txtViewTimeIn);
         txtTimeOut = findViewById(R.id.txtViewTimeOut);
+        Log.d(TAG, "onCreate: SP " + sp.getAll());
 
         //NOTES: PERMISSIONS MUST BE REQUESTED PRIOR CALLING GOOGLE MAPS SERVICES, OTHERWISE SOME FUNCTION CALLS WILL CRASH THE APP.
         checkGPSServices();
@@ -166,37 +169,39 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 myRef.child(username).setValue(partnerLog);
+                String key = myLog.push().getKey();
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTimeInMillis(partnerLog.getTimeIn());
+//                String dateTodayIn = DateFormat.format("MMM dd, yyyy h:mm a", calendar).toString();
+
+                myLog.child(key).child("logTime").setValue(partnerLog.getTimeIn());
+                myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has logged in.");
+                myLog.child(key).child("username").setValue(sp.getString("username", ""));
+
                 txtTimeOut.setText("--- --, ---- --:-- AM/PM");
                 sp.edit().putBoolean("clockInDetails", true).apply();
-                //TIME_IN_STATUS = 1;
-                finish();
-                //Intent toPondInfoActivity = new Intent (PartnerLogActivity.this, PondInfoActivity.class);
-                //startActivity(toPondInfoActivity);
+                Intent toHomeActivity = new Intent (PartnerLogActivity.this, HomeActivity.class);
+                startActivity(toHomeActivity);
             }
         });
-                timeOut.setOnClickListener(new View.OnClickListener() {
+
+        timeOut.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                long currentTimestamp = System.currentTimeMillis();
-                myRef.child(username).child("timeOut").setValue(currentTimestamp);
-                sp.edit().putBoolean("clockInDetails", false).apply();
-                // TIME_IN_STATUS = 0;
-                Intent toProfileActivity = new Intent (PartnerLogActivity.this, ProfileActivity.class);
-                startActivity(toProfileActivity);
+                    long currentTimestamp = System.currentTimeMillis();
+                    myRef.child(username).child("timeOut").setValue(currentTimestamp);
+                    String key = myLog.push().getKey();
+                    myLog.child(key).child("logTime").setValue(currentTimestamp);
+                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has logged out.");
+                    myLog.child(key).child("username").setValue(sp.getString("username", ""));
+
+                    sp.edit().putBoolean("clockInDetails", false).apply();
+                    Intent toProfileActivity = new Intent (PartnerLogActivity.this, ProfileActivity.class);
+                    startActivity(toProfileActivity);
             }
         });
     }
 
-    /*
-    @Override
-    public void onBackPressed() {
-        if(TIME_IN_STATUS == 1){
-            Toast.makeText(PartnerLogActivity.this,"You need to time out before you can exit this page or transfer to another pond.", Toast.LENGTH_SHORT).show();
-        } else {
-            super.onBackPressed();
-        }
-    }
-    */
 
     private void checkGPSServices() {
         LocationManager location = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
