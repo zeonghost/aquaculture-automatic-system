@@ -137,6 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: SP CLOCKED IN " + clockedIn);
 
                 if(clockedIn){
+                    /*
                     AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
                     timeOutDialog.setTitle("Reminder:");
                     timeOutDialog.setMessage("Please clock out prior signing out.");
@@ -147,6 +148,12 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     });
                     timeOutDialog.show();
+                     */
+                    DatabaseReference myRef = database.getReference("PartnerLog");
+                    long currentTimestamp = System.currentTimeMillis();
+                    myRef.child(sp.getString("username", null)).child("timeOut").setValue(currentTimestamp);
+                    sp.edit().putBoolean("clockInDetails", false).apply();
+                    Toast.makeText(ProfileActivity.this, "Time out already, now you can log out safety.", Toast.LENGTH_SHORT).show();
                 } else {
                     sp.edit().clear().apply();
                     TIME_IN_STATUS = 0;
