@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
@@ -40,7 +42,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.collection.LLRBNode;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
@@ -66,6 +71,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     private TextView txtLocation;
     private TextView txtTimeIn;
     private TextView txtTimeOut;
+    private String logLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +117,20 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                 device = sp.getString("device", "");
 
                 partnerLog = new PartnerLocationLog (username, fullname, device, myLocation.getTime(), 0, myLocation.getLatitude(), myLocation.getLongitude());
+
+                Geocoder gcd = new Geocoder(PartnerLogActivity.this, Locale.getDefault());
+                try {
+                    List<Address> addresses = gcd.getFromLocation(myLocation.getLatitude(), myLocation.getLongitude(), 1);
+                    Log.d(TAG, "onComplete: ADDRESSES " + addresses.get(0).getAddressLine(0));
+                    if(addresses.size() > 0){
+                        logLocation = addresses.get(0).getAddressLine(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.d(TAG, "LOG LOCATION: " + logLocation);
+
             }
         });
         googleMap.setMyLocationEnabled(true);
@@ -175,7 +195,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
 //                String dateTodayIn = DateFormat.format("MMM dd, yyyy h:mm a", calendar).toString();
 
                 myLog.child(key).child("logTime").setValue(partnerLog.getTimeIn());
-                myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has logged in.");
+                myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked in nearby " + logLocation);
                 myLog.child(key).child("username").setValue(sp.getString("username", ""));
 
                 txtTimeOut.setText("--- --, ---- --:-- AM/PM");
@@ -192,7 +212,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                     myRef.child(username).child("timeOut").setValue(currentTimestamp);
                     String key = myLog.push().getKey();
                     myLog.child(key).child("logTime").setValue(currentTimestamp);
-                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has logged out.");
+                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked out nearby " + logLocation);
                     myLog.child(key).child("username").setValue(sp.getString("username", ""));
 
                     sp.edit().putBoolean("clockInDetails", false).apply();

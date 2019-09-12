@@ -156,7 +156,7 @@ public class ProfileActivity extends AppCompatActivity {
                     DatabaseReference myLog = database.getReference("pi1-log");
                     String key = myLog.push().getKey();
                     myLog.child(key).child("logTime").setValue(currentTimestamp);
-                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has logged out.");
+                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked out.");
                     myLog.child(key).child("username").setValue(sp.getString("username", ""));
 
 

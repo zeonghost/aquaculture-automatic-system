@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@id/usernameLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toStartOf="@id/usernameLayout"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,6 +22,26 @@
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
+        android:id="@+id/usernameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/dateSearchLayout"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/partnersSpinner"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="50dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="10dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dateSearchLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"

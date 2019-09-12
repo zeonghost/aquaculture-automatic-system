@@ -2,6 +2,7 @@ package com.example.aquaculture;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.DialogFragment;
@@ -13,9 +14,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.aquaculture.Fragment.DatePickerFragment;
@@ -23,13 +27,17 @@ import com.example.aquaculture.Model.Log;
 import com.example.aquaculture.ViewHolder.LogViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -38,6 +46,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef;
+    private DatabaseReference myPartner;
     private RecyclerView logInfo;
     private FirebaseRecyclerOptions<Log> options;
     private FirebaseRecyclerAdapter<Log, LogViewHolder> adapter;
@@ -46,10 +55,15 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
     private Button plot;
     private Long fromDate;
     private Long toDate;
+    private String user;
     private String dateTemp;
+    private Spinner partnerSpinner;
+    private ArrayList<String> partnerList;
+    private SharedPreferences sp;
     private static final String TAG = "MainActivity";
     public static long tr1;
     public static long tr2;
+    public static String userLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +74,10 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         endDate = findViewById(R.id.et_end);
         plot = findViewById(R.id.btr_go);
         logInfo = findViewById(R.id.rm);
+        sp = getSharedPreferences("login", MODE_PRIVATE);
+        partnerSpinner = findViewById(R.id.partnersSpinner);
+        partnerList = new ArrayList<>();
         logInfo.setHasFixedSize(true);
-
         startDate.setFocusable(false);
         startDate.setClickable(true);
         endDate.setFocusable(false);
@@ -79,6 +95,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
 
         start();
         plot();
+        getPartners();
 
     }
 
@@ -131,6 +148,23 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void plot(){
+
+        partnerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(partnerSpinner.getSelectedItemPosition() == 0){
+                    user = "";
+                } else {
+                    user = partnerSpinner.getSelectedItem().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         /***********************************
          * START OF THE DATE PICKING LOGIC *
          ***********************************/
@@ -160,8 +194,8 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         plot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty()){
-                    Toast.makeText(LogViewActivity.this, "Please set the dates of data you want.", Toast.LENGTH_SHORT).show();
+                if (startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty() || user.isEmpty()){
+                    Toast.makeText(LogViewActivity.this, "Please choose the dates and select the user to proceed.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -169,7 +203,8 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                 android.util.Log.d(TAG, "fromDate: " + fromDate);
                 tr1 = toDate;
                 tr2 = fromDate;
-
+                userLog = user.split(" ")[0];
+                android.util.Log.d(TAG, "USERLOG " + userLog + " SPLIT " + user.split(" ")[0]);
                 Intent intent4 = new Intent(LogViewActivity.this, LogSearchActivity.class);
                 startActivity(intent4);
             }
@@ -182,7 +217,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         String path = getData + "-log";
 
         myRef = database.getReference(path);
-        Query query = myRef.orderByChild("logTime").limitToLast(50);
+        Query query = myRef.orderByChild("logTime").limitToLast(8);
 
         options = new FirebaseRecyclerOptions.Builder<Log>()
                 .setQuery(query, Log.class)
@@ -200,7 +235,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                 Date date = new Date(timestamp.getTime());
                 String formattedDateTime = dateFormat.format(date);
 
-                holder.logTime.setText(formattedDateTime);
+                holder.logTime.setText("• " + formattedDateTime);
                 holder.logDetail.setText(logDetail);
             }
 
@@ -239,6 +274,32 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         });
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
         bottomNavigationView.setItemIconTintList(null);
+    }
+
+    private void getPartners(){
+        myPartner = database.getReference("Partners");
+        myPartner.child(sp.getString("username", "")).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    partnerList.add("Select a user to search log by name");
+                    String ownAccount = sp.getString("username","") + " - " + sp.getString("firstname", "") + " " + sp.getString("lastname", "");
+                    partnerList.add(ownAccount);
+                    for(DataSnapshot snaps : dataSnapshot.getChildren()){
+                        partnerList.add(snaps.child("username").getValue().toString() + " - " + snaps.child("fullname").getValue().toString());
+                    }
+
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(LogViewActivity.this, android.R.layout.simple_spinner_item, partnerList);
+                    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    partnerSpinner.setAdapter(arrayAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

@@ -612,7 +612,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 ch2OnTimeInt.setText(ch2OnTimeInterval.toString() + " second/s");
                 ch2OffTimeInt.setText(ch2OffTimeInterval.toString() + " second/s");
 
-                SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+                final SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
                 final String un = u2 + " "+ u1;
@@ -646,10 +646,12 @@ public class PondInfoActivity extends AppCompatActivity {
                             myRef1.child("auto").setValue(0);
                             Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off Automatic Model";
+                            String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
                             logPut.put("logTime", time);
+                            logPut.put("username", username);
                             String key = logWrite.push().getKey();
                             logWrite.child(key).updateChildren(logPut);
                         }
@@ -658,10 +660,12 @@ public class PondInfoActivity extends AppCompatActivity {
                             myRef1.child("auto").setValue(1);
                             Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
                             String log = un + " turned on Automatic Model";
+                            String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
                             logPut.put("logTime", time);
+                            logPut.put("username", username);
                             String key = logWrite.push().getKey();
                             logWrite.child(key).updateChildren(logPut);
                         }
@@ -686,10 +690,12 @@ public class PondInfoActivity extends AppCompatActivity {
                             myRef1.child("ch1").setValue(0);//if click then change status
                             Toast.makeText(PondInfoActivity.this, "Turned off channel 1", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off channel 1";
+                            String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
                             logPut.put("logTime", time);
+                            logPut.put("username", username);
                             String key = logWrite.push().getKey();
                             logWrite.child(key).updateChildren(logPut);
                         }
@@ -698,10 +704,12 @@ public class PondInfoActivity extends AppCompatActivity {
                             myRef1.child("ch1").setValue(1);
                             Toast.makeText(PondInfoActivity.this, "Turned on channel 1", Toast.LENGTH_SHORT).show();
                             String log = un + " turned on channel 1";
+                            String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
                             logPut.put("logTime", time);
+                            logPut.put("username", username);
                             String key = logWrite.push().getKey();
                             logWrite.child(key).updateChildren(logPut);
                         }
@@ -726,10 +734,12 @@ public class PondInfoActivity extends AppCompatActivity {
                             myRef1.child("ch2").setValue(0);
                             Toast.makeText(PondInfoActivity.this, "Turned off channel 2", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off channel 2";
+                            String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
                             logPut.put("logTime", time);
+                            logPut.put("username", username);
                             String key = logWrite.push().getKey();
                             logWrite.child(key).updateChildren(logPut);
                         }
@@ -738,10 +748,12 @@ public class PondInfoActivity extends AppCompatActivity {
                             myRef1.child("ch2").setValue(1);
                             Toast.makeText(PondInfoActivity.this, "Turned on channel 2", Toast.LENGTH_SHORT).show();
                             String log = un + " turned on channel 2";
+                            String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
                             logPut.put("logTime", time);
+                            logPut.put("username", username);
                             String key = logWrite.push().getKey();
                             logWrite.child(key).updateChildren(logPut);
                         }
@@ -766,10 +778,12 @@ public class PondInfoActivity extends AppCompatActivity {
                             myRef1.child("ch3").setValue(0);
                             Toast.makeText(PondInfoActivity.this, "Turned off channel 3", Toast.LENGTH_SHORT).show();
                             String log = un + " turned off channel 3";
+                            String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
                             logPut.put("logDetail", log);
                             logPut.put("logTime", time);
+                            logPut.put("username", username);
                             String key = logWrite.push().getKey();
                             logWrite.child(key).updateChildren(logPut);
                         }
@@ -1027,12 +1041,14 @@ public class PondInfoActivity extends AppCompatActivity {
                 SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                 String u1 = sp.getString("lastname", "");
                 String u2 = sp.getString("firstname", "");
+                String username = sp.getString("username", "");
                 final String un = u2 + " "+ u1;
                 String log = un + " changed the highest critical temperature to "+ topup +" ℃, lowest critical temperature to " + botup + " ℃, channel 2 on-time to "+onTime+" seconds, and off-time to "+ offTime+" seconds.";
                 Long time = System.currentTimeMillis();
                 Map<String, Object> logPut = new HashMap<>();
                 logPut.put("logDetail", log);
                 logPut.put("logTime", time);
+                logPut.put("username", username);
                 String key = logWrite.push().getKey();
                 logWrite.child(key).updateChildren(logPut);
             }
