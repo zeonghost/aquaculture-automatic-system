@@ -86,9 +86,18 @@ public class LogSearchActivity extends AppCompatActivity {
 
                     holder.logTime.setText("• " + formattedDateTime);
                     holder.logDetail.setText(logDetail);
-                }
+                } else if(Objects.equals(searchedUsername, "All")) {
+                    long logTime = model.getTime();
+                    String logDetail = model.getdetail();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+                    Timestamp timestamp = new Timestamp(logTime);
+                    Date date = new Date(timestamp.getTime());
+                    String formattedDateTime = dateFormat.format(date);
 
-                else {
+                    holder.logTime.setText(formattedDateTime);
+                    holder.logDetail.setText(logDetail);
+                } else {
                     holder.logHolder.setVisibility(View.GONE);
                     holder.logTime.setVisibility(View.GONE);
                     holder.logDetail.setVisibility(View.GONE);

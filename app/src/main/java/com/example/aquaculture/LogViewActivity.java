@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class LogViewActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
@@ -82,7 +83,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         startDate.setClickable(true);
         endDate.setFocusable(false);
         endDate.setClickable(true);
-
         LinearLayoutManager layout = new LinearLayoutManager(LogViewActivity.this);
         layout.setStackFromEnd(true);
         layout.setReverseLayout(true);
@@ -91,11 +91,12 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
 
         String getData = HomeActivity.transferData;
         String path = getData + "-log";
-        android.util.Log.d("TAG", "Result 123: " + path);
 
         start();
         plot();
+        showSpinner();
         getPartners();
+        android.util.Log.d(TAG, "onCreate: " + sp.getAll());
 
     }
 
@@ -148,6 +149,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
     }
 
     public void plot(){
+        final String role = sp.getString("role", "");
 
         partnerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -194,6 +196,14 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         plot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                android.util.Log.d(TAG, "USER " + user);
+
+                if(user == null){
+                    user = sp.getString("username", "");
+                    android.util.Log.d(TAG, "GET USER " + user);
+                }
+
+
                 if (startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty() || user.isEmpty()){
                     Toast.makeText(LogViewActivity.this, "Please choose the dates and select the user to proceed.", Toast.LENGTH_SHORT).show();
                     return;
@@ -215,9 +225,10 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
     public void start(){
         String getData = HomeActivity.transferData;
         String path = getData + "-log";
+        final String ownAccount = sp.getString("username", "");
 
         myRef = database.getReference(path);
-        Query query = myRef.orderByChild("logTime").limitToLast(8);
+        Query query = myRef.orderByChild("logTime").limitToLast(20);
 
         options = new FirebaseRecyclerOptions.Builder<Log>()
                 .setQuery(query, Log.class)
@@ -226,17 +237,36 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         adapter = new FirebaseRecyclerAdapter<Log, LogViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull LogViewHolder holder, int position, @NonNull Log model) {
-                long logTime = model.getTime();
-                String logDetail = model.getdetail();
+                String username = model.getUsername();
+                if(Objects.equals(ownAccount, username)){
+                    long logTime = model.getTime();
+                    String logDetail = model.getdetail();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+                    Timestamp timestamp = new Timestamp(logTime);
+                    Date date = new Date(timestamp.getTime());
+                    String formattedDateTime = dateFormat.format(date);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-                Timestamp timestamp = new Timestamp(logTime);
-                Date date = new Date(timestamp.getTime());
-                String formattedDateTime = dateFormat.format(date);
+                    holder.logTime.setText("• " + formattedDateTime);
+                    holder.logDetail.setText(logDetail);
+                } else {
+                    holder.logHolder.setVisibility(View.GONE);
+                    holder.logTime.setVisibility(View.GONE);
+                    holder.logDetail.setVisibility(View.GONE);
+                    holder.itemView.setVisibility(View.GONE);
+                }
 
-                holder.logTime.setText("• " + formattedDateTime);
-                holder.logDetail.setText(logDetail);
+//                long logTime = model.getTime();
+//                String logDetail = model.getdetail();
+//
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+//                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//                Timestamp timestamp = new Timestamp(logTime);
+//                Date date = new Date(timestamp.getTime());
+//                String formattedDateTime = dateFormat.format(date);
+//
+//                holder.logTime.setText("• " + formattedDateTime);
+//                holder.logDetail.setText(logDetail);
             }
 
             @NonNull
@@ -283,6 +313,7 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     partnerList.add("Select a user to search log by name");
+                    partnerList.add("All users");
                     String ownAccount = sp.getString("username","") + " - " + sp.getString("firstname", "") + " " + sp.getString("lastname", "");
                     partnerList.add(ownAccount);
                     for(DataSnapshot snaps : dataSnapshot.getChildren()){
@@ -300,6 +331,15 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
 
             }
         });
+    }
+
+    private void showSpinner(){
+        String role = sp.getString("role","");
+        if(Objects.equals(role, "Partner")){
+            partnerSpinner.setVisibility(View.GONE);
+        } else {
+            partnerSpinner.setVisibility(View.VISIBLE);
+        }
     }
 
 }
