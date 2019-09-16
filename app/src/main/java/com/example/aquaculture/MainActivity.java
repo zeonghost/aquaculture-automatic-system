@@ -270,4 +270,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }*/
+
+    private long firstPressedTime;//first time press back button
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() - firstPressedTime < 2000) {
+            //super.onBackPressed();
+            //System.exit(0);
+            finish();
+        } else {
+            Toast.makeText(MainActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
+            firstPressedTime = System.currentTimeMillis();
+
+        }
+    }
 }

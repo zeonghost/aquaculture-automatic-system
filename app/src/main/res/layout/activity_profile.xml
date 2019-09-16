@@ -24,7 +24,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Fullname"
-            android:textSize="50sp"
+            android:textSize="40sp"
             android:textStyle="bold" />
 
         <TextView

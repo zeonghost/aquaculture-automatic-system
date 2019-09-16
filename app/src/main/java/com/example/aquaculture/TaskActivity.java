@@ -175,6 +175,10 @@ public class TaskActivity extends AppCompatActivity {
                         holder.edit.setVisibility(View.GONE);
                         holder.delete.setVisibility(View.GONE);
                     }
+                } else {
+                    holder.done.setVisibility(View.GONE);
+                    holder.edit.setVisibility(View.VISIBLE);
+                    holder.delete.setVisibility(View.VISIBLE);
                 }
             }
 
