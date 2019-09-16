@@ -1,6 +1,7 @@
 package com.example.aquaculture;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +51,9 @@ public class AddPondActivity extends AppCompatActivity {
     private DatabaseReference linkPondRef;
     private String username;
     private SharedPreferences sp;
+    private CheckBox activeChannel1;
+    private CheckBox activeChannel2;
+    private CheckBox activeChannel3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,6 @@ public class AddPondActivity extends AppCompatActivity {
         piId = HomeActivity.qrResult; // the result get from qr scanner, use this in real
         dev = (TextView)findViewById(R.id.piId);
         dev.setText(piId);
-
         pond = (EditText)findViewById(R.id.pond);
         locat = (EditText)findViewById(R.id.locat);
         ch1n = (EditText)findViewById(R.id.ch1n);
@@ -67,6 +72,55 @@ public class AddPondActivity extends AppCompatActivity {
         length = (EditText)findViewById(R.id.length);
         depth = (EditText)findViewById(R.id.depth);
         btr =(Button) findViewById(R.id.btr);
+        activeChannel1 = findViewById(R.id.activeChannel1);
+        activeChannel2 = findViewById(R.id.activeChannel2);
+        activeChannel3 = findViewById(R.id.activeChannel3);
+
+        ch1n.setVisibility(View.GONE);
+        ch1n.setText("non-active");
+        ch2n.setVisibility(View.GONE);
+        ch2n.setText("non-active");
+        ch3n.setVisibility(View.GONE);
+        ch3n.setText("non-active");
+
+        activeChannel1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ch1n.setVisibility(View.VISIBLE);
+                    ch1n.setText("");
+                } else {
+                    ch1n.setVisibility(View.GONE);
+                    ch1n.setText("non-active");
+                }
+            }
+        });
+
+        activeChannel2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ch2n.setVisibility(View.VISIBLE);
+                    ch2n.setText("");
+                } else {
+                    ch2n.setVisibility(View.GONE);
+                    ch2n.setText("non-active");
+                }
+            }
+        });
+
+        activeChannel3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ch3n.setVisibility(View.VISIBLE);
+                    ch3n.setText("");
+                } else {
+                    ch3n.setVisibility(View.GONE);
+                    ch3n.setText("non-active");
+                }
+            }
+        });
 
         database =  FirebaseDatabase.getInstance();
         addPondRef = database.getReference();
@@ -111,23 +165,23 @@ public class AddPondActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String p = pond.getText().toString();
                 String l = locat.getText().toString();
-                String c1 = ch1n.getText().toString();
-                String c2 = ch2n.getText().toString();
-                String c3 = ch3n.getText().toString();
+                String c1 = ch1n.getText().toString().trim();
+                String c2 = ch2n.getText().toString().trim();
+                String c3 = ch3n.getText().toString().trim();
                 String s = spec.getText().toString();
                 String w = width.getText().toString();
                 String le = length.getText().toString();
                 String d = depth.getText().toString();
                 String pi = piId;
 
-                Float wid = Float.parseFloat(w);
-                Float len = Float.parseFloat(le);
-                Float dep = Float.parseFloat(d);
 
-                if(p.isEmpty() || l.isEmpty() || c1.isEmpty() || c2.isEmpty()|| c3.isEmpty()|| s.isEmpty()|| w.isEmpty()|| le.isEmpty()|| d.isEmpty()){
+                if(p.isEmpty() || l.isEmpty() || s.isEmpty()|| w.isEmpty()|| le.isEmpty()|| d.isEmpty() || c1.isEmpty() || c2.isEmpty() || c3.isEmpty()){
                     Toast.makeText(AddPondActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();
                     return;
                 } else{
+                    Float wid = Float.parseFloat(w);
+                    Float len = Float.parseFloat(le);
+                    Float dep = Float.parseFloat(d);
                     pondAdd newPond = new pondAdd(pi, p, l, c1, c2, c3, s, wid, len, dep);
                     String key = piId + "-detail";
                     addPondRef.child(key).setValue(newPond);

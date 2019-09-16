@@ -152,8 +152,15 @@ public class ProfileActivity extends AppCompatActivity {
                     DatabaseReference myRef = database.getReference("PartnerLog");
                     long currentTimestamp = System.currentTimeMillis();
                     myRef.child(sp.getString("username", null)).child("timeOut").setValue(currentTimestamp);
+
+                    DatabaseReference myLog = database.getReference("pi1-log");
+                    String key = myLog.push().getKey();
+                    myLog.child(key).child("logTime").setValue(currentTimestamp);
+                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked out.");
+                    myLog.child(key).child("username").setValue(sp.getString("username", ""));
+
                     sp.edit().putBoolean("clockInDetails", false).apply();
-                    Toast.makeText(ProfileActivity.this, "Time out already, now you can log out safety.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "You have successfully clocked out, now may now can log out safely.", Toast.LENGTH_SHORT).show();
                 } else {
                     sp.edit().clear().apply();
                     TIME_IN_STATUS = 0;
@@ -231,25 +238,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         hideTestingButtons(btr1, btr3, btr4);
-    }
-
-    private void connectionStatus(){
-        String userID = sp.getString("uid", "");
-        final DatabaseReference testRef = database.getReference().child("user").child(userID);
-        testRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    testRef.child("online").onDisconnect().cancel();
-                    testRef.child("online").setValue(false);
-                    //testRef.child("online").setValue(true);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
     public void editDialog(){

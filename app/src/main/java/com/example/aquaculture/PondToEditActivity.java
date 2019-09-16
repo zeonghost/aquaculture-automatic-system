@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PondToEditActivity extends AppCompatActivity {
     private static final String TAG = "PondToEditActivity";
@@ -118,6 +121,11 @@ public class PondToEditActivity extends AppCompatActivity {
         final EditText lengthInput = view.findViewById(R.id.editTextLength);
         final EditText depthInput = view.findViewById(R.id.editTextDepth);
         Button updatePondButton = view.findViewById(R.id.btnEditPond);
+        final CheckBox activeChannel1Box = view.findViewById(R.id.editActiveChannel1);
+        final CheckBox activeChannel2Box = view.findViewById(R.id.editActiveChannel2);
+        final CheckBox activeChannel3Box = view.findViewById(R.id.editActiveChannel3);
+
+
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setView(view);
@@ -135,6 +143,27 @@ public class PondToEditActivity extends AppCompatActivity {
                 widthInput.setText(String.valueOf(dataSnapshot.child("width").getValue(Float.class)));
                 lengthInput.setText(String.valueOf(dataSnapshot.child("length").getValue(Float.class)));
                 depthInput.setText(String.valueOf(dataSnapshot.child("depth").getValue(Float.class)));
+
+                if(Objects.equals(ch1Input.getText().toString(), "non-active" )){
+                    ch1Input.setVisibility(View.GONE);
+                    ch1Input.setText("");
+                } else {
+                    activeChannel1Box.setChecked(true);
+                }
+
+                if(Objects.equals(ch2Input.getText().toString(), "non-active" )){
+                    ch2Input.setVisibility(View.GONE);
+                    ch2Input.setText("");
+                } else {
+                    activeChannel2Box.setChecked(true);
+                }
+
+                if(Objects.equals(ch3Input.getText().toString(), "non-active")){
+                    ch3Input.setVisibility(View.GONE);
+                    ch3Input.setText("");
+                } else {
+                    activeChannel3Box.setChecked(true);
+                }
             }
 
             @Override
@@ -142,6 +171,43 @@ public class PondToEditActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+        activeChannel1Box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ch1Input.setVisibility(View.VISIBLE);
+                } else {
+                    ch1Input.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        activeChannel2Box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ch2Input.setVisibility(View.VISIBLE);
+                } else {
+                    ch2Input.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        activeChannel3Box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ch3Input.setVisibility(View.VISIBLE);
+                } else {
+                    ch3Input.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
 
         updatePondButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +221,18 @@ public class PondToEditActivity extends AppCompatActivity {
                 String width = widthInput.getText().toString().trim();
                 String length = lengthInput.getText().toString().trim();
                 String depth = depthInput.getText().toString().trim();
+
+                if(!activeChannel1Box.isChecked()){
+                    ch1 = "non-active";
+                }
+
+                if(!activeChannel2Box.isChecked()){
+                    ch2 = "non-active";
+                }
+
+                if(!activeChannel3Box.isChecked()){
+                    ch3 = "non-active";
+                }
 
                 if(pond.isEmpty() || location.isEmpty() || ch1.isEmpty() || ch2.isEmpty() || ch3.isEmpty() || species.isEmpty() || width.isEmpty() || length.isEmpty() || depth.isEmpty()){
                     Toast.makeText(PondToEditActivity.this, "Please fill up all fields.", Toast.LENGTH_SHORT).show();

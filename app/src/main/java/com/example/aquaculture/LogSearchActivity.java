@@ -23,6 +23,7 @@ import com.google.firebase.database.Query;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class LogSearchActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class LogSearchActivity extends AppCompatActivity {
     private Long toDate;
     private RecyclerView logInfo;
     private static final String TAG = "MainActivity";
+    private String searchedUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class LogSearchActivity extends AppCompatActivity {
 
         fromDate = LogViewActivity.tr2;
         toDate = LogViewActivity.tr1;
+        searchedUsername = LogViewActivity.userLog;
         android.util.Log.d(TAG, "fromDate: " + fromDate);
         android.util.Log.d(TAG, "fromDate: " + toDate);
 
@@ -70,16 +73,48 @@ public class LogSearchActivity extends AppCompatActivity {
         adapter = new FirebaseRecyclerAdapter<Log, LogViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull LogViewHolder holder, int position, @NonNull Log model) {
-                long logTime = model.getTime();
-                String logDetail = model.getdetail();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-                Timestamp timestamp = new Timestamp(logTime);
-                Date date = new Date(timestamp.getTime());
-                String formattedDateTime = dateFormat.format(date);
+                String username = model.getUsername();
 
-                holder.logTime.setText(formattedDateTime);
-                holder.logDetail.setText(logDetail);
+                if(Objects.equals(searchedUsername, username)){
+                    long logTime = model.getTime();
+                    String logDetail = model.getdetail();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+                    Timestamp timestamp = new Timestamp(logTime);
+                    Date date = new Date(timestamp.getTime());
+                    String formattedDateTime = dateFormat.format(date);
+
+                    holder.logTime.setText("• " + formattedDateTime);
+                    holder.logDetail.setText(logDetail);
+                } else if(Objects.equals(searchedUsername, "All")) {
+                    long logTime = model.getTime();
+                    String logDetail = model.getdetail();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+                    Timestamp timestamp = new Timestamp(logTime);
+                    Date date = new Date(timestamp.getTime());
+                    String formattedDateTime = dateFormat.format(date);
+
+                    holder.logTime.setText(formattedDateTime);
+                    holder.logDetail.setText(logDetail);
+                } else {
+                    holder.logHolder.setVisibility(View.GONE);
+                    holder.logTime.setVisibility(View.GONE);
+                    holder.logDetail.setVisibility(View.GONE);
+                    holder.itemView.setVisibility(View.GONE);
+                }
+
+//                long logTime = model.getTime();
+//                String logDetail = model.getdetail();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
+//                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//                Timestamp timestamp = new Timestamp(logTime);
+//                Date date = new Date(timestamp.getTime());
+//                String formattedDateTime = dateFormat.format(date);
+//
+//                holder.logTime.setText(formattedDateTime);
+//                holder.logDetail.setText(logDetail);
+
             }
 
             @NonNull

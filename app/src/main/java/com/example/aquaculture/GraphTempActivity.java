@@ -221,7 +221,7 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
                             final AlertDialog.Builder normalDialog =
                                     new AlertDialog.Builder(GraphTempActivity.this);
-                            normalDialog.setTitle("Warning");
+                            normalDialog.setTitle("Oops!");
                             normalDialog.setMessage("No data on picked date");
                             normalDialog.setPositiveButton("Back",
                                     new DialogInterface.OnClickListener() {
