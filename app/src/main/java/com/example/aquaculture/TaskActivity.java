@@ -71,6 +71,7 @@ public class TaskActivity extends AppCompatActivity {
     private FloatingActionButton add;
     private SharedPreferences sp;
     public SharedPreferences sp1;
+    public static SharedPreferences sp2;
     public static String transId;
     public String pushToken;
     private ArrayList<String> partnerList;
@@ -83,6 +84,7 @@ public class TaskActivity extends AppCompatActivity {
         partnerList.add("");
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
         sp1 = getSharedPreferences("temp", Context.MODE_PRIVATE);
+        sp2 = getSharedPreferences("login", Context.MODE_PRIVATE);
         buttonNavigationSettings();
         getPartners();
         taskInfo = findViewById(R.id.recyclerview);
@@ -149,18 +151,26 @@ public class TaskActivity extends AppCompatActivity {
                 });
 
                 if(Objects.equals(role, "Partner")){
-                    if(Objects.equals(status, "Pending")){
-                        holder.edit.setVisibility(View.INVISIBLE);
-                        holder.delete.setVisibility(View.INVISIBLE);
-                        holder.done.setVisibility(View.VISIBLE);
-                        holder.done.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                transId = taskId;
-                                showDoneDialog();
-                            }
-                        });
-                    } else {
+                    boolean clockedIn = sp.getBoolean("clockInDetails", false);
+                    if(clockedIn){
+                        if(Objects.equals(status, "Pending")){
+                            holder.edit.setVisibility(View.INVISIBLE);
+                            holder.delete.setVisibility(View.INVISIBLE);
+                            holder.done.setVisibility(View.VISIBLE);
+                            holder.done.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    transId = taskId;
+                                    showDoneDialog();
+                                }
+                            });
+                        } else {
+                            holder.done.setVisibility(View.GONE);
+                            holder.edit.setVisibility(View.GONE);
+                            holder.delete.setVisibility(View.GONE);
+                        }
+                    }
+                    else{
                         holder.done.setVisibility(View.GONE);
                         holder.edit.setVisibility(View.GONE);
                         holder.delete.setVisibility(View.GONE);
@@ -245,7 +255,6 @@ public class TaskActivity extends AppCompatActivity {
                         sp1.edit()
                                 .putString("pushToken", pushToken)
                                 .apply();
-                        Log.d(TAG, "Push Token111: "+ pushToken);
                     }
 
                     @Override
@@ -412,6 +421,16 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         AlertDialog.Builder ad1 = new AlertDialog.Builder(TaskActivity.this);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.radioPending : status = "Pending"; break;
+                    case R.id.radioDone : status = "Done"; break;
+                }
+            }
+        });
 
         ad1.setView(textEntryView);
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {

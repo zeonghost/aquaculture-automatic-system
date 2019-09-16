@@ -90,13 +90,13 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
                 holder.fullNamePartner.setText(fullname);
                 holder.deviceId.setText(deviceId);
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        waitingDialog.show();
-                        getLocationPartner(username);
-                    }
-                });
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        waitingDialog.show();
+//                        getLocationPartner(username);
+//                    }
+//                });
 
 //                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
 //                    @Override

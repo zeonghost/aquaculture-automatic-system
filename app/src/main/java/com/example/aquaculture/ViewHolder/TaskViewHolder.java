@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import com.example.aquaculture.MainActivity;
 import com.example.aquaculture.R;
+import com.example.aquaculture.TaskActivity;
 
 import org.w3c.dom.Text;
 
 import java.util.Objects;
 
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
+import static com.example.aquaculture.TaskActivity.sp2;
 
 public class TaskViewHolder extends RecyclerView.ViewHolder {
     //public TextView TaskId;
@@ -48,11 +50,12 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         receiverName = itemView.findViewById(R.id.txtReceiverName);
         uploader.setVisibility(View.INVISIBLE);
         receiver.setVisibility(View.INVISIBLE);
-        showButtonPerRole();
+        //showButtonPerRole();
     }
 
     private void showButtonPerRole(){
-        String role = MainActivity.sp.getString("role", "");
+        String role = sp2.getString("role", "");
+        boolean clockedIn = sp2.getBoolean("clockInDetails", false);
         if (Objects.equals(role, "Admin")){
             edit.setVisibility(View.VISIBLE);
             delete.setVisibility(View.VISIBLE);
@@ -60,8 +63,8 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         } else {
             edit.setVisibility(View.GONE);
             delete.setVisibility(View.GONE);
-            done.setVisibility(View.VISIBLE);
-            if(TIME_IN_STATUS == 1){
+            //done.setVisibility(View.VISIBLE);
+            if(clockedIn){
                 done.setVisibility(View.VISIBLE);
                 delete.setVisibility(View.INVISIBLE);
             } else {
