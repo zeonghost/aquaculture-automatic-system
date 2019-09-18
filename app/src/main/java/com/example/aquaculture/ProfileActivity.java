@@ -140,10 +140,11 @@ public class ProfileActivity extends AppCompatActivity {
                     AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
                     timeOutDialog.setTitle("Reminder:");
                     timeOutDialog.setMessage("Please clock out prior signing out.");
-                    timeOutDialog.setPositiveButton("Clock Out", new DialogInterface.OnClickListener() {
+                    timeOutDialog.setCancelable(false);
+                    timeOutDialog.setPositiveButton("Understood", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
-                            startActivity(intent);
+//                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
+//                            startActivity(intent);
                         }
                     });
                     timeOutDialog.show();
