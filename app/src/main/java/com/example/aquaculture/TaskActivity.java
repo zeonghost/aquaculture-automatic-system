@@ -39,6 +39,7 @@ import com.example.aquaculture.Model.Task;
 import com.example.aquaculture.ViewHolder.TaskViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.common.api.internal.TaskApiCall;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,11 +76,13 @@ public class TaskActivity extends AppCompatActivity {
     public static String transId;
     public String pushToken;
     private ArrayList<String> partnerList;
+    private Calendar today;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+        today = Calendar.getInstance();
         partnerList = new ArrayList<>();
         partnerList.add("");
         sp = getSharedPreferences("login", Context.MODE_PRIVATE);
@@ -439,13 +442,17 @@ public class TaskActivity extends AppCompatActivity {
         ad1.setView(textEntryView);
         ad1.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int i) {
-                Map<String, Object> hopperUpdates = new HashMap<>();
-                hopperUpdates.put("date", date.getText().toString());
-                hopperUpdates.put("time", time.getText().toString());
-                hopperUpdates.put("status", status);
-                hopperUpdates.put("task", task.getText().toString());
-                hopperRef.updateChildren(hopperUpdates);
-                Toast.makeText(TaskActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
+                if(!task.getText().toString().isEmpty()){
+                    Map<String, Object> hopperUpdates = new HashMap<>();
+                    hopperUpdates.put("date", date.getText().toString());
+                    hopperUpdates.put("time", time.getText().toString());
+                    hopperUpdates.put("status", status);
+                    hopperUpdates.put("task", task.getText().toString());
+                    hopperRef.updateChildren(hopperUpdates);
+                    Toast.makeText(TaskActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(TaskActivity.this, "Please complete all fields.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         ad1.show();
@@ -510,11 +517,20 @@ public class TaskActivity extends AppCompatActivity {
 
     private void showDatePickerDialog(final EditText date){
         final Calendar cal = Calendar.getInstance();
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(TaskActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                date.setText((month+1) + "-" + dayOfMonth + "-" + year);
+
+                Log.d(TAG, "today get month " + today.get(Calendar.MONTH));
+                Log.d(TAG, "cal get month " + month);
+
+                if(today.get(Calendar.MONTH) > month || today.get(Calendar.YEAR) > year){
+                    Toast.makeText(TaskActivity.this, "You cannot set a task in the past.", Toast.LENGTH_SHORT).show();
+                } else if (today.get(Calendar.DAY_OF_MONTH) > dayOfMonth){
+                    Toast.makeText(TaskActivity.this, "You cannot set a task in the past.", Toast.LENGTH_SHORT).show();
+                } else {
+                    date.setText((month+1) + "-" + dayOfMonth + "-" + year);
+                }
             }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();

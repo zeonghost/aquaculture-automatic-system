@@ -85,7 +85,12 @@ public class SearchUserActivity extends AppCompatActivity {
                 getUserNameText = getUserName.getText().toString().trim();
 
                 if(Objects.equals(getUserNameText, sp.getString("username", ""))){
-                    Toast.makeText(SearchUserActivity.this, "Di man gud pwede i-add imong kaugalingon dong/dzai!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SearchUserActivity.this, "Sorry, you cannot link your own account.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(getUserNameText.isEmpty()){
+                    Toast.makeText(SearchUserActivity.this, "Please input a username.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
