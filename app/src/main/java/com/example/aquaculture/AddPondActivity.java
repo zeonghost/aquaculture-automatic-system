@@ -30,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddPondActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -178,6 +180,22 @@ public class AddPondActivity extends AppCompatActivity {
                 if(p.isEmpty() || l.isEmpty() || s.isEmpty()|| w.isEmpty()|| le.isEmpty()|| d.isEmpty() || c1.isEmpty() || c2.isEmpty() || c3.isEmpty()){
                     Toast.makeText(AddPondActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();
                     return;
+                }else if(!isNumericzidai(w)||!isNumericzidai(le)||!isNumericzidai(d)){
+                    if(!isNumericzidai(w)){
+                        Toast.makeText(AddPondActivity.this, "The width should be number!", Toast.LENGTH_SHORT).show();
+                        width.getText().clear();
+                        width.requestFocus();
+                    }
+                    if(!isNumericzidai(le)){
+                        Toast.makeText(AddPondActivity.this, "The length should be number!", Toast.LENGTH_SHORT).show();
+                        length.getText().clear();
+                        length.requestFocus();
+                    }
+                    if(!isNumericzidai(d)){
+                        Toast.makeText(AddPondActivity.this, "The depth should be number!", Toast.LENGTH_SHORT).show();
+                        depth.getText().clear();
+                        depth.requestFocus();
+                    }
                 } else{
                     Float wid = Float.parseFloat(w);
                     Float len = Float.parseFloat(le);
@@ -225,6 +243,15 @@ public class AddPondActivity extends AppCompatActivity {
                     }
                 });
         normalDialog.show().setCanceledOnTouchOutside(false);
+    }
+
+    public static boolean isNumericzidai(String str) {
+        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
+        Matcher isNum = pattern.matcher(str);
+        if (!isNum.matches()) {
+            return false;
+        }
+        return true;
     }
 
     private void showDialogAlreadyLinked(){

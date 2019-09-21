@@ -1,6 +1,8 @@
 package com.example.aquaculture;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -97,7 +99,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         showSpinner();
         getPartners();
         android.util.Log.d(TAG, "onCreate: " + sp.getAll());
-
     }
 
     /***********************************************
@@ -119,6 +120,8 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         if(startDate.getText().toString().isEmpty()){
             if(!endDate.getText().toString().isEmpty() && calendar.getTimeInMillis() > toDate){
                 Toast.makeText(LogViewActivity.this, "Invalid Date: Please choose before your end date.", Toast.LENGTH_SHORT).show();
+                startDate.setText(null);
+                endDate.setText(null);
                 return;
             }
             startDate.setText(dateTemp);
@@ -126,6 +129,8 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         } else {
             if(fromDate > calendar.getTimeInMillis()){
                 Toast.makeText(LogViewActivity.this, "Invalid Date: Please choose after your start date.", Toast.LENGTH_SHORT).show();
+                startDate.setText(null);
+                endDate.setText(null);
                 return;
             }
             endDate.setText(dateTemp);
@@ -203,7 +208,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                     android.util.Log.d(TAG, "GET USER " + user);
                 }
 
-
                 if (startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty() || user.isEmpty()){
                     Toast.makeText(LogViewActivity.this, "Please choose the dates and select the user to proceed.", Toast.LENGTH_SHORT).show();
                     return;
@@ -215,8 +219,24 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                 tr2 = fromDate;
                 userLog = user.split(" ")[0];
                 android.util.Log.d(TAG, "USERLOG " + userLog + " SPLIT " + user.split(" ")[0]);
-                Intent intent4 = new Intent(LogViewActivity.this, LogSearchActivity.class);
-                startActivity(intent4);
+
+                Query q2 = myRef.orderByChild("logTime").startAt(fromDate).endAt(toDate).limitToFirst(1);
+                q2.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()){
+                            Intent intent4 = new Intent(LogViewActivity.this, LogSearchActivity.class);
+                            startActivity(intent4);
+                        } else {
+                            noDataDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
 
         });
@@ -229,6 +249,21 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
 
         myRef = database.getReference(path);
         Query query = myRef.orderByChild("logTime").limitToLast(20);
+
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    noDataDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         options = new FirebaseRecyclerOptions.Builder<Log>()
                 .setQuery(query, Log.class)
@@ -340,6 +375,19 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         } else {
             partnerSpinner.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void noDataDialog(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(LogViewActivity.this);
+        dialog.setTitle("Oops!").setMessage("There are no log reports on the selected dates.");
+        dialog.setCancelable(false);
+        dialog.setPositiveButton("Understood", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        dialog.show();
     }
 
 }

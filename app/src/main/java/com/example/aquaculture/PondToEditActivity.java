@@ -37,6 +37,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PondToEditActivity extends AppCompatActivity {
     private static final String TAG = "PondToEditActivity";
@@ -103,6 +105,15 @@ public class PondToEditActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+    }
+
+    public static boolean isNumericzidai(String str) {
+        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
+        Matcher isNum = pattern.matcher(str);
+        if (!isNum.matches()) {
+            return false;
+        }
+        return true;
     }
 
     private void editPondDialog(final String piID){
@@ -236,7 +247,23 @@ public class PondToEditActivity extends AppCompatActivity {
 
                 if(pond.isEmpty() || location.isEmpty() || ch1.isEmpty() || ch2.isEmpty() || ch3.isEmpty() || species.isEmpty() || width.isEmpty() || length.isEmpty() || depth.isEmpty()){
                     Toast.makeText(PondToEditActivity.this, "Please fill up all fields.", Toast.LENGTH_SHORT).show();
-                } else {
+                }else if(!isNumericzidai(width)||!isNumericzidai(length)||!isNumericzidai(depth)){
+                    if(!isNumericzidai(width)){
+                        Toast.makeText(PondToEditActivity.this, "The width should be number!", Toast.LENGTH_SHORT).show();
+                        widthInput.getText().clear();
+                        widthInput.requestFocus();
+                    }
+                    if(!isNumericzidai(length)){
+                        Toast.makeText(PondToEditActivity.this, "The length should be number!", Toast.LENGTH_SHORT).show();
+                        lengthInput.getText().clear();
+                        lengthInput.requestFocus();
+                    }
+                    if(!isNumericzidai(depth)){
+                        Toast.makeText(PondToEditActivity.this, "The depth should be number!", Toast.LENGTH_SHORT).show();
+                        depthInput.getText().clear();
+                        depthInput.requestFocus();
+                    }
+                }else {
                     Float wid = Float.parseFloat(width);
                     Float len = Float.parseFloat(length);
                     Float dep = Float.parseFloat(depth);

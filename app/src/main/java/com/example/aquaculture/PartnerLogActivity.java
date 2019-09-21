@@ -1,6 +1,7 @@
 package com.example.aquaculture;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aquaculture.Model.PartnerLocationLog;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -72,6 +74,7 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     private TextView txtTimeIn;
     private TextView txtTimeOut;
     private String logLocation;
+    private ProgressDialog connectDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,16 +92,23 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         txtName = findViewById(R.id.txtViewName);
         txtTimeIn = findViewById(R.id.txtViewTimeIn);
         txtTimeOut = findViewById(R.id.txtViewTimeOut);
+        connectDialog = new ProgressDialog(PartnerLogActivity.this);
+        connectDialog.setMessage("Google maps is loading...");
+        connectDialog.setIndeterminate(true);
+        connectDialog.setCancelable(false);
+        connectDialog.show();
         Log.d(TAG, "onCreate: SP " + sp.getAll());
 
-        //NOTES: PERMISSIONS MUST BE REQUESTED PRIOR CALLING GOOGLE MAPS SERVICES, OTHERWISE SOME FUNCTION CALLS WILL CRASH THE APP.
-        checkGPSServices();
-        checkLocationService();
+//        //NOTES: PERMISSIONS MUST BE REQUESTED PRIOR CALLING GOOGLE MAPS SERVICES, OTHERWISE SOME FUNCTION CALLS WILL CRASH THE APP.
+//        checkGPSServices();
+//        checkLocationService();
     }
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            checkGPSServices();
+            checkLocationService();
             return;
         }
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
@@ -127,12 +137,14 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Toast.makeText(PartnerLogActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
 
                 Log.d(TAG, "LOG LOCATION: " + logLocation);
 
             }
         });
+        connectDialog.dismiss();
         googleMap.setMyLocationEnabled(true);
     }
 
@@ -190,11 +202,9 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 myRef.child(username).setValue(partnerLog);
                 String key = myLog.push().getKey();
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.setTimeInMillis(partnerLog.getTimeIn());
-//                String dateTodayIn = DateFormat.format("MMM dd, yyyy h:mm a", calendar).toString();
+                long currentTimestamp = System.currentTimeMillis();
 
-                myLog.child(key).child("logTime").setValue(partnerLog.getTimeIn());
+                myLog.child(key).child("logTime").setValue(currentTimestamp);
                 myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked in nearby " + logLocation);
                 myLog.child(key).child("username").setValue(sp.getString("username", ""));
 
@@ -216,8 +226,10 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                     myLog.child(key).child("username").setValue(sp.getString("username", ""));
 
                     sp.edit().putBoolean("clockInDetails", false).apply();
-                    Intent toProfileActivity = new Intent (PartnerLogActivity.this, ProfileActivity.class);
-                    startActivity(toProfileActivity);
+                    sp.edit().clear().apply();
+                    TIME_IN_STATUS = 0;
+                    Intent toLogInPage = new Intent (PartnerLogActivity.this, MainActivity.class);
+                    startActivity(toLogInPage);
             }
         });
     }

@@ -137,30 +137,31 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: SP CLOCKED IN " + clockedIn);
 
                 if(clockedIn){
-                    /*
                     AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
                     timeOutDialog.setTitle("Reminder:");
                     timeOutDialog.setMessage("Please clock out prior signing out.");
-                    timeOutDialog.setPositiveButton("Clock Out", new DialogInterface.OnClickListener() {
+                    timeOutDialog.setCancelable(false);
+                    timeOutDialog.setPositiveButton("Understood", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
-                            startActivity(intent);
+//                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
+//                            startActivity(intent);
                         }
                     });
                     timeOutDialog.show();
-                     */
-                    DatabaseReference myRef = database.getReference("PartnerLog");
-                    long currentTimestamp = System.currentTimeMillis();
-                    myRef.child(sp.getString("username", null)).child("timeOut").setValue(currentTimestamp);
 
-                    DatabaseReference myLog = database.getReference("pi1-log");
-                    String key = myLog.push().getKey();
-                    myLog.child(key).child("logTime").setValue(currentTimestamp);
-                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked out.");
-                    myLog.child(key).child("username").setValue(sp.getString("username", ""));
-
-                    sp.edit().putBoolean("clockInDetails", false).apply();
-                    Toast.makeText(ProfileActivity.this, "You have successfully clocked out, now may now can log out safely.", Toast.LENGTH_SHORT).show();
+//                    DatabaseReference myRef = database.getReference("PartnerLog");
+//                    long currentTimestamp = System.currentTimeMillis();
+//                    myRef.child(sp.getString("username", null)).child("timeOut").setValue(currentTimestamp);
+//
+//                    DatabaseReference myLog = database.getReference("pi1-log");
+//                    String key = myLog.push().getKey();
+//                    myLog.child(key).child("logTime").setValue(currentTimestamp);
+//                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked out.");
+//                    myLog.child(key).child("username").setValue(sp.getString("username", ""));
+//
+//
+//                    sp.edit().putBoolean("clockInDetails", false).apply();
+//                    Toast.makeText(ProfileActivity.this, "You have successfully clocked out, now may now can log out safely.", Toast.LENGTH_SHORT).show();
                 } else {
                     sp.edit().clear().apply();
                     TIME_IN_STATUS = 0;
