@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -246,9 +247,10 @@ public class AddPondActivity extends AppCompatActivity {
     }
 
     public static boolean isNumericzidai(String str) {
-        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
-        Matcher isNum = pattern.matcher(str);
-        if (!isNum.matches()) {
+        String bigStr;
+        try {
+            bigStr = new BigDecimal(str).toString();
+        } catch (Exception e) {
             return false;
         }
         return true;
