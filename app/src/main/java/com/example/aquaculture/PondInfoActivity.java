@@ -1007,6 +1007,11 @@ public class PondInfoActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(ch2_1.indexOf('.') != -1 || ch2_2.indexOf('.') != -1){
+                    Toast.makeText(PondInfoActivity.this, "The time should be a whole number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(topget.indexOf(".") > 0){
                     sb1.delete(topget.indexOf("."), topget.indexOf(".")+1);
                     topget =sb1.toString();
