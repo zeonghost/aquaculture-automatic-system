@@ -51,6 +51,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.math.BigDecimal;
 import java.sql.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -61,6 +62,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PondInfoActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -290,6 +293,25 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
         statusCheck();
+    }
+
+    //public static boolean isNumericzidai(String str) {
+      //  Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
+        //Matcher isNum = pattern.matcher(str);
+        //if (!isNum.matches()) {
+          //  return false;
+        //}
+        //return true;
+    //}
+
+    public static boolean isNumeric(String str) {
+        String bigStr;
+        try {
+            bigStr = new BigDecimal(str).toString();
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -958,6 +980,32 @@ public class PondInfoActivity extends AppCompatActivity {
                 StringBuilder  sb2 = new StringBuilder (botget);
                 StringBuilder  sb3 = new StringBuilder (topup);
                 StringBuilder  sb4 = new StringBuilder (botup);
+                String ch2_1 = ch2OnTime.getText().toString();
+                String ch2_2 = ch2OffTime.getText().toString();
+
+                if(!isNumeric(topget)||!isNumeric(botget)||!isNumeric(ch2_1)||!isNumeric(ch2_2)){
+                    if(!isNumeric(topget)){
+                        Toast.makeText(PondInfoActivity.this, "The highest tempeature should be number!", Toast.LENGTH_SHORT).show();
+                        top.getText().clear();
+                        top.requestFocus();
+                    }
+                    if(!isNumeric(botget)){
+                        Toast.makeText(PondInfoActivity.this, "The lowest temperature should be number!", Toast.LENGTH_SHORT).show();
+                        bottom.getText().clear();
+                        bottom.requestFocus();
+                    }
+                    if(!isNumeric(ch2_1)){
+                        Toast.makeText(PondInfoActivity.this, "The turn on time should be number!", Toast.LENGTH_SHORT).show();
+                        ch2OnTime.getText().clear();
+                        ch2OnTime.requestFocus();
+                    }
+                    if(!isNumeric(ch2_2)){
+                        Toast.makeText(PondInfoActivity.this, "The turn off time should be number!", Toast.LENGTH_SHORT).show();
+                        ch2OffTime.getText().clear();
+                        ch2OffTime.requestFocus();
+                    }
+                    return;
+                }
 
                 if(topget.indexOf(".") > 0){
                     sb1.delete(topget.indexOf("."), topget.indexOf(".")+1);
@@ -1051,6 +1099,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 logPut.put("username", username);
                 String key = logWrite.push().getKey();
                 logWrite.child(key).updateChildren(logPut);
+                Toast.makeText(PondInfoActivity.this, "Update success!", Toast.LENGTH_SHORT).show();
             }
         });
         ad1.show();
