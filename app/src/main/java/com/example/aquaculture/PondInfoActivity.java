@@ -666,8 +666,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         if(val4 == 1){
                             sw.setImageResource(R.drawable.icons_switch_off_s);
                             myRef1.child("auto").setValue(0);
-                            Toast.makeText(PondInfoActivity.this, "Automatic Model OFF", Toast.LENGTH_SHORT).show();
-                            String log = un + " turned off Automatic Model";
+                            Toast.makeText(PondInfoActivity.this, "Automatic Mode OFF", Toast.LENGTH_SHORT).show();
+                            String log = un + " turned off Automatic Mode";
                             String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
@@ -680,8 +680,8 @@ public class PondInfoActivity extends AppCompatActivity {
                         else{
                             sw.setImageResource(R.drawable.icons_switch_on_s);
                             myRef1.child("auto").setValue(1);
-                            Toast.makeText(PondInfoActivity.this, "Automatic Model ON", Toast.LENGTH_SHORT).show();//show message
-                            String log = un + " turned on Automatic Model";
+                            Toast.makeText(PondInfoActivity.this, "Automatic Mode ON", Toast.LENGTH_SHORT).show();//show message
+                            String log = un + " turned on Automatic Mode";
                             String username = sp.getString("username", "");
                             Long time = System.currentTimeMillis();
                             Map<String, Object> logPut = new HashMap<>();
@@ -1104,7 +1104,7 @@ public class PondInfoActivity extends AppCompatActivity {
                 logPut.put("username", username);
                 String key = logWrite.push().getKey();
                 logWrite.child(key).updateChildren(logPut);
-                Toast.makeText(PondInfoActivity.this, "Update success!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PondInfoActivity.this, "Smart Settings has been updated!", Toast.LENGTH_SHORT).show();
             }
         });
         ad1.show();

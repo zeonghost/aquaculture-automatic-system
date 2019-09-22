@@ -525,9 +525,9 @@ public class TaskActivity extends AppCompatActivity {
                 Log.d(TAG, "cal get month " + month);
 
                 if(today.get(Calendar.MONTH) > month || today.get(Calendar.YEAR) > year){
-                    Toast.makeText(TaskActivity.this, "You cannot set a task in the past.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TaskActivity.this, "You cannot set a task prior to today's date.", Toast.LENGTH_SHORT).show();
                 } else if (today.get(Calendar.DAY_OF_MONTH) > dayOfMonth){
-                    Toast.makeText(TaskActivity.this, "You cannot set a task in the past.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TaskActivity.this, "You cannot set a task prior to today's date.", Toast.LENGTH_SHORT).show();
                 } else {
                     date.setText((month+1) + "-" + dayOfMonth + "-" + year);
                 }
