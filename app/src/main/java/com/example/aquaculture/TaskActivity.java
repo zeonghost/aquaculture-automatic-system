@@ -592,4 +592,22 @@ public class TaskActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
+    private void test(){
+        final DatabaseReference getLog = FirebaseDatabase.getInstance().getReference("pi1-log");
+
+        getLog.orderByChild("logTime").limitToFirst(50).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "DELETE LOG: " + dataSnapshot);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }

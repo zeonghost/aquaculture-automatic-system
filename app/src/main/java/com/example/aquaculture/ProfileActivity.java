@@ -311,17 +311,22 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int i) {
                 String fn = fname.getText().toString();
                 String ln = lname.getText().toString();
-                Map<String, Object> profileupdate = new HashMap<>();
-                profileupdate.put("fname", fn);
-                profileupdate.put("lname", ln);
-                myRef.child(id).updateChildren(profileupdate);
-                sp.edit()
-                        .putString("firstname", fn)
-                        .putString("lastname", ln)
-                        .apply();
-                fullname.setText(sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
-                username.setText(sp.getString("username", null));
-                Toast.makeText(ProfileActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
+                if(fn.isEmpty() || ln.isEmpty()){
+                    Toast.makeText(ProfileActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    Map<String, Object> profileupdate = new HashMap<>();
+                    profileupdate.put("fname", fn);
+                    profileupdate.put("lname", ln);
+                    myRef.child(id).updateChildren(profileupdate);
+                    sp.edit()
+                            .putString("firstname", fn)
+                            .putString("lastname", ln)
+                            .apply();
+                    fullname.setText(sp.getString("firstname", "") + " " + sp.getString("lastname", ""));
+                    username.setText(sp.getString("username", null));
+                    Toast.makeText(ProfileActivity.this, "Edit Success", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         ad1.show();

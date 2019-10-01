@@ -96,7 +96,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         connectDialog.setMessage("Google maps is loading...");
         connectDialog.setIndeterminate(true);
         connectDialog.setCancelable(false);
-        connectDialog.show();
         Log.d(TAG, "onCreate: SP " + sp.getAll());
 
 //        //NOTES: PERMISSIONS MUST BE REQUESTED PRIOR CALLING GOOGLE MAPS SERVICES, OTHERWISE SOME FUNCTION CALLS WILL CRASH THE APP.
@@ -130,21 +129,25 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
 
                 Geocoder gcd = new Geocoder(PartnerLogActivity.this, Locale.getDefault());
                 try {
+                    connectDialog.show();
                     List<Address> addresses = gcd.getFromLocation(myLocation.getLatitude(), myLocation.getLongitude(), 1);
                     Log.d(TAG, "onComplete: ADDRESSES " + addresses.get(0).getAddressLine(0));
                     if(addresses.size() > 0){
                         logLocation = addresses.get(0).getAddressLine(0);
                     }
+                    connectDialog.dismiss();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(PartnerLogActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PartnerLogActivity.this, "Internet Connection timeout. Google Maps has failed to load. Try again.", Toast.LENGTH_SHORT).show();
+                    Intent toHomeActivity = new Intent (PartnerLogActivity.this, HomeActivity.class);
+                    startActivity(toHomeActivity);
+
                 }
 
                 Log.d(TAG, "LOG LOCATION: " + logLocation);
 
             }
         });
-        connectDialog.dismiss();
         googleMap.setMyLocationEnabled(true);
     }
 

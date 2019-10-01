@@ -212,7 +212,7 @@ public class AddPondActivity extends AppCompatActivity {
                     linkPondRef.child(piId).child("pondName").setValue(p);
                     linkPondRef.child(piId).child("piId").setValue(piId);
 
-                    Toast.makeText(AddPondActivity.this, "Registered Account Successfully.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddPondActivity.this, "Added Pond Successfully.", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(AddPondActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }

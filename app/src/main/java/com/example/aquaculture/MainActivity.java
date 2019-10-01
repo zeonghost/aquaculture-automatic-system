@@ -276,9 +276,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - firstPressedTime < 2000) {
-            //super.onBackPressed();
-            //System.exit(0);
-            finish();
+            //android.os.Process.killProcess(android.os.Process.myPid());
+            finishAffinity();
         } else {
             Toast.makeText(MainActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
             firstPressedTime = System.currentTimeMillis();
