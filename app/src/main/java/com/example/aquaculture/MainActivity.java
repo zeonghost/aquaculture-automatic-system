@@ -1,6 +1,5 @@
 package com.example.aquaculture;
 
-
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,14 +10,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.content.Intent;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,27 +22,17 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
     private EditText name;//name input
     private EditText pass;//password input
     private Button login;//login button
@@ -58,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
-    //private String rem_pass;
     private String auto_log;
     public static SharedPreferences sp;
 
@@ -111,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //firebaseConnectionState();
                 if(name.getText().toString().isEmpty() && pass.getText().toString().isEmpty()){
                     Toast.makeText(MainActivity.this, "Please enter a username or password.", Toast.LENGTH_SHORT).show();
                 } else if(name.getText().toString().isEmpty()) {
@@ -168,8 +152,6 @@ public class MainActivity extends AppCompatActivity {
                             .putString("lastname", dataSnapshot.child("lname").getValue(String.class))
                             .putString("uid", dataSnapshot.getKey())
                             .apply();
-                    Log.d(TAG, "SharedPref: LOG IN: " + sp.getAll().toString());
-
                     //save password and auto login status
                     //jump to HomeActivity page
                     waitingDialog.dismiss();
@@ -219,9 +201,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     //FOR CHECKING LOCATION AND GPS SERVICES
-
     private void checkGPSServices() {
         LocationManager location = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (location.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
@@ -245,43 +225,16 @@ public class MainActivity extends AppCompatActivity {
             }, 1);
         }
     }
-   /*
-    //TESTING PURPOSES
-    private void firebaseConnectionState(){
-        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-        connectedRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean connected = snapshot.getValue(Boolean.class);
-                if (connected) {
-                    Log.d(TAG, "connected");
-                    Toast.makeText(MainActivity.this, "CONNECTED TO DATABASE", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.d(TAG, "not connected");
-                    Toast.makeText(MainActivity.this, "DISCONNECTED FROM DATABASE", Toast.LENGTH_SHORT).show();
-                }
-                if(!connected)
-                    Toast.makeText(MainActivity.this, "Cannot connect to database. Please check your Internet connection.", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "Listener was cancelled");
-            }
-        });
-    }*/
 
     private long firstPressedTime;//first time press back button
 
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - firstPressedTime < 2000) {
-            //android.os.Process.killProcess(android.os.Process.myPid());
             finishAffinity();
         } else {
             Toast.makeText(MainActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
             firstPressedTime = System.currentTimeMillis();
-
         }
     }
 }

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +36,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     public String speciesget;//species get from database
     public String uid;//uid get from database
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +55,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 //search username and get device path and uid
                 //device path used to compare later with result of search location
                 //uid used to update password
-
                 Ref.orderByChild("username").equalTo(name.getText().toString()).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -126,30 +123,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                         if(!(dataSnapshot.exists())){
                             Toast.makeText(ForgetPasswordActivity.this, "Password Reset Fail. Please check if any of the fields is incorrect.", Toast.LENGTH_SHORT).show();
                             return;
-                        }/*
-                        DatabaseReference Ref2 = db.getReference();
-                        Query q = Ref2.orderByChild("location").equalTo(locat.getText().toString());
-                        q.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(!(dataSnapshot.exists())){
-                                    Toast.makeText(ForgetPasswordActivity.this, "Password Reset Fail. Please check if any of the fields is incorrect.", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                speciesget = dataSnapshot.child("species").getValue(String.class);
-                                locatget = dataSnapshot.getKey();
-                                if(!Objects.equals(speciesget, species.getText().toString())){
-                                    Toast.makeText(ForgetPasswordActivity.this, "Password Reset Fail. Please check if any of the fields is incorrect.", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                        */
+                        }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {

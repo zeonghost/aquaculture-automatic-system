@@ -17,7 +17,6 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,6 +93,7 @@
             android:text="Channel 1:"
             android:textSize="15sp"
             />
+
         <EditText
             android:id="@+id/editTextChannel1"
             android:layout_width="0dp"
@@ -160,6 +160,7 @@
         android:weightSum="4"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -169,6 +170,7 @@
             android:text="Channel 3:"
             android:textSize="15sp"
             />
+
         <EditText
             android:id="@+id/editTextChannel3"
             android:layout_width="0dp"
@@ -197,6 +199,7 @@
         android:weightSum="4"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -206,6 +209,7 @@
             android:text="Species:"
             android:textSize="15sp"
             />
+
         <EditText
             android:id="@+id/editTextSpecies"
             android:layout_width="0dp"
@@ -234,6 +238,7 @@
             android:gravity="left|center"
             android:text="Pond Width (meters):"
             android:textSize="15sp" />
+
         <EditText
             android:id="@+id/editTextWidth"
             android:layout_width="0dp"
@@ -262,6 +267,7 @@
             android:gravity="left|center"
             android:text="Pond Length (meters):"
             android:textSize="15sp" />
+
         <EditText
             android:id="@+id/editTextLength"
             android:layout_width="0dp"
@@ -291,6 +297,7 @@
             android:gravity="left|center"
             android:text="Pond Depth (meters):"
             android:textSize="15sp" />
+
         <EditText
             android:id="@+id/editTextDepth"
             android:layout_width="0dp"

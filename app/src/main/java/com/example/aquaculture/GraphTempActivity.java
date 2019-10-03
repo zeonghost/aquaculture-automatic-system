@@ -10,7 +10,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +33,6 @@ import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
-import com.google.common.graph.Graph;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,7 +51,6 @@ import java.util.TimeZone;
 
 public class GraphTempActivity extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener, DatePickerDialog.OnDateSetListener{
 
-    private static final String TAG = "LOG";
     private LineChart lineChart;
     private ArrayList<Entry> yValues = new ArrayList<>();
     private ArrayList<String> xValues = new ArrayList<>();
@@ -149,8 +146,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
             }
             startDate.setText(dateTemp);
             fromDate = calendar.getTimeInMillis(); // Timestamp format
-            Log.d(TAG, "dateTemp: " + dateTemp);
-            Log.d(TAG, "fromDate: " + fromDate);
         } else {
             if(fromDate > calendar.getTimeInMillis()){
                 Toast.makeText(GraphTempActivity.this, "Invalid Date: Please choose after your start date.", Toast.LENGTH_SHORT).show();
@@ -158,8 +153,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
             }
             endDate.setText(dateTemp);
             toDate = calendar.getTimeInMillis() + 86399000; // Timestamp format
-            Log.d(TAG, "dateTemp: " + dateTemp);
-            Log.d(TAG, "toDate: " + toDate);
         }
     }
     /***********************************************
@@ -206,8 +199,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
                 fromDate/=1000;
                 toDate/=1000;
-                Log.d(TAG, "onStart fromDate: " + fromDate);
-                Log.d(TAG, "onStart toDate: " + toDate);
 
                 Query q2 = myRef.orderByChild("time").startAt(fromDate).endAt(toDate);
 
@@ -231,10 +222,8 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                                         }
                                     });
                             normalDialog.show();
-                            //Toast.makeText(GraphTempActivity.this, "No Data!", Toast.LENGTH_SHORT).show();
                         }
 
-                        Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
                         Timestamp timestamp;
                         Date date;
                         String formattedDateTime;
@@ -255,7 +244,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                             xValues.add(formattedDateTime);
                             i += 1;
                         }
-                        Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
 
                         LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature");
 
@@ -270,10 +258,8 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                         lineDataSet.setCircleHoleRadius(-1);
                         lineDataSet.setCircleColor(Color.BLUE);
                         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                        //lineDataSet.setValueTextColor(Color.BLACK);
 
                         LineData lineData = new LineData(lineDataSet);
-                        //lineData.setValueFormatter(new myValueFormatter());
 
                         lineChart.getAxisRight().setEnabled(false);
                         lineChart.setData(lineData);
@@ -281,19 +267,14 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                         lineChart.invalidate();
 
                         lineChart.setVisibleXRangeMinimum(5f);
-                        //lineChart.setVisibleXRangeMaximum(6f);
 
                         XAxis xAxis = lineChart.getXAxis();
                         xAxis.setValueFormatter(new myXValueFormatter(xValues));
                         xAxis.setDrawLabels(false);
-                        //xAxis.setGranularity(2f);
-                        //xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                        //xAxis.setLabelRotationAngle(-45);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        //Log.d("TAG", "Result:1111");
                     }
                 });
                 startDate.setText(null);
@@ -308,51 +289,38 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
     @Override
     public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.d(TAG, "onChartGestureStart: X: " + me.getX() + " Y: " + me.getY());
     }
 
     @Override
     public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.d(TAG, "onChartGestureEnd: " + lastPerformedGesture);
     }
 
     @Override
     public void onChartLongPressed(MotionEvent me) {
-        Log.d(TAG, "onChartLongPressed: ");
     }
 
     @Override
     public void onChartDoubleTapped(MotionEvent me) {
-        Log.d(TAG, "onChartDoubleTapped: ");
     }
 
     @Override
     public void onChartSingleTapped(MotionEvent me) {
-        Log.d(TAG, "onChartSingleTapped: ");
     }
 
     @Override
     public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
-        Log.d(TAG, "onChartFling: veloX: " + velocityX + " veloY: " + velocityY);
     }
 
     @Override
     public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
-        Log.d(TAG, "onChartScale: ScaleX: " + scaleX + " scaleY: " + scaleY);
     }
 
     @Override
     public void onChartTranslate(MotionEvent me, float dX, float dY) {
-        Log.d(TAG, "onChartTranslate: dX: " + dX + " dY: " + dY);
     }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Log.d(TAG, "onValueSelected: " + e.toString());
-        Log.d(TAG, "X Value: " + e.getX());
-        Log.d(TAG, "Y Value: " + e.getY());
-        Log.d(TAG, "Date: " + xValues.get((int) e.getX()));
-
         String temp = e.getY() + " °C";
         String date = xValues.get((int) e.getX());
         showTemp.setText(temp);
@@ -361,7 +329,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
     @Override
     public void onNothingSelected() {
-        Log.d(TAG, "onNothingSelected: ");
     }
 
     public void startingGraph(){
@@ -372,12 +339,10 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
         q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 if(!dataSnapshot.exists()){
                     return;
                 }
 
-                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
                 Timestamp timestamp;
                 Date date;
                 String formattedDateTime;
@@ -399,7 +364,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                     xValues.add(formattedDateTime);
                     i += 1;
                 }
-                Log.d(TAG, "Count: " + dataSnapshot.getChildrenCount());
                 LineDataSet lineDataSet = new LineDataSet(yValues, "Water Temperature");
 
                 //DESIGN OF THE LINES
@@ -413,10 +377,8 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 lineDataSet.setCircleHoleRadius(-1);
                 lineDataSet.setCircleColor(Color.BLUE);
                 lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                //lineDataSet.setValueTextColor(Color.BLACK);
 
                 LineData lineData = new LineData(lineDataSet);
-                //lineData.setValueFormatter(new myValueFormatter());
 
                 lineChart.getAxisRight().setEnabled(false);
                 lineChart.setData(lineData);
@@ -424,7 +386,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 lineChart.invalidate();
 
                 lineChart.setVisibleXRangeMinimum(5f);
-                //lineChart.setVisibleXRangeMaximum(6f);
 
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setValueFormatter(new myXValueFormatter(xValues));
@@ -434,7 +395,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
                 showTemp.setText(entry.getY() + " °C");
                 showDateTime.setText(xValues.get(yValues.size() - 1));
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -451,7 +411,6 @@ public class GraphTempActivity extends AppCompatActivity implements OnChartGestu
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            Log.d(TAG, "getFormattedValue: value index: " + value);
             if(values.size() > (int) value){
                 return values.get((int) value);
             } else {

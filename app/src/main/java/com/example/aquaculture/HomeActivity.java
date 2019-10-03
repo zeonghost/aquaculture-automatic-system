@@ -9,18 +9,14 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.aquaculture.Model.Forecast;
@@ -54,7 +50,6 @@ import java.util.Objects;
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
 public class HomeActivity extends AppCompatActivity {
-    private static final String TAG = "LOG DATA: ";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef;
     private RecyclerView pondInfo;
@@ -65,12 +60,7 @@ public class HomeActivity extends AppCompatActivity {
     public static String transferData;
     public static String qrResult;
     private boolean clockDetails;
-    //private ViewPager viewPager;
-    //private MenuItem menuItem;
     public ProgressDialog waitingDialog;
-
-    ArrayList<View> viewContainter = new ArrayList<View>();
-
     private Forecast forecast;
     private float highCriticalLevel;
     private float lowCriticalLevel;
@@ -99,7 +89,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
                 if (!task.isSuccessful()) {
-                    Log.w(TAG, "getInstanceId failed", task.getException());
                     return;
                 }
                 // Get new Instance ID token
@@ -119,8 +108,6 @@ public class HomeActivity extends AppCompatActivity {
         forecast = new Forecast();
         sme = new SimpleExponentialSmoothing();
 
-
-        Log.d(TAG, "SP: " + sp.getAll().toString());
         myRef = database.getReference("/PondDetail");
         Query query = myRef.orderByChild(username).equalTo(role);
 
@@ -140,18 +127,15 @@ public class HomeActivity extends AppCompatActivity {
                 holder.location.setText("Location: " + location);
 
                 transferData = piID;
-                Log.d(TAG, "Result-2: "+ transferData);
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         transferData = piID;
-                        Log.d(TAG, "Result-2: "+ transferData);
                         if(Objects.equals(sp.getString("role", ""), "Partner")){
                             sp.edit().putString("device", piID).apply();
                             sp.edit().putString("location", location).apply();
                             clockDetails=sp.getBoolean("clockInDetails",false);
-                            Log.d(TAG, "onStart: clockInDetails " + clockDetails);
                             if(!clockDetails){
                                 checkInOutDialog();
                             } else {
@@ -197,8 +181,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() - firstPressedTime < 2000) {
-            //super.onBackPressed();
-            //System.exit(0);
             finish();
         } else {
             Toast.makeText(HomeActivity.this, "Press again to Exit", Toast.LENGTH_SHORT).show();
@@ -288,7 +270,6 @@ public class HomeActivity extends AppCompatActivity {
             ref.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Log.d(TAG, "Check Time Out: " + dataSnapshot.child("timeOut").getValue());
                     long timeOutStatus = dataSnapshot.child("timeOut").getValue(Long.class);
                     if(timeOutStatus == 0){
                         TIME_IN_STATUS = 1;
@@ -302,22 +283,13 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
     private void initializeForecast(){
         myRef = database.getReference("pi1-forecast");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if(!dataSnapshot.exists()){
-//                    updateForecast();
-//                }
-
                 updateForecast();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -451,7 +423,6 @@ public class HomeActivity extends AppCompatActivity {
         forecastResult.setHighCritical(highCriticalLevel);
         forecastResult.setLowCritical(lowCriticalLevel);
         forecastResult.update(result);
-        Log.d(TAG, "init_forecastNode RESULT: " + forecastResult);
         refForecastNode.setValue(forecastResult);
     }
 
@@ -466,11 +437,9 @@ public class HomeActivity extends AppCompatActivity {
                     lowCriticalLevel = (float) lowCritValue/10.0f;
                     Integer highCritValue = dataSnapshot.child("high").getValue(Integer.class);
                     highCriticalLevel = (float) highCritValue/10.0f;
-                    Log.d(TAG, "getCriticalLevels: " + dataSnapshot.child("low").getValue());
                 }
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

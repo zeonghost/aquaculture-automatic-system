@@ -7,10 +7,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,7 +45,6 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
     private ArrayList<Entry> yValuesForecast;
     private ArrayList<String> xValuesForecast;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +63,6 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
         buttonNavigationSettings();
     }
 
-    
     private void getForecastGraph(){
         forecastGraph.setOnChartGestureListener(ForecastActivity.this);
         forecastGraph.setOnChartValueSelectedListener(ForecastActivity.this);
@@ -88,7 +84,6 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
                         index++;
                         continue;
                     }
-                    Log.d(TAG, "FORECAST: " + snaps.getValue());
                     val = snaps.getValue(Double.class);
                     initialValue = Integer.valueOf((int) (Math.round(val * 10)));
                     newVal = initialValue/10.0f;
@@ -124,7 +119,6 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH");
                 position = Integer.valueOf(timeFormat.format(cal.getTime()));
-                Log.d(TAG, "onDataChange: POSITION " + position);
 
                 if(position >= 23){
                     position = 0;
@@ -142,7 +136,7 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
 
             }
         });
-    }
+    }//get forecast value and plot line chart
 
     @Override
     public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
@@ -186,13 +180,9 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Log.d(TAG, "X Value: " + e.getX());
-        Log.d(TAG, "Y Value: " + e.getY());
-        Log.d(TAG, "Date: " + xValuesForecast.get((int) e.getX()));
-
         forecastTime.setText(xValuesForecast.get((int) e.getX()));
         tempForecast.setText(String.valueOf(e.getY()) + " °C");
-    }
+    }//show data when select point
 
     @Override
     public void onNothingSelected() {
@@ -201,21 +191,18 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
 
     public class myXValueFormatter implements IAxisValueFormatter {
         private ArrayList<String> values;
-
         public myXValueFormatter(ArrayList<String> values) {
             this.values = values;
         }
-
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            Log.d(TAG, "getFormattedValue: value index: " + value);
             if(values.size() > (int) value){
                 return values.get((int) value);
             } else {
                 return null;
             }
         }
-    }
+    }//for line chart
 
     private void setXValuesForecast(){
         xValuesForecast.add("12:00 AM");
@@ -242,31 +229,7 @@ public class ForecastActivity extends AppCompatActivity implements OnChartGestur
         xValuesForecast.add("9:00 PM");
         xValuesForecast.add("10:00 PM");
         xValuesForecast.add("11:00 PM");
-    }
-
-//    private void buttonNavigationSettings(){
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.item1://btn 1 -> HomeActivity
-//                        Intent intent1 = new Intent(ForecastActivity.this, HomeActivity.class);
-//                        startActivity(intent1);
-//                        break;
-//                    case R.id.item2://btn 2 -> task
-//                        Intent intent2 = new Intent(ForecastActivity.this, TaskActivity.class);
-//                        startActivity(intent2);
-//                        break;
-//                    case R.id.item3://btn 3 -> profile
-//                        Intent intent3 = new Intent(ForecastActivity.this, ProfileActivity.class);
-//                        startActivity(intent3);
-//                        break;
-//                }
-//                return false;
-//            }
-//        });//bottom navigation
-//    }
+    }//plot data
 
     private void buttonNavigationSettings(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);

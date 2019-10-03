@@ -11,24 +11,20 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aquaculture.Model.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +33,6 @@ import java.util.Objects;
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
 public class ProfileActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private SharedPreferences sp;
     private TextView fullname;
@@ -134,7 +129,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean clockedIn = sp.getBoolean("clockInDetails", false);
-                Log.d(TAG, "onClick: SP CLOCKED IN " + clockedIn);
 
                 if(clockedIn){
                     AlertDialog.Builder timeOutDialog = new AlertDialog.Builder(ProfileActivity.this);
@@ -143,25 +137,9 @@ public class ProfileActivity extends AppCompatActivity {
                     timeOutDialog.setCancelable(false);
                     timeOutDialog.setPositiveButton("Understood", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int i) {
-//                            Intent intent = new Intent(ProfileActivity.this, PartnerLogActivity.class);
-//                            startActivity(intent);
                         }
                     });
                     timeOutDialog.show();
-
-//                    DatabaseReference myRef = database.getReference("PartnerLog");
-//                    long currentTimestamp = System.currentTimeMillis();
-//                    myRef.child(sp.getString("username", null)).child("timeOut").setValue(currentTimestamp);
-//
-//                    DatabaseReference myLog = database.getReference("pi1-log");
-//                    String key = myLog.push().getKey();
-//                    myLog.child(key).child("logTime").setValue(currentTimestamp);
-//                    myLog.child(key).child("logDetail").setValue(sp.getString("firstname", "") + " " + sp.getString("lastname", "") + " has clocked out.");
-//                    myLog.child(key).child("username").setValue(sp.getString("username", ""));
-//
-//
-//                    sp.edit().putBoolean("clockInDetails", false).apply();
-//                    Toast.makeText(ProfileActivity.this, "You have successfully clocked out, now may now can log out safely.", Toast.LENGTH_SHORT).show();
                 } else {
                     sp.edit().clear().apply();
                     TIME_IN_STATUS = 0;

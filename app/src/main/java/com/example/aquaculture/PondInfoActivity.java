@@ -7,19 +7,14 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -41,7 +36,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,21 +46,14 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.math.BigDecimal;
-import java.sql.Array;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PondInfoActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     private CardView graphCheck;
     private CardView logview;
     private CardView tempRead;
@@ -84,14 +71,6 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView lowTemp;
     private TextView ch2OnTimeInt;
     private TextView ch2OffTimeInt;
-//    private TextView time1;
-//    private TextView log1;
-//    private TextView time2;
-//    private TextView log2;
-//    private TextView time3;
-//    private TextView log3;
-//    private TextView time4;
-//    private TextView log4;
     private TextView forecastTemp;
     private TextView forecastWeather;
     private TextView evaporateRate;
@@ -120,7 +99,6 @@ public class PondInfoActivity extends AppCompatActivity {
     private TextView wDateTime;
     private float highCriticalLevel;
     private float lowCriticalLevel;
-
     private FirebaseDatabase myDatabase;
 
     @Override
@@ -154,14 +132,6 @@ public class PondInfoActivity extends AppCompatActivity {
         lowTemp = findViewById(R.id.txtViewLowTemp);
         ch2OnTimeInt = findViewById(R.id.txtCh2OnTime);
         ch2OffTimeInt = findViewById(R.id.txtCh2OffTime);
-//        time1 = findViewById(R.id.T1);
-//        log1 = findViewById(R.id.L1);
-//        time2 = findViewById(R.id.T2);
-//        log2 = findViewById(R.id.L2);
-//        time3 = findViewById(R.id.T3);
-//        log3 = findViewById(R.id.L3);
-//        time4 = findViewById(R.id.T4);
-//        log4 = findViewById(R.id.L4);
         channel1 = findViewById(R.id.ch1btr);
         channel2 = findViewById(R.id.ch2btr);
         channel3 = findViewById(R.id.ch3btr);
@@ -185,10 +155,8 @@ public class PondInfoActivity extends AppCompatActivity {
         basicReadWrite();
         startingTempGraph();
         buttomNavigation();
-//        logRead();
         setChannels();
         initializeForecast();
-//        getForecastGraph();
         getEvaporateGraph();
     }
 
@@ -294,15 +262,6 @@ public class PondInfoActivity extends AppCompatActivity {
         });
         statusCheck();
     }
-
-    //public static boolean isNumericzidai(String str) {
-      //  Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
-        //Matcher isNum = pattern.matcher(str);
-        //if (!isNum.matches()) {
-          //  return false;
-        //}
-        //return true;
-    //}
 
     public static boolean isNumeric(String str) {
         String bigStr;
@@ -463,19 +422,14 @@ public class PondInfoActivity extends AppCompatActivity {
                 lineDataSet.setCircleHoleRadius(0.5f);
                 lineDataSet.setCircleColor(Color.BLUE);
                 lineDataSet.setDrawCircles(false);
-                //lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-                //lineDataSet.setValueTextColor(Color.BLACK);
 
                 LineData lineData = new LineData(lineDataSet);
-                //lineData.setValueFormatter(new myValueFormatter());
                 lineChart.getXAxis().setEnabled(false);
                 lineChart.getAxisRight().setEnabled(false);
                 lineChart.setData(lineData);
                 lineChart.notifyDataSetChanged();
                 lineChart.invalidate();
 
-                //lineChart.setVisibleXRangeMinimum(5f);
-                //lineChart.setVisibleXRangeMaximum(6f);
             }
 
             @Override
@@ -484,52 +438,6 @@ public class PondInfoActivity extends AppCompatActivity {
             }
         });
     }
-
-//    public void logRead(){
-//        final String getData = HomeActivity.transferData;
-//        String path4 = getData + "-log";
-//
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference logPath = database.getReference(path4);
-//
-//        logPath.orderByChild("logTime").limitToLast(4).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                int i = 0;
-//                for(DataSnapshot snaps : dataSnapshot.getChildren()){
-//                    String logDetail = snaps.child("logDetail").getValue().toString();
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
-//                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-//                    Long logTime = snaps.child("logTime").getValue(Long.class);
-//                    Timestamp timestamp = new Timestamp(logTime);
-//                    Date date = new Date(timestamp.getTime());
-//                    String formattedDateTime = dateFormat.format(date);
-//                    if(i == 3) {
-//                        time1.setText(formattedDateTime);
-//                        log1.setText(logDetail);
-//                    }
-//                    if(i == 2){
-//                        time2.setText(formattedDateTime);
-//                        log2.setText(logDetail);
-//                    }
-//                    if(i == 1){
-//                        time3.setText(formattedDateTime);
-//                        log3.setText(logDetail);
-//                    }
-//                    if(i == 0){
-//                        time4.setText(formattedDateTime);
-//                        log4.setText(logDetail);
-//                    }
-//                    i += 1;
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
 
     public void basicReadWrite() {
         final String getData = HomeActivity.transferData;
@@ -826,8 +734,6 @@ public class PondInfoActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
     }
@@ -844,23 +750,6 @@ public class PondInfoActivity extends AppCompatActivity {
         final DatabaseReference tempRead = database.getReference(path6);
         final ImageButton sw = (ImageButton)findViewById(R.id.autobtr);
 
-//        tempRead.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                warnMess.setVisibility(View.GONE);
-//                sw.setVisibility(View.VISIBLE);
-//                channel1.setVisibility(View.VISIBLE);
-//                channel2.setVisibility(View.VISIBLE);
-//                channel3.setVisibility(View.VISIBLE);
-//                Log.d(TAG,"data changed");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
         recRead.orderByChild("time").limitToLast(1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -874,20 +763,13 @@ public class PondInfoActivity extends AppCompatActivity {
                     newTime = newTime - twt;
 
                     if(recTime < newTime){
-                        Log.d(TAG, "The hardware should be offline.");
                         warnMess.setVisibility(View.VISIBLE);
                         warnMess.setTranslationZ(1);
                         sw.setVisibility(View.GONE);
-//                        channel1.setVisibility(View.GONE);
-//                        channel2.setVisibility(View.GONE);
-//                        channel3.setVisibility(View.GONE);
                     }
                     else{
                         warnMess.setVisibility(View.GONE);
                         sw.setVisibility(View.VISIBLE);
-//                        channel1.setVisibility(View.VISIBLE);
-//                        channel2.setVisibility(View.VISIBLE);
-//                        channel3.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -899,7 +781,6 @@ public class PondInfoActivity extends AppCompatActivity {
         });
 
     }
-
 
     public void buttomNavigation(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -1271,7 +1152,6 @@ public class PondInfoActivity extends AppCompatActivity {
                     Integer highCritValue = dataSnapshot.child("high").getValue(Integer.class);
                     highCriticalLevel = (float) highCritValue/10.0f;
                 }
-
             }
 
             @Override
@@ -1352,21 +1232,15 @@ public class PondInfoActivity extends AppCompatActivity {
                         String dateTodayMonth[] = dateToday.split(" ", 2);
                         String dateDatabaseMonth[] = date_in_database.split(" ", 2);
 
-                        Log.d(TAG, "onDataChange: deteTODAYMONTH " + dateTodayMonth[0]);
-                        Log.d(TAG, "onDataChange: dateDBMONTH " + dateDatabaseMonth[0]);
-
                         if(!Objects.equals(dateTodayMonth[0], dateDatabaseMonth[0])){
-                            Log.d(TAG, "onDataChange: MONTHS DID NOT MATCH!");
                             evapRef.removeValue();
                             evapRef.child(dataArray[0]).setValue(roundedEvapRate);
                             return;
                         }
 
                         if(Objects.equals(date_in_database, dateToday)){
-                            Log.d(TAG, "IN!!!");
                             if(snaps.getValue(Float.class) < roundedEvapRate){
                                 evapRef.child(dataArray[0]).setValue(roundedEvapRate);
-                                Log.d(TAG, "STORE NEW EVAPORATION RATE! ");
                             }
                         }
                     }
@@ -1374,7 +1248,6 @@ public class PondInfoActivity extends AppCompatActivity {
                     if(!Objects.equals(date_in_database, dateToday)){
                         evapRef.child(dataArray[0]).setValue(roundedEvapRate);
                     }
-                    Log.d(TAG, "LAST DATE IN DB: " + date_in_database);
                 }
             }
 
@@ -1423,7 +1296,6 @@ public class PondInfoActivity extends AppCompatActivity {
                     channel3.setVisibility(View.VISIBLE);
                     channel3Text.setText(ch3Name);
                 }
-
             }
 
             @Override

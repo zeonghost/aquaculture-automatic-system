@@ -112,7 +112,6 @@
             android:textColor="#ffff"/>
     </LinearLayout>
 
-
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="378dp"
@@ -125,7 +124,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardView"
         app:layout_constraintVertical_bias="0.198" />
-
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"

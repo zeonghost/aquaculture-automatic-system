@@ -1,7 +1,6 @@
 package com.example.aquaculture;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,20 +17,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aquaculture.Model.Pond;
 import com.example.aquaculture.Model.pondAdd;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AddPondActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -62,7 +54,7 @@ public class AddPondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pond);
-        piId = HomeActivity.qrResult; // the result get from qr scanner, use this in real
+        piId = HomeActivity.qrResult;
         dev = (TextView)findViewById(R.id.piId);
         dev.setText(piId);
         pond = (EditText)findViewById(R.id.pond);
@@ -97,7 +89,7 @@ public class AddPondActivity extends AppCompatActivity {
                     ch1n.setText("non-active");
                 }
             }
-        });
+        });//active status check for ch1
 
         activeChannel2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -110,7 +102,7 @@ public class AddPondActivity extends AppCompatActivity {
                     ch2n.setText("non-active");
                 }
             }
-        });
+        });//active status check for ch2
 
         activeChannel3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -123,7 +115,7 @@ public class AddPondActivity extends AppCompatActivity {
                     ch3n.setText("non-active");
                 }
             }
-        });
+        });//active status check for ch3
 
         database =  FirebaseDatabase.getInstance();
         addPondRef = database.getReference();
@@ -135,7 +127,6 @@ public class AddPondActivity extends AppCompatActivity {
         linkPondRef.orderByChild("piId").equalTo(piId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Log.d(TAG, "linkPondRef DataSnap: " + dataSnapshot.child(username).getValue());
                 if(dataSnapshot.child(username).getValue() == null){
                     showDialog();
                 } else {
@@ -145,23 +136,20 @@ public class AddPondActivity extends AppCompatActivity {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 exist = true;
-                Log.d(TAG, "Result-exist2: "+ exist);
             }
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 exist = true;
-                Log.d(TAG, "Result-exist3: "+ exist);
             }
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 exist = true;
-                Log.d(TAG, "Result-exist4: "+ exist);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });//check if pond exist or not
 
         btr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +164,6 @@ public class AddPondActivity extends AppCompatActivity {
                 String le = length.getText().toString();
                 String d = depth.getText().toString();
                 String pi = piId;
-
 
                 if(p.isEmpty() || l.isEmpty() || s.isEmpty()|| w.isEmpty()|| le.isEmpty()|| d.isEmpty() || c1.isEmpty() || c2.isEmpty() || c3.isEmpty()){
                     Toast.makeText(AddPondActivity.this, "Please fill up all the fields.", Toast.LENGTH_SHORT).show();
@@ -217,7 +204,7 @@ public class AddPondActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });
+        });//get reading and add pond to database
     }
 
     private void showDialog(){
@@ -244,7 +231,7 @@ public class AddPondActivity extends AppCompatActivity {
                     }
                 });
         normalDialog.show().setCanceledOnTouchOutside(false);
-    }
+    }//show dialog if pond already exist and ask if need to link to this account
 
     public static boolean isNumericzidai(String str) {
         String bigStr;
@@ -254,7 +241,7 @@ public class AddPondActivity extends AppCompatActivity {
             return false;
         }
         return true;
-    }
+    }//check if input is number
 
     private void showDialogAlreadyLinked(){
         AlertDialog.Builder normalDialog = new AlertDialog.Builder(AddPondActivity.this);
@@ -269,5 +256,5 @@ public class AddPondActivity extends AppCompatActivity {
                     }
                 });
         normalDialog.show().setCanceledOnTouchOutside(false);
-    }
+    }//show dialog if pond already linked to account
 }

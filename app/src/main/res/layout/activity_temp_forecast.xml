@@ -9,7 +9,6 @@
     tools:context=".ForecastActivity">
 
     <android.support.v7.widget.CardView
-
         android:id="@+id/waterForecastCardView"
         android:layout_width="match_parent"
         android:layout_height="170dp"

@@ -35,7 +35,6 @@ public class LogSearchActivity extends AppCompatActivity {
     private Long fromDate;
     private Long toDate;
     private RecyclerView logInfo;
-    private static final String TAG = "MainActivity";
     private String searchedUsername;
 
     @Override
@@ -56,8 +55,6 @@ public class LogSearchActivity extends AppCompatActivity {
         fromDate = LogViewActivity.tr2;
         toDate = LogViewActivity.tr1;
         searchedUsername = LogViewActivity.userLog;
-        android.util.Log.d(TAG, "fromDate: " + fromDate);
-        android.util.Log.d(TAG, "fromDate: " + toDate);
 
         String getData = HomeActivity.transferData;
         String path = getData + "-log";
@@ -74,7 +71,6 @@ public class LogSearchActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull LogViewHolder holder, int position, @NonNull Log model) {
                 String username = model.getUsername();
-
                 if(Objects.equals(searchedUsername, username)){
                     long logTime = model.getTime();
                     String logDetail = model.getdetail();
@@ -83,7 +79,6 @@ public class LogSearchActivity extends AppCompatActivity {
                     Timestamp timestamp = new Timestamp(logTime);
                     Date date = new Date(timestamp.getTime());
                     String formattedDateTime = dateFormat.format(date);
-
                     holder.logTime.setText("• " + formattedDateTime);
                     holder.logDetail.setText(logDetail);
                 } else if(Objects.equals(searchedUsername, "All")) {
@@ -94,7 +89,6 @@ public class LogSearchActivity extends AppCompatActivity {
                     Timestamp timestamp = new Timestamp(logTime);
                     Date date = new Date(timestamp.getTime());
                     String formattedDateTime = dateFormat.format(date);
-
                     holder.logTime.setText(formattedDateTime);
                     holder.logDetail.setText(logDetail);
                 } else {
@@ -103,18 +97,6 @@ public class LogSearchActivity extends AppCompatActivity {
                     holder.logDetail.setVisibility(View.GONE);
                     holder.itemView.setVisibility(View.GONE);
                 }
-
-//                long logTime = model.getTime();
-//                String logDetail = model.getdetail();
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
-//                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-//                Timestamp timestamp = new Timestamp(logTime);
-//                Date date = new Date(timestamp.getTime());
-//                String formattedDateTime = dateFormat.format(date);
-//
-//                holder.logTime.setText(formattedDateTime);
-//                holder.logDetail.setText(logDetail);
-
             }
 
             @NonNull
@@ -126,7 +108,6 @@ public class LogSearchActivity extends AppCompatActivity {
             }
         };
         logInfo.setAdapter(adapter);
-
     }
 
     @Override

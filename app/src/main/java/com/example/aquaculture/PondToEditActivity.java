@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aquaculture.Model.Pond;
@@ -35,14 +33,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PondToEditActivity extends AppCompatActivity {
-    private static final String TAG = "PondToEditActivity";
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private RecyclerView pondInfoRecycler;
@@ -86,7 +79,6 @@ public class PondToEditActivity extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "onClick: " + piID);
                         editPondDialog(piID);
                     }
                 });
@@ -138,8 +130,6 @@ public class PondToEditActivity extends AppCompatActivity {
         final CheckBox activeChannel2Box = view.findViewById(R.id.editActiveChannel2);
         final CheckBox activeChannel3Box = view.findViewById(R.id.editActiveChannel3);
 
-
-
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setView(view);
         final AlertDialog updateDialog = dialog.show();
@@ -185,8 +175,6 @@ public class PondToEditActivity extends AppCompatActivity {
             }
         });
 
-
-
         activeChannel1Box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -219,8 +207,6 @@ public class PondToEditActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
         updatePondButton.setOnClickListener(new View.OnClickListener() {
             @Override

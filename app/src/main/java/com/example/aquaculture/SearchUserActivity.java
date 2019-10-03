@@ -4,19 +4,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,10 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
-
 public class SearchUserActivity extends AppCompatActivity {
-
-    private static final String TAG = "SearchUserActivity";
     private RecyclerView linkUserRecyclerView;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
@@ -73,7 +66,6 @@ public class SearchUserActivity extends AppCompatActivity {
         linkUserRecyclerView = findViewById(R.id.userRecyclerView);
         linkUserRecyclerView.setHasFixedSize(true);
         linkUserRecyclerView.setLayoutManager(new LinearLayoutManager(SearchUserActivity.this));
-
     }
 
     @Override
@@ -104,8 +96,6 @@ public class SearchUserActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        //adapter.stopListening();
-        //adapterPond.stopListening();
         super.onStop();
     }
 
@@ -133,8 +123,6 @@ public class SearchUserActivity extends AppCompatActivity {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "getUserNameText: " + getUserNameText);
-                Log.d(TAG, "queryUsers: " + dataSnapshot.getValue());
                 if (!dataSnapshot.exists()){
                     Toast.makeText(SearchUserActivity.this, "User does not exist.", Toast.LENGTH_SHORT).show();
                 }
@@ -145,7 +133,6 @@ public class SearchUserActivity extends AppCompatActivity {
 
             }
         });
-
 
         options = new FirebaseRecyclerOptions.Builder<User>()
                 .setQuery(query, User.class)
@@ -166,7 +153,6 @@ public class SearchUserActivity extends AppCompatActivity {
                         getUser.edit().putString("firstName", model.getFname()).apply();
                         getUser.edit().putString("lastName", model.getLname()).apply();
                         getUser.edit().putString("userRole", model.getRole()).apply();
-                        Log.d(TAG, "SP - getUser: " + getUser.getAll().toString());
                         pondSelectionDialog();
                     }
                 });
@@ -243,7 +229,6 @@ public class SearchUserActivity extends AppCompatActivity {
         LayoutInflater floatingDialog = LayoutInflater.from(this);
         View view = floatingDialog.inflate(R.layout.dialog_link_user_pond, null);
         TextView userInfoDetail = view.findViewById(R.id.txtViewUserInfo);
-        //TextView pondInfoDetail = view.findViewById(R.id.txtViewPondInfo);
 
         String userInfo = getUser.getString("userID", "") + " - "
                 + getUser.getString("firstName", "") + " "
@@ -257,10 +242,8 @@ public class SearchUserActivity extends AppCompatActivity {
                 + getPond.getString("location","");
 
         userInfoDetail.setText(userInfo);
-        //pondInfoDetail.setText(pondInfo);
 
         AlertDialog.Builder link = new AlertDialog.Builder(SearchUserActivity.this);
-        //link.setTitle("Link User to Pond:");
         link.setView(view);
 
         link.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -298,7 +281,6 @@ public class SearchUserActivity extends AppCompatActivity {
         myRefPondDetail.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: " + dataSnapshot.getChildrenCount());
                 if(dataSnapshot.exists()){
                     Toast.makeText(SearchUserActivity.this, "This user is already linked.", Toast.LENGTH_SHORT).show();
                     return;

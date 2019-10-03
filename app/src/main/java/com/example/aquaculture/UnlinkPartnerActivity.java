@@ -12,8 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,22 +22,10 @@ import com.example.aquaculture.Model.Partner;
 import com.example.aquaculture.ViewHolder.PartnerViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Calendar;
 
 public class UnlinkPartnerActivity extends AppCompatActivity {
-    private static final String TAG = "UnlinkPartnerActivity";
     private RecyclerView recyclerPartner;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference ref;
@@ -118,7 +104,6 @@ public class UnlinkPartnerActivity extends AppCompatActivity {
         final String username = partnerTemp.getString("username", "");
         final String key = partnerTemp.getString("key", "");
         final String device = partnerTemp.getString("deviceId","");
-        Log.d(TAG, "unLinkPartnerDialog: " + partnerTemp.getAll().toString());
         final String pathToPondDetailNode = "PondDetail/" + device + "/" + username;
         final DatabaseReference removeLinkFromPondDetail = database.getReference(pathToPondDetailNode);
         final DatabaseReference removeLinkFromPartner = database.getReference(path);

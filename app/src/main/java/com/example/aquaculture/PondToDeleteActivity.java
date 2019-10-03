@@ -5,14 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +21,6 @@ import com.example.aquaculture.Model.Pond;
 import com.example.aquaculture.ViewHolder.PondViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 public class PondToDeleteActivity extends AppCompatActivity {
-    private static final String TAG = "PondToDeleteActivity";
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private RecyclerView pondInfoRecycler;
@@ -155,11 +151,9 @@ public class PondToDeleteActivity extends AppCompatActivity {
                             for(DataSnapshot snaps : dataSnapshot.getChildren()){
                                 String id = snaps.getKey();
                                 refPartners.child(username).child(id).removeValue();
-                                Log.d(TAG, "onDataChange: key " + id);
                             }
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 

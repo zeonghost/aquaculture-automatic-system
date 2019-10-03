@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.example.aquaculture.Model.Weather;
@@ -20,7 +19,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.google.firebase.Timestamp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GraphTesting extends AppCompatActivity implements OnChartGestureListener, OnChartValueSelectedListener {
-    private static final String TAG = "GraphTesting";
     private LineChart lineChartEvaporation;
     private FirebaseDatabase myDatabase;
     private DatabaseReference myEvapReference;
@@ -76,7 +73,6 @@ public class GraphTesting extends AppCompatActivity implements OnChartGestureLis
                 float i = 0;
                 double val;
                 for(DataSnapshot snaps : dataSnapshot.getChildren()){
-                    Log.d(TAG, "FORECAST: " + snaps.getValue());
                     val = snaps.getValue(Double.class);
                     yValuesForecast.add(new Entry(i, (float) val));
                     i++;
@@ -125,20 +121,13 @@ public class GraphTesting extends AppCompatActivity implements OnChartGestureLis
         myEvapReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //final double evapRate = convertMilliToMeter(0.011 * 30);
                 final double evapRate = convertMilliToMeter(iEvap * 30);
                 float count = 0;
                 depth = dataSnapshot.child("depth").getValue(Double.class);
-                Log.d(TAG, "onDataChange: DEPTH " + dataSnapshot.child("depth").getValue(Double.class));
-                Log.d(TAG, "onDataChange: Evap Rate per Day: " + w.getEvaporationRate());
-                Log.d(TAG, "onDataChange: Evap Rate Per Month : " + evapRate);
-
                 while (depth > 0.459d){
-                    Log.d(TAG, "onDataChange: Depth level " + depth);
                     depth -= evapRate;
                     yValuesEvap.add(new Entry(count, (float)depth));
                     count++;
-                    Log.d(TAG, "onDataChange: count " + count);
                 }
 
                 LineDataSet lineDataSet = new LineDataSet(yValuesEvap, "Water Evaporation Rate");
@@ -171,7 +160,6 @@ public class GraphTesting extends AppCompatActivity implements OnChartGestureLis
 
     private String getDateToday(){
         Calendar calendar = Calendar.getInstance();
-        //calendar.setTimeInMillis();
         String dateString = DateFormat.format("MMMM dd, yyyy - h:mm a", calendar).toString();
         return dateString;
     }
@@ -179,66 +167,58 @@ public class GraphTesting extends AppCompatActivity implements OnChartGestureLis
     private void getEvaporationRate(){
         w.search("Manila");
         w.calculateEvaporationRate();
-        Log.d(TAG, "getWeatherAndEvaporationRate: EVAP " + w.getEvaporationRate());
         Integer initialEvapRate = Integer.valueOf((int) (Math.round(w.getEvaporationRate() * 1000)));
         iEvap = (double) initialEvapRate/1000;
-        Log.d(TAG, "getWeatherAndEvaporationRate: iEVAP " + iEvap);
-        //String evapRate = String.valueOf((double) initialEvapRate/1000.0);
-        //evaporateRate.setText(evapRate);
     }
 
     @Override
     public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.d(TAG, "onChartGestureStart: X: " + me.getX() + " Y: " + me.getY());
+
     }
 
     @Override
     public void onChartGestureEnd(MotionEvent me, ChartTouchListener.ChartGesture lastPerformedGesture) {
-        Log.d(TAG, "onChartGestureEnd: " + lastPerformedGesture);
+
     }
 
     @Override
     public void onChartLongPressed(MotionEvent me) {
-        Log.d(TAG, "onChartLongPressed: ");
+
     }
 
     @Override
     public void onChartDoubleTapped(MotionEvent me) {
-        Log.d(TAG, "onChartDoubleTapped: ");
+
     }
 
     @Override
     public void onChartSingleTapped(MotionEvent me) {
-        Log.d(TAG, "onChartSingleTapped: ");
+
     }
 
     @Override
     public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
-        Log.d(TAG, "onChartFling: veloX: " + velocityX + " veloY: " + velocityY);
+
     }
 
     @Override
     public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
-        Log.d(TAG, "onChartScale: ScaleX: " + scaleX + " scaleY: " + scaleY);
+
     }
 
     @Override
     public void onChartTranslate(MotionEvent me, float dX, float dY) {
-        Log.d(TAG, "onChartTranslate: dX: " + dX + " dY: " + dY);
+
     }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Log.d(TAG, "onValueSelected: " + e.toString());
-        Log.d(TAG, "X Value: " + e.getX());
-        Log.d(TAG, "Y Value: " + e.getY());
-        Log.d(TAG, "Date: " + xValuesForecast.get((int) e.getX()));
 
     }
 
     @Override
     public void onNothingSelected() {
-        Log.d(TAG, "onNothingSelected: ");
+
     }
 
     public class myXValueFormatter implements IAxisValueFormatter {
@@ -250,7 +230,6 @@ public class GraphTesting extends AppCompatActivity implements OnChartGestureLis
 
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            Log.d(TAG, "getFormattedValue: value index: " + value);
             if(values.size() > (int) value){
                 return values.get((int) value);
             } else {

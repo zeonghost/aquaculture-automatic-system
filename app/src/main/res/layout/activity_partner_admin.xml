@@ -9,6 +9,7 @@
     android:background="@drawable/plain"
     android:orientation="vertical"
     tools:context=".PartnerAdminActivity">
+
     <LinearLayout
         android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
@@ -38,7 +39,6 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView">
 
     </android.support.v7.widget.RecyclerView>
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnLinkUser"

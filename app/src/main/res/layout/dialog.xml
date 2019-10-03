@@ -10,7 +10,6 @@
         android:layout_width="287dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
         android:layout_marginTop="30dp"
         android:text="Highest Critical Water Temperature (Celsius):" />
 
@@ -21,7 +20,6 @@
         android:layout_height="wrap_content"
         android:textCursorDrawable="@drawable/cursor"
         android:textColorLink="#0F7D63">
-
         <requestFocus />
     </EditText>
 

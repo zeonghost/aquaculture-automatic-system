@@ -7,39 +7,31 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.aquaculture.Fragment.DatePickerFragment;
 import com.example.aquaculture.Model.Task;
 import com.example.aquaculture.ViewHolder.TaskViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.common.api.internal.TaskApiCall;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,9 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.protobuf.Internal;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,10 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
-
-public class TaskActivity extends AppCompatActivity {
-    private static final String TAG = "LOG DATA: ";
+public class  TaskActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef;
     private DatabaseReference myRef1;
@@ -127,7 +114,6 @@ public class TaskActivity extends AppCompatActivity {
                 String uploaderName = model.getUploaderName();
                 String receiverName = model.getReceiverName();
 
-                //holder.TaskId.setText(taskId);
                 holder.date.setText(date);
                 holder.receiver.setText(receiver);
                 holder.status.setText(status);
@@ -391,7 +377,6 @@ public class TaskActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Task taskTemp = dataSnapshot.getValue(Task.class);
-                Log.d(TAG, "Datasnapshot: " + dataSnapshot.getValue().toString());
                 date.setText(taskTemp.getDate());
                 time.setText(taskTemp.getTime());
                 if (Objects.equals(taskTemp.getStatus(), "Pending")){
@@ -521,9 +506,6 @@ public class TaskActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                Log.d(TAG, "today get month " + today.get(Calendar.MONTH));
-                Log.d(TAG, "cal get month " + month);
-
                 if(today.get(Calendar.MONTH) > month || today.get(Calendar.YEAR) > year){
                     Toast.makeText(TaskActivity.this, "You cannot set a task prior to today's date.", Toast.LENGTH_SHORT).show();
                 } else if (today.get(Calendar.DAY_OF_MONTH) > dayOfMonth){
@@ -599,7 +581,6 @@ public class TaskActivity extends AppCompatActivity {
         getLog.orderByChild("logTime").limitToFirst(50).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d(TAG, "DELETE LOG: " + dataSnapshot);
 
             }
 

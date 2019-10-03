@@ -19,7 +19,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,7 +41,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.collection.LLRBNode;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -52,7 +50,6 @@ import java.util.Locale;
 import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 
 public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private static final String TAG = "PartnerLogActivity";
     private MapFragment mapFragment;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private FirebaseDatabase database;
@@ -96,11 +93,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
         connectDialog.setMessage("Google maps is loading...");
         connectDialog.setIndeterminate(true);
         connectDialog.setCancelable(false);
-        Log.d(TAG, "onCreate: SP " + sp.getAll());
-
-//        //NOTES: PERMISSIONS MUST BE REQUESTED PRIOR CALLING GOOGLE MAPS SERVICES, OTHERWISE SOME FUNCTION CALLS WILL CRASH THE APP.
-//        checkGPSServices();
-//        checkLocationService();
     }
 
     @Override
@@ -118,8 +110,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                 currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 googleMap.addMarker(new MarkerOptions().position(currentLocation).title("YOU!"));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16.5f));
-                Log.d(TAG, "Latitude: " + location.getLatitude());
-                Log.d(TAG, "Longitude: " + location.getLongitude());
 
                 fullname = sp.getString("firstname", "") + " " + sp.getString("lastname", "");
                 username = sp.getString("username", "");
@@ -131,7 +121,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                 try {
                     connectDialog.show();
                     List<Address> addresses = gcd.getFromLocation(myLocation.getLatitude(), myLocation.getLongitude(), 1);
-                    Log.d(TAG, "onComplete: ADDRESSES " + addresses.get(0).getAddressLine(0));
                     if(addresses.size() > 0){
                         logLocation = addresses.get(0).getAddressLine(0);
                     }
@@ -144,8 +133,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
 
                 }
 
-                Log.d(TAG, "LOG LOCATION: " + logLocation);
-
             }
         });
         googleMap.setMyLocationEnabled(true);
@@ -155,7 +142,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
     protected void onStart() {
         super.onStart();
         clockDetails=sp.getBoolean("clockInDetails",false);
-        Log.d(TAG, "onStart: clockInDetails " + clockDetails);
         if(clockDetails)
         {
             timeOut.setEnabled(true);
@@ -192,13 +178,11 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
 
         timeIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,7 +220,6 @@ public class PartnerLogActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
     }
-
 
     private void checkGPSServices() {
         LocationManager location = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

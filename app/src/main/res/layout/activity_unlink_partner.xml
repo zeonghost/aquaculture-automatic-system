@@ -9,6 +9,7 @@
     android:background="@drawable/plain"
     android:orientation="vertical"
     tools:context=".PartnerAdminActivity">
+
     <LinearLayout
         android:id="@+id/layoutTitle"
         android:layout_width="match_parent"

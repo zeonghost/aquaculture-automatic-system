@@ -63,7 +63,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
     private Spinner partnerSpinner;
     private ArrayList<String> partnerList;
     private SharedPreferences sp;
-    private static final String TAG = "MainActivity";
     public static long tr1;
     public static long tr2;
     public static String userLog;
@@ -98,13 +97,11 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         plot();
         showSpinner();
         getPartners();
-        android.util.Log.d(TAG, "onCreate: " + sp.getAll());
     }
 
     /***********************************************
      * REQUIRED TO RETURN A DATE FOR DATE LISTENER *
      ***********************************************/
-    //@Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
@@ -155,7 +152,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
 
     public void plot(){
         final String role = sp.getString("role", "");
-
         partnerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -165,7 +161,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                     user = partnerSpinner.getSelectedItem().toString();
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -201,24 +196,17 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         plot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.util.Log.d(TAG, "USER " + user);
-
                 if(user == null){
                     user = sp.getString("username", "");
-                    android.util.Log.d(TAG, "GET USER " + user);
                 }
 
                 if (startDate.getText().toString().isEmpty() || endDate.getText().toString().isEmpty() || user.isEmpty()){
                     Toast.makeText(LogViewActivity.this, "Please choose the dates and select the user to proceed.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                android.util.Log.d(TAG, "toDate: " + toDate);
-                android.util.Log.d(TAG, "fromDate: " + fromDate);
                 tr1 = toDate;
                 tr2 = fromDate;
                 userLog = user.split(" ")[0];
-                android.util.Log.d(TAG, "USERLOG " + userLog + " SPLIT " + user.split(" ")[0]);
 
                 Query q2 = myRef.orderByChild("logTime").startAt(fromDate).endAt(toDate).limitToFirst(1);
                 q2.addValueEventListener(new ValueEventListener() {
@@ -231,7 +219,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                             noDataDialog();
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -249,7 +236,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
 
         myRef = database.getReference(path);
         Query query = myRef.orderByChild("logTime").limitToLast(20);
-
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -290,18 +276,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                     holder.logDetail.setVisibility(View.GONE);
                     holder.itemView.setVisibility(View.GONE);
                 }
-
-//                long logTime = model.getTime();
-//                String logDetail = model.getdetail();
-//
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a");
-//                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-//                Timestamp timestamp = new Timestamp(logTime);
-//                Date date = new Date(timestamp.getTime());
-//                String formattedDateTime = dateFormat.format(date);
-//
-//                holder.logTime.setText("• " + formattedDateTime);
-//                holder.logDetail.setText(logDetail);
             }
 
             @NonNull
@@ -360,7 +334,6 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
                     partnerSpinner.setAdapter(arrayAdapter);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -389,5 +362,4 @@ public class LogViewActivity extends AppCompatActivity implements DatePickerDial
         });
         dialog.show();
     }
-
 }

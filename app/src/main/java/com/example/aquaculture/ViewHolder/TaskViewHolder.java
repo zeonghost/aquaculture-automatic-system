@@ -21,7 +21,6 @@ import static com.example.aquaculture.Model.Constant.TIME_IN_STATUS;
 import static com.example.aquaculture.TaskActivity.sp2;
 
 public class TaskViewHolder extends RecyclerView.ViewHolder {
-    //public TextView TaskId;
     public TextView date;
     public TextView receiver;
     public TextView receiverName;
@@ -36,7 +35,6 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
     public TaskViewHolder(@NonNull View itemView){
         super(itemView);
-        //TaskId = itemView.findViewById(R.id.taskId);
         date = itemView.findViewById(R.id.date);
         receiver = itemView.findViewById(R.id.receiver);
         status = itemView.findViewById(R.id.status);
@@ -50,7 +48,6 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         receiverName = itemView.findViewById(R.id.txtReceiverName);
         uploader.setVisibility(View.INVISIBLE);
         receiver.setVisibility(View.INVISIBLE);
-        //showButtonPerRole();
     }
 
     private void showButtonPerRole(){
@@ -63,7 +60,6 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         } else {
             edit.setVisibility(View.GONE);
             delete.setVisibility(View.GONE);
-            //done.setVisibility(View.VISIBLE);
             if(clockedIn){
                 done.setVisibility(View.VISIBLE);
                 delete.setVisibility(View.INVISIBLE);

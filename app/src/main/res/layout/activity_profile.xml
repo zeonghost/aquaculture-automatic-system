@@ -103,7 +103,6 @@
                     android:textColor="#D32B2525"
                     android:textSize="20sp" />
 
-
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -229,7 +228,6 @@
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
-
 
     <Button
         android:id="@+id/btr1"

@@ -14,12 +14,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.aquaculture.Model.Partner;
 import com.example.aquaculture.ViewHolder.PartnerViewHolder;
@@ -40,7 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 public class PartnerAdminActivity extends AppCompatActivity implements OnMapReadyCallback{
-    private static final String TAG = "PartnerAdminActivity";
     private RecyclerView recyclerPartner;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference ref;
@@ -90,24 +87,6 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
                 holder.fullNamePartner.setText(fullname);
                 holder.deviceId.setText(deviceId);
 
-//                holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        waitingDialog.show();
-//                        getLocationPartner(username);
-//                    }
-//                });
-
-//                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View v) {
-//                        partnerTemp.edit().putString("deviceId", deviceId).apply();
-//                        partnerTemp.edit().putString("username", username).apply();
-//                        partnerTemp.edit().putString("key", key).apply();
-//                        unLinkPartnerDialog();
-//                        return true;
-//                    }
-//                });
             }
 
             @NonNull
@@ -131,7 +110,6 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -179,29 +157,6 @@ public class PartnerAdminActivity extends AppCompatActivity implements OnMapRead
             }
         });
     }
-
-//    private void unLinkPartnerDialog(){
-//        final String username = partnerTemp.getString("username", "");
-//        final String key = partnerTemp.getString("key", "");
-//        final String device = partnerTemp.getString("deviceId","");
-//        Log.d(TAG, "unLinkPartnerDialog: " + partnerTemp.getAll().toString());
-//        final String pathToPondDetailNode = "PondDetail/" + device + "/" + username;
-//        final DatabaseReference removeLinkFromPondDetail = database.getReference(pathToPondDetailNode);
-//        final DatabaseReference removeLinkFromPartner = database.getReference(path);
-//        AlertDialog.Builder unLinkPartner= new AlertDialog.Builder(this);
-//        unLinkPartner.setTitle("Unlink Partner: ");
-//        unLinkPartner.setMessage("This will remove your partner from the pond where he/she is assigned into.\n\n" +
-//                "Do you want to un-link this user?");
-//        unLinkPartner.setPositiveButton("Unlink", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                removeLinkFromPartner.child(key).removeValue();
-//                removeLinkFromPondDetail.removeValue();
-//                Toast.makeText(PartnerAdminActivity.this, "User has been removed access to the pond.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        unLinkPartner.show();
-//    }
 
     private void partnerInfoDialog(){
         final LayoutInflater floatingDialog = LayoutInflater.from(this);

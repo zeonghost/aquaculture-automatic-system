@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,10 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
 public class RegisterActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     private EditText name;//name input
     private EditText pass;//password input
     private EditText fname;//first name input
@@ -56,7 +52,6 @@ public class RegisterActivity extends AppCompatActivity {
                     ref.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Log.d(TAG, "User name duplicate count: " + dataSnapshot.getChildrenCount());
                             if(dataSnapshot.getValue() != null){
                                 Toast.makeText(RegisterActivity.this, "Username: " + name.getText().toString() + " is already taken.", Toast.LENGTH_SHORT).show();
                                 name.getText().clear();
@@ -76,9 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] choice = getResources().getStringArray(R.array.Role);
-                Log.d(TAG, "Role: "+ choice[position]);
                 getRole=choice[position];
-                Log.d(TAG, "Result: "+ getRole);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

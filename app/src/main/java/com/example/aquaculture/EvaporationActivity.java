@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.TextView;
@@ -52,7 +51,6 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
         getData = HomeActivity.transferData;
         myDatabase = FirebaseDatabase.getInstance();
 
-
         String evapPath = getData + "-evap";
         evapRef = myDatabase.getReference(evapPath);
         xValuesEvap = new ArrayList<>();
@@ -60,7 +58,6 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
         buttonNavigationSettings();
         updateEvaporationGraph();
     }
-
 
     private void updateEvaporationGraph(){
         evaporationGraph.setOnChartGestureListener(EvaporationActivity.this);
@@ -82,13 +79,10 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
                             String date = snaps.getKey();
                             String dateArray[] = date.split(" ", 3);
                             month = dateArray[0] + " " + dateArray[2];
-                            Log.d(TAG, "DATE ARRAY: " + dateArray[0] + " " + dateArray[2]);
                         }
-
                         yValues.add(new Entry(i, snaps.getValue(Float.class)));
                         i++;
                     }
-                    Log.d(TAG, "Y VALUES EVAPORATION: " + yValues);
                     evaporationGraph.getDescription().setText(month);
                     LineDataSet lineDataSet = new LineDataSet(yValues, "Highest Evaporation Rate Per Day");
                     lineDataSet.setFillAlpha(0);
@@ -110,7 +104,6 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
                     evaporationGraph.invalidate();
 
                     XAxis xAxis = evaporationGraph.getXAxis();
-//                    setXValuesEvaporation();
                     xAxis.setValueFormatter(new EvaporationActivity.myXValueFormatter(xValuesEvap));
                     xAxis.setDrawLabels(true);
 
@@ -118,7 +111,6 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
                     Entry entry = yValues.get(indexSize - 1);
                     evapRate.setText(entry.getY() + " mm/day");
                     dateEvap.setText(xValuesEvap.get(indexSize - 1));
-                    Log.d(TAG, "onDataChange: " + xValuesEvap);
                 }
             }
 
@@ -127,8 +119,7 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
 
             }
         });
-    }
-
+    }//set line chart
 
     private void buttonNavigationSettings(){
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
@@ -198,13 +189,9 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Log.d(TAG, "X Value: " + e.getX());
-        Log.d(TAG, "Y Value: " + e.getY());
-        Log.d(TAG, "Date: " + xValuesEvap.get((int) e.getX()));
-
         dateEvap.setText(xValuesEvap.get((int) e.getX()));
         evapRate.setText(String.valueOf(e.getY()));
-    }
+    }//show text when select point in line chart
 
     @Override
     public void onNothingSelected() {
@@ -213,21 +200,18 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
 
     public class myXValueFormatter implements IAxisValueFormatter {
         private ArrayList<String> values;
-
         public myXValueFormatter(ArrayList<String> values) {
             this.values = values;
         }
-
         @Override
         public String getFormattedValue(float value, AxisBase axis) {
-            Log.d(TAG, "getFormattedValue: value index: " + value);
             if(values.size() > (int) value){
                 return values.get((int) value);
             } else {
                 return null;
             }
         }
-    }
+    }//for line chart
 
     private void setXValuesEvaporation(){
         evapRef.orderByKey().addValueEventListener(new ValueEventListener() {
@@ -237,7 +221,6 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
                     for(DataSnapshot snaps : dataSnapshot.getChildren()){
                         String date = snaps.getKey();
                         xValuesEvap.add(date);
-                        Log.d(TAG, "XVALUES: " + xValuesEvap);
                     }
                 }
             }
@@ -247,7 +230,7 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
 
             }
         });
-    }
+    }//set evaporation data in x axis
 
     private String getSystemDate(){
         String date;
@@ -255,5 +238,5 @@ public class EvaporationActivity extends AppCompatActivity implements OnChartGes
         SimpleDateFormat timeFormat = new SimpleDateFormat("MMMM dd, yyyy");
         date = timeFormat.format(cal.getTimeInMillis());
         return date;
-    }
+    }//get system time
 }

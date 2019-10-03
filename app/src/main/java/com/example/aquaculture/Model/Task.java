@@ -12,7 +12,6 @@ public class Task {
     private String uploader;
     private String receiverName;
     private String uploaderName;
-    //private String receiveToken;
 
     public Task(){}
 
@@ -35,7 +34,6 @@ public class Task {
         this.task = task;
         this.time = time;
         this.uploader = uploader;
-        //this.receiveToken = receiveToken;
     }
 
     public Task(String date, String receiver, String status, String task, String time){
@@ -49,10 +47,6 @@ public class Task {
     public String getTaskId() {
         return TaskId;
     }
-    //@PropertyName("receiveToken")
-    //public String getReceiveToken() {
-     //   return receiveToken;
-    //}
     @PropertyName("date")
     public String getDate() {
         return date;
